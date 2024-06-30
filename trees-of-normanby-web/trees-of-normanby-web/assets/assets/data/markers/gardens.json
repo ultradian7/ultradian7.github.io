@@ -1,0 +1,30 @@
+[
+  {
+    "position": {"lat": 53.63985, "lng": -0.66212},
+    "name": "The Walled Garden",
+    "description": "Opening Times:\n9:00 - 16:30\nOpen Everyday.",
+    "image": "assets/images/w_garden.jpg",
+    "category": "gardens"
+  },
+  {
+    "position": {"lat": 53.63753, "lng": -0.65945},
+    "name": "Sunken Garden",
+    "description": "",
+    "image": "",
+    "category": "gardens"
+  },
+  {
+    "position": {"lat": 53.63974, "lng": -0.66299},
+    "name": "Wellbeing Garden",
+    "description": "",
+    "image": "",
+    "category": "gardens"
+  },
+  {
+    "position": {"lat": 53.63772, "lng": -0.65906},
+    "name": "Rose Garden",
+    "description": "",
+    "image": "",
+    "category": "gardens"
+  }
+]
