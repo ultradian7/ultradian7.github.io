@@ -1,11 +1,11 @@
 {
-    "name": "trees_of_normanby",
-    "short_name": "trees_of_normanby",
+    "name": "Trees of Normanby",
+    "short_name": "Trees of Normanby",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A detailed map of tress at Normanby Park.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
