@@ -1,0 +1,107 @@
+[
+  {
+      "position": {"lat": 53.63790, "lng": -0.65952},
+      "name": "Normanby Hall",
+      "description": "Opening Times:\n11:00 - 16:00\nOpen March - October.",
+      "image": "assets/images/the_hall.jpg",
+      "category": "museums"
+  },
+  {
+      "position": {"lat": 53.64060, "lng": -0.66061},
+      "name": "Rural Life Museum",
+      "description": "Opening Times:\n11:00 - 16:00\nOpen April - October.",
+      "image": "assets/images/rlm.jpg",
+      "category": "museums"
+  },
+  {
+      "position": {"lat": 53.63897, "lng": -0.65998},
+      "name": "The Stableyard Café",
+      "description": "Opening Times:\n9:30 - 17:00\nOpen Everyday.",
+      "image": "assets/images/stables.png",
+      "category": "catering"
+  },
+  {
+      "position": {"lat": 53.63914, "lng": -0.65533},
+      "name": "Golf Clubhouse",
+      "description": "Enjoy a tasty meal from the clubhouse whilst admiring the great views across the 18th from the balcony. The bar stocks a selection of refreshing beers, ciders, gins and wines. Non members are also made welcome.",
+      "image": "assets/images/clubhouse.jpg",
+      "category": "catering"
+  },
+  {
+      "position": {"lat": 53.63932, "lng": -0.65986},
+      "name": "The Giftshop",
+      "description": "Opening times:\n10:00 - 17:00\nOpen Everyday.",
+      "image": "",
+      "category": "buildings"
+  },
+  {
+      "position": {"lat": 53.63976, "lng": -0.66009},
+      "name": "Kennels",
+      "description": "The old kennel block is the main toilet site in the park.",
+      "image": "",
+      "category": "toilets"
+  },
+  {
+      "position": {"lat": 53.63906, "lng": -0.66056},
+      "name": "The Stables",
+      "description": "",
+      "image": "",
+      "category": "museums"
+  },
+  {
+      "position": {"lat": 53.63906, "lng": -0.66017},
+      "name": "Coach House",
+      "description": "",
+      "image": "",
+      "category": "museums"
+  },
+  {
+      "position": {"lat": 53.63954, "lng": -0.66136},
+      "name": "Park Education Rooms",
+      "description": "",
+      "image": "",
+      "category": "buildings"
+  },
+  {
+      "position": {"lat": 53.63911, "lng": -0.65957},
+      "name": "Go Ape Cabin",
+      "description": "",
+      "image": "",
+      "category": "buildings"
+  },
+  {
+      "position": {"lat": 53.63879, "lng": -0.66029},
+      "name": "Normanby Arms Outside Bar",
+      "description": "",
+      "image": "",
+      "category": "alcohol"
+  },
+  {
+      "position": {"lat": 53.63952, "lng": -0.66026},
+      "name": "Laundry Cottage Admin Offices",
+      "description": "",
+      "image": "",
+      "category": "buildings"
+  },
+  {
+      "position": {"lat": 53.64031, "lng": -0.65948},
+      "name": "Ticket Booth",
+      "description": "",
+      "image": "",
+      "category": "buildings"
+  },
+  {
+      "position": {"lat": 53.6384, "lng": -0.659011},
+      "name": "Changing Places Toilets",
+      "description": "",
+      "image": "",
+      "category": "toilets"
+  },
+  {
+    "position": {"lat": 53.63884, "lng": -0.66059},
+    "name": "Additional Toilets",
+    "description": "",
+    "image": "",
+    "category": "toilets"
+}
+]
