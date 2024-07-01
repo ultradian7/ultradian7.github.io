@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ultradian7 Projects</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultradian7 Projects</title>
+    <style>
+      body {
+        display: inline;
+        flex-direction: column;
+        color: white;
+        padding: 10px;
+        font-family: Arial, sans-serif;
+        background-color: rgb(31,31,31);
+      }
+      .title{
+        font-size: 25px;
+      }
+      p {
+        color: white;
+        line-height: 1.5;
+      }
+      .entries-row{
+        flex-direction: row;
+      }
+      .entry {
+        width: 30%;
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
 
-  <!-- Page content here -->
-  <h1>Ultradian7 Projects</h1>
+    </style>
+  </head>
+  <body>
 
-  <a href="trees-of-normanby-web/index.html">Trees of Normanby</a>
-  <a href="valuesynth-web/index.html">ValueSynth</a>
-  
-  <script>
+    <!-- Page content here -->
+    <div class="entries-row"></div>Ultradian7 Projects</div>
+
+    <div class="entries-row">
+
+      <div class="entry">
+          <a class="title" href="trees-of-normanby-web/index.html">Trees of Normanby</a>
+          <p>A detailed interactive map of notable trees at Normanby Park, written with Flutter. Link directs to a web version which has Android and Windows counterparts.</p>
+      </div>
+
+      <div class="entry">
+          <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
+          <p>An additive synth written with Cmajor, the link directs to a web assembly build of the instrument. Has native and plugin counterparts.</p>
+      </div>
+
+    </div>
     
-    //Javascript here
+    <script>
+      
+      //Javascript here
 
-  </script>
-</body>
+    </script>
+  </body>
 </html>
