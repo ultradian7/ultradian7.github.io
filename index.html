@@ -208,29 +208,30 @@
             }
 
             drawTable(svg, rows, cols, cellSize) {
-                const strokeColor = this.getCssVariable("--my-gray");
+                const strokeColour = this.getCssVariable("--my-gray");
+                const fillColour = this.getCssVariable("--my-dark-gray");
 
                 for (let row = 0; row < rows; row++) {
                     for (let col = 0; col < cols; col++) {
-                        const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColor);
+                        const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColour, fillColour);
                         svg.appendChild(hexagonGroup);
                     }
                 }
             }
 
-            createHexagonGroup(col, row, size, strokeColor) {
+            createHexagonGroup(col, row, size, strokeColour, fillColour) {
                 const group = document.createElementNS(this.svgNamespace, "g");
-                const hexagon = this.createHexagon(col, row, size, strokeColor);
+                const hexagon = this.createHexagon(col, row, size, strokeColour, fillColour);
                 group.appendChild(hexagon);
                 return group;
             }
 
-            createHexagon(col, row, size, strokeColor) {
+            createHexagon(col, row, size, strokeColour, fillColour) {
                 const points = this.calculateHexagonPoints(col, row, size);
                 const hexagon = document.createElementNS(this.svgNamespace, "polygon");
                 hexagon.setAttribute("points", points.join(" "));
-                hexagon.setAttribute("stroke", strokeColor);
-                hexagon.setAttribute("fill", this.getCssVariable("--my-dark-gray"));
+                hexagon.setAttribute("stroke", strokeColour);
+                hexagon.setAttribute("fill", fillColour);
                 return hexagon;
             }
 
