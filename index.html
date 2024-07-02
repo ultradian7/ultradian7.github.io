@@ -16,6 +16,10 @@
             --my-blue: rgb(143, 219, 251);
             --my-pink: rgb(196, 121, 209);
             --my-orange: rgb(255, 178, 102);
+            --my-aqua: rgb(156, 236, 211);
+            --my-green: rgb(95, 151, 92);
+            color-scheme: only light;
+
             --hexagon-size: 60px; /* Initial hexagon size */
         }
 
@@ -156,10 +160,13 @@
         }
     </style>
 </head>
+
+<div class="background">
+    <svg-table></svg-table>
+</div>
+
 <body class="column">
-    <div class="background">
-        <svg-table></svg-table>
-    </div>
+
     <!-- Page content here -->
     <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
     <div class="entries-row">
@@ -208,30 +215,30 @@
             }
 
             drawTable(svg, rows, cols, cellSize) {
-                const strokeColour = this.getCssVariable("--my-gray");
-                const fillColour = this.getCssVariable("--my-dark-gray");
+                const strokeColor = this.getCssVariable("--my-gray");
+                const fillColor = this.getCssVariable("--my-dark-gray");
 
                 for (let row = 0; row < rows; row++) {
                     for (let col = 0; col < cols; col++) {
-                        const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColour, fillColour);
+                        const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColor, fillColor);
                         svg.appendChild(hexagonGroup);
                     }
                 }
             }
 
-            createHexagonGroup(col, row, size, strokeColour, fillColour) {
+            createHexagonGroup(col, row, size, strokeColor, fillColor) {
                 const group = document.createElementNS(this.svgNamespace, "g");
-                const hexagon = this.createHexagon(col, row, size, strokeColour, fillColour);
+                const hexagon = this.createHexagon(col, row, size, strokeColor, fillColor);
                 group.appendChild(hexagon);
                 return group;
             }
 
-            createHexagon(col, row, size, strokeColour, fillColour) {
+            createHexagon(col, row, size, strokeColor, fillColor) {
                 const points = this.calculateHexagonPoints(col, row, size);
                 const hexagon = document.createElementNS(this.svgNamespace, "polygon");
                 hexagon.setAttribute("points", points.join(" "));
-                hexagon.setAttribute("stroke", strokeColour);
-                hexagon.setAttribute("fill", fillColour);
+                hexagon.setAttribute("stroke", strokeColor);
+                hexagon.setAttribute("fill", fillColor);
                 return hexagon;
             }
 
