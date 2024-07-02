@@ -1,126 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <title>Ultradian7 Projects</title>
-    <style>
-      .ubuntu-mono-regular {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 400;
-        font-style: normal;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <title>Ultradian7 Projects</title>
+  <style>
+    :root {
+      --my-yellow: rgb(206, 186, 132);
+      --my-dark-gray: rgb(31, 31, 31);
+      --my-gray: rgb(58, 57, 57);
+      --my-blue: rgb(143, 219, 251);
+      --my-pink: rgb(196, 121, 209);
+      --my-orange: rgb(255, 178, 102);
+    }
 
-      .ubuntu-mono-bold {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 700;
-        font-style: normal;
-      }
+    .ubuntu-mono-regular {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 400;
+      font-style: normal;
+    }
 
-      .ubuntu-mono-regular-italic {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 400;
-        font-style: italic;
-      }
+    .ubuntu-mono-bold {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 700;
+      font-style: normal;
+    }
 
-      .ubuntu-mono-bold-italic {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 700;
-        font-style: italic;
-      }
+    .ubuntu-mono-regular-italic {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 400;
+      font-style: italic;
+    }
 
-      body {
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        color: rgb(206, 186, 132);
-        padding: 25px;
-        font-family: ubuntu-mono-regular;
-        background-color: rgb(31, 31, 31);
-        gap: 10px;
-      }
+    .ubuntu-mono-bold-italic {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 700;
+      font-style: italic;
+    }
 
-      .title {
-        font-size: 25px;
-      }
+    body {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      color: var(--my-yellow);
+      padding: 25px;
+      background-color: var(--my-dark-gray);
+      gap: 10px;
+    }
 
-      .header {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 700;
-        font-style: normal;
-        font-size: 55px;
-        margin-bottom: 35px
-      }
+    .title {
+      font-size: 25px;
+    }
 
+    .header {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 700;
+      font-style: normal;
+      font-size: 55px;
+      margin-bottom: 35px
+    }
 
+    .column {
+      gap: 20px;
+      flex-direction: column;
+    }
 
-      .column {
-        gap: 20px;
-        flex-direction: column;
-      }
+    .entries-row {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 400;
+      font-style: normal;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
 
-      .entries-row {
-        font-family: "Ubuntu Mono", monospace;
-        font-weight: 400;
-        font-style: normal;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
+    .c3 {
+      color: var(--my-blue);
+    }
 
-      .c3{
-        color: rgb(143, 219, 251);
-      }
+    .c2 {
+      color: var(--my-orange);
+    }
 
-      .c2{
-        color: rgb(255, 178, 102);
-      }
-      .c1 {
-        color: rgb(196, 121, 209);
-      }
+    .c1 {
+      color: var(--my-pink);
+    }
 
-      a{
-        color: rgb(196, 121, 209);
-      }
+    a {
+      color: var(--my-pink);
+    }
 
+    .entry {
+      flex: 1 1 calc(30% - 20px);
+      padding: 10px;
+      border: 3px solid var(--my-gray);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      color: var(--my-blue);
+      line-height: 1.6;
+      font-size: 18px;
+    }
+
+    @media (max-width: 1080px) {
       .entry {
-        width: 30%;
-        padding: 10px;
-        border: 3px solid rgb(58, 57, 57);
-        border-radius: 10px;
-        margin-bottom: 10px;
-        color: rgb(143, 219, 251);
-        line-height: 1.6;
-        font-size: 18px;
+        flex: 1 1 calc(45% - 20px);
       }
-    </style>
-  </head>
-  <body class="column">
-    <!-- Page content here -->
-    <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
+    }
 
-    <div class="entries-row">
+    @media (max-width: 600px) {
+      .entry {
+        flex: 1 1 calc(100% - 20px);
+      }
+    }
 
-      <div class="entry">
-        <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
-        <p>A weird additive synthesizer that lets you define frequencies of all 128 MIDI notes. A work in progress, the link directs to a web assembly build of the instrument. Written in Cmajor, has native and plugin counterparts.</p>
-      </div>
+    footer {
+      margin-top: 10px;
+      border-top: 3px solid var(--my-gray);
+      width: 100%;
+      text-align: center;
+      color: var(--my-yellow);
+      font-size: 18px;
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 400;
+      font-style: normal;
+    }
 
-      <div class="entry">
-        <a class="title" href="trees-of-normanby-web/index.html">Trees of Normanby</a>
-        <p>A detailed and interactive map of notable trees at Normanby Park, a cross platform app written with Flutter. Work in progress, link directs to a web version, has Android and Windows counterparts.</p>
-      </div>
+    footer a {
+      color: var(--my-pink);
+      text-decoration: none;
+    }
 
-
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="column">
+  <!-- Page content here -->
+  <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
+  <div class="entries-row">
+    <div class="entry">
+      <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
+      <p>A weird additive synthesizer that lets you define frequencies of all 128 MIDI notes. A work in progress, the link directs to a web assembly build of the instrument. Written in Cmajor, has native and plugin counterparts.</p>
     </div>
-
-    <script>
-      // Javascript here
-    </script>
-  </body>
+    <div class="entry">
+      <a class="title" href="trees-of-normanby-web/index.html">Trees of Normanby</a>
+      <p>A detailed and interactive map of notable trees at Normanby Park, a cross platform app written with Flutter. Work in progress, link directs to a web version, has Android and Windows counterparts.</p>
+    </div>
+  </div>
+  <footer>
+    <p>Contact: <a href="mailto:contact@ultradian7.com">ultradian7@gmail.com</a></p>
+  </footer>
+  <script>
+    // Javascript here
+  </script>
+</body>
 </html>
