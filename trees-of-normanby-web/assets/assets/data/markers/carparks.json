@@ -1,0 +1,35 @@
+[
+    {
+        "position": {"lat": 53.64009, "lng": -0.65980},
+        "name": "Car Park - Hard Standing",
+        "description": "",
+        "image": "",
+        "category": "carparks",
+        "markerType": "carpark"
+    },
+    {
+        "position": {"lat": 53.64063, "lng": -0.65976},
+        "name": "Coach Park",
+        "description": "",
+        "image": "",
+        "category": "carparks",
+        "markerType": "carpark"
+      },
+      {
+        "position": {"lat": 53.64019, "lng": -0.65894},
+        "name": "Paddock Car Park",
+        "description": "",
+        "image": "",
+        "category": "carparks",
+        "markerType": "carpark"
+        
+      },
+      {
+        "position": {"lat": 53.6409, "lng": -0.6576},
+        "name": "Overspill Car Park",
+        "description": "",
+        "image": "",
+        "category": "carparks",
+        "markerType": "carpark"
+      }
+]
