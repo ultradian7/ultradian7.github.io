@@ -350,78 +350,213 @@
                 }
     
                 async function fetchSpeciesData() {
-    const selectedKingdomId = kingdomFilter.value;
+                    const selectedKingdomId = kingdomFilter.value;
 
-    let query = supabase.from("taxon_species").select(`
-        id,
-        name,
-        common_name,
-        native_range,
-        info,
-        genus_id,
-        taxon_genus!inner (
-            id,
-            name,
-            taxon_family!inner (
-                id,
-                name,
-                taxon_order!inner (
-                    id,
-                    name,
-                    taxon_class!inner (
+                    let query = supabase.from("taxon_species").select(`
                         id,
                         name,
-                        taxon_phylum!inner (
+                        common_name,
+                        native_range,
+                        info,
+                        genus_id,
+                        taxon_genus!inner (
                             id,
                             name,
-                            kingdom_id
+                            taxon_family!inner (
+                                id,
+                                name,
+                                taxon_order!inner (
+                                    id,
+                                    name,
+                                    taxon_class!inner (
+                                        id,
+                                        name,
+                                        taxon_phylum!inner (
+                                            id,
+                                            name,
+                                            kingdom_id
+                                        )
+                                    )
+                                )
+                            )
                         )
-                    )
-                )
-            )
-        )
-    `).order("id");
+                    `).order("id");
 
-    if (selectedKingdomId) {
-        query = query.eq("taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
-    }
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
 
-    const { data: speciesData, error } = await query;
+                    const { data: speciesData, error } = await query;
 
-    if (error) {
-        console.error("Error fetching species data:", error);
-        return;
-    }
-    speciesData.forEach(species => createSpeciesCard(species));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
+                    if (error) {
+                        console.error("Error fetching species data:", error);
+                        return;
+                    }
+                    speciesData.forEach(species => createSpeciesCard(species));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
 
-async function fetchSpecimenData() {
-    const selectedKingdomId = kingdomFilter.value;
+                async function fetchSpecimenData() {
+                    const selectedKingdomId = kingdomFilter.value;
 
-    let query = supabase.from("botanical_specimen").select(`
-        id,
-        species_id,
-        variety_id,
-        location::geometry,
-        info,
-        is_accessible,
-        is_tree,
-        is_notable,
-        taxon_species!inner (
-            id,
-            name,
-            genus_id,
-            taxon_genus!inner (
-                id,
-                name,
-                taxon_family!inner (
-                    id,
-                    name,
-                    taxon_order!inner (
+                    let query = supabase.from("botanical_specimen").select(`
+                        id,
+                        species_id,
+                        variety_id,
+                        location::geometry,
+                        info,
+                        is_accessible,
+                        is_tree,
+                        is_notable,
+                        taxon_species!inner (
+                            id,
+                            name,
+                            genus_id,
+                            taxon_genus!inner (
+                                id,
+                                name,
+                                taxon_family!inner (
+                                    id,
+                                    name,
+                                    taxon_order!inner (
+                                        id,
+                                        name,
+                                        taxon_class!inner (
+                                            id,
+                                            name,
+                                            taxon_phylum!inner (
+                                                id,
+                                                name,
+                                                kingdom_id
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    `).order("id");
+
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
+
+                    const { data: specimenData, error } = await query;
+
+                    if (error) {
+                        console.error("Error fetching specimen data:", error);
+                        return;
+                    }
+
+                    const processedSpecimenData = specimenData.map(specimen => {
+                        const latitude = specimen.location ? parseFloat(specimen.location.coordinates[1]) : 0;
+                        const longitude = specimen.location ? parseFloat(specimen.location.coordinates[0]) : 0;
+
+                        return {
+                            ...specimen,
+                            latitude,
+                            longitude
+                        };
+                    });
+
+                    processedSpecimenData.forEach(specimen => {
+                        createSpecimenCard(specimen);
+                    });
+
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
+
+                async function fetchGenusData() {
+                    const selectedKingdomId = kingdomFilter.value;
+
+                    let query = supabase.from("taxon_genus").select(`
                         id,
                         name,
+                        info,
+                        family_id,
+                        taxon_family!inner (
+                            id,
+                            name,
+                            taxon_order!inner (
+                                id,
+                                name,
+                                taxon_class!inner (
+                                    id,
+                                    name,
+                                    taxon_phylum!inner (
+                                        id,
+                                        name,
+                                        kingdom_id
+                                    )
+                                )
+                            )
+                        )
+                    `).order("id");
+
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
+
+                    const { data: genusData, error } = await query;
+
+                    if (error) {
+                        console.error("Error fetching genus data:", error);
+                        return;
+                    }
+
+                    genusData.forEach(genus => createGenusCard(genus));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
+
+                async function fetchFamilyData() {
+                    const selectedKingdomId = kingdomFilter.value;
+
+                    let query = supabase.from("taxon_family").select(`
+                        id,
+                        name,
+                        info,
+                        order_id,
+                        taxon_order!inner (
+                            id,
+                            name,
+                            taxon_class!inner (
+                                id,
+                                name,
+                                taxon_phylum!inner (
+                                    id,
+                                    name,
+                                    kingdom_id
+                                )
+                            )
+                        )
+                    `).order("id");
+
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
+
+                    const { data: familyData, error } = await query;
+
+                    if (error) {
+                        console.error("Error fetching family data:", error);
+                        return;
+                    }
+
+                    familyData.forEach(family => createFamilyCard(family));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
+
+                async function fetchOrderData() {
+                    const selectedKingdomId = kingdomFilter.value;
+
+                    let query = supabase.from("taxon_order").select(`
+                        id,
+                        name,
+                        info,
+                        class_id,
                         taxon_class!inner (
                             id,
                             name,
@@ -431,219 +566,84 @@ async function fetchSpecimenData() {
                                 kingdom_id
                             )
                         )
-                    )
-                )
-            )
-        )
-    `).order("id");
+                    `).order("id");
 
-    if (selectedKingdomId) {
-        query = query.eq("taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
-    }
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
 
-    const { data: specimenData, error } = await query;
+                    const { data: orderData, error } = await query;
 
-    if (error) {
-        console.error("Error fetching specimen data:", error);
-        return;
-    }
+                    if (error) {
+                        console.error("Error fetching order data:", error);
+                        return;
+                    }
 
-    const processedSpecimenData = specimenData.map(specimen => {
-        const latitude = specimen.location ? parseFloat(specimen.location.coordinates[1]) : 0;
-        const longitude = specimen.location ? parseFloat(specimen.location.coordinates[0]) : 0;
+                    orderData.forEach(order => createOrderCard(order));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
 
-        return {
-            ...specimen,
-            latitude,
-            longitude
-        };
-    });
+                async function fetchClassData() {
+                    const selectedKingdomId = kingdomFilter.value;
 
-    processedSpecimenData.forEach(specimen => {
-        createSpecimenCard(specimen);
-    });
-
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
-
-async function fetchGenusData() {
-    const selectedKingdomId = kingdomFilter.value;
-
-    let query = supabase.from("taxon_genus").select(`
-        id,
-        name,
-        info,
-        family_id,
-        taxon_family!inner (
-            id,
-            name,
-            taxon_order!inner (
-                id,
-                name,
-                taxon_class!inner (
-                    id,
-                    name,
-                    taxon_phylum!inner (
+                    let query = supabase.from("taxon_class").select(`
                         id,
                         name,
-                        kingdom_id
-                    )
-                )
-            )
-        )
-    `).order("id");
+                        info,
+                        phylum_id,
+                        taxon_phylum!inner (
+                            id,
+                            name,
+                            kingdom_id
+                        )
+                    `).order("id");
 
-    if (selectedKingdomId) {
-        query = query.eq("taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
-    }
+                    if (selectedKingdomId) {
+                        query = query.eq("taxon_phylum.kingdom_id", selectedKingdomId);
+                    }
 
-    const { data: genusData, error } = await query;
+                    const { data: classData, error } = await query;
 
-    if (error) {
-        console.error("Error fetching genus data:", error);
-        return;
-    }
+                    if (error) {
+                        console.error("Error fetching class data:", error);
+                        return;
+                    }
 
-    genusData.forEach(genus => createGenusCard(genus));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
+                    classData.forEach(classItem => createClassCard(classItem));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
 
-async function fetchFamilyData() {
-    const selectedKingdomId = kingdomFilter.value;
+                async function fetchPhylumData() {
+                    const selectedKingdomId = kingdomFilter.value;
 
-    let query = supabase.from("taxon_family").select(`
-        id,
-        name,
-        info,
-        order_id,
-        taxon_order!inner (
-            id,
-            name,
-            taxon_class!inner (
-                id,
-                name,
-                taxon_phylum!inner (
-                    id,
-                    name,
-                    kingdom_id
-                )
-            )
-        )
-    `).order("id");
+                    let query = supabase.from("taxon_phylum").select(`
+                        id,
+                        name,
+                        info,
+                        kingdom_id,
+                        taxon_kingdom!inner (
+                            id,
+                            name
+                        )
+                    `).order("id");
 
-    if (selectedKingdomId) {
-        query = query.eq("taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
-    }
+                    if (selectedKingdomId) {
+                        query = query.eq("kingdom_id", selectedKingdomId);
+                    }
 
-    const { data: familyData, error } = await query;
+                    const { data: phylumData, error } = await query;
 
-    if (error) {
-        console.error("Error fetching family data:", error);
-        return;
-    }
+                    if (error) {
+                        console.error("Error fetching phylum data:", error);
+                        return;
+                    }
 
-    familyData.forEach(family => createFamilyCard(family));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
-
-async function fetchOrderData() {
-    const selectedKingdomId = kingdomFilter.value;
-
-    let query = supabase.from("taxon_order").select(`
-        id,
-        name,
-        info,
-        class_id,
-        taxon_class!inner (
-            id,
-            name,
-            taxon_phylum!inner (
-                id,
-                name,
-                kingdom_id
-            )
-        )
-    `).order("id");
-
-    if (selectedKingdomId) {
-        query = query.eq("taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
-    }
-
-    const { data: orderData, error } = await query;
-
-    if (error) {
-        console.error("Error fetching order data:", error);
-        return;
-    }
-
-    orderData.forEach(order => createOrderCard(order));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
-
-async function fetchClassData() {
-    const selectedKingdomId = kingdomFilter.value;
-
-    let query = supabase.from("taxon_class").select(`
-        id,
-        name,
-        info,
-        phylum_id,
-        taxon_phylum!inner (
-            id,
-            name,
-            kingdom_id
-        )
-    `).order("id");
-
-    if (selectedKingdomId) {
-        query = query.eq("taxon_phylum.kingdom_id", selectedKingdomId);
-    }
-
-    const { data: classData, error } = await query;
-
-    if (error) {
-        console.error("Error fetching class data:", error);
-        return;
-    }
-
-    classData.forEach(classItem => createClassCard(classItem));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
-
-async function fetchPhylumData() {
-    const selectedKingdomId = kingdomFilter.value;
-
-    let query = supabase.from("taxon_phylum").select(`
-        id,
-        name,
-        info,
-        kingdom_id,
-        taxon_kingdom!inner (
-            id,
-            name
-        )
-    `).order("id");
-
-    if (selectedKingdomId) {
-        query = query.eq("kingdom_id", selectedKingdomId);
-    }
-
-    const { data: phylumData, error } = await query;
-
-    if (error) {
-        console.error("Error fetching phylum data:", error);
-        return;
-    }
-
-    phylumData.forEach(phylum => createPhylumCard(phylum));
-    addSearchFunctionality();
-    addUpdateFunctionality();
-}
+                    phylumData.forEach(phylum => createPhylumCard(phylum));
+                    addSearchFunctionality();
+                    addUpdateFunctionality();
+                }
 
     
                 async function addNewCard() {
@@ -887,164 +887,186 @@ async function fetchPhylumData() {
                     });
                     return map;
                 }
-    
+
                 function addSearchFunctionality() {
                     const searchInput = document.getElementById("search");
+                    
                     searchInput.addEventListener("input", function() {
                         const searchTerm = searchInput.value.toLowerCase();
-                        const cards = cardContainer.getElementsByClassName("card");
-                        Array.from(cards).forEach(card => {
-                            const commonName = card.querySelector("h3") ? card.querySelector("h3").textContent.toLowerCase() : "";
-                            if (commonName.includes(searchTerm)) {
-                                card.style.display = "";
+                        const cards = document.querySelectorAll("#card-container .card");
+
+                        cards.forEach(card => {
+                            const cardTextContent = getCardTextContent(card).toLowerCase();
+                            if (cardTextContent.includes(searchTerm)) {
+                                card.style.display = "grid"; // Use "grid" to maintain the grid layout
                             } else {
                                 card.style.display = "none";
                             }
                         });
                     });
+
+                    function getCardTextContent(card) {
+                        // Collect text content from all possible fields in the card
+                        let textContent = '';
+                        const fields = card.querySelectorAll("p, input, textarea, select");
+                        
+                        fields.forEach(field => {
+                            if (field.tagName === 'SELECT') {
+                                textContent += field.options[field.selectedIndex].text + ' ';
+                            } else if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
+                                textContent += field.value + ' ';
+                            } else {
+                                textContent += field.textContent + ' ';
+                            }
+                        });
+
+                        return textContent.trim();
+                    }
                 }
+
+
     
                 function addUpdateFunctionality() {
-    const updateButtons = document.querySelectorAll(".update-button");
-    updateButtons.forEach(button => {
-        button.addEventListener("click", async () => {
-            const card = button.closest(".card");
-            const id = button.getAttribute("data-id");
-            const type = button.getAttribute("data-type");
+                    const updateButtons = document.querySelectorAll(".update-button");
+                    updateButtons.forEach(button => {
+                        button.addEventListener("click", async () => {
+                            const card = button.closest(".card");
+                            const id = button.getAttribute("data-id");
+                            const type = button.getAttribute("data-type");
 
-            let updateSuccessful = false;
+                            let updateSuccessful = false;
 
-            if (type === "species") {
-                const genusId = card.querySelector(".menu-button-container select").value;
-                const speciesName = card.querySelector(".input-field.italic").value;
-                const commonName = card.querySelector("textarea.font-arial").value;
-                const nativeRange = card.querySelectorAll("textarea")[1].value;
-                const info = card.querySelectorAll("textarea")[2].value;
+                            if (type === "species") {
+                                const genusId = card.querySelector(".menu-button-container select").value;
+                                const speciesName = card.querySelector(".input-field.italic").value;
+                                const commonName = card.querySelector("textarea.font-arial").value;
+                                const nativeRange = card.querySelectorAll("textarea")[1].value;
+                                const info = card.querySelectorAll("textarea")[2].value;
 
-                const { data, error } = await supabase
-                    .from("taxon_species")
-                    .update({ genus_id: genusId, name: speciesName, common_name: commonName, native_range: nativeRange, info: info })
-                    .eq("id", id);
+                                const { data, error } = await supabase
+                                    .from("taxon_species")
+                                    .update({ genus_id: genusId, name: speciesName, common_name: commonName, native_range: nativeRange, info: info })
+                                    .eq("id", id);
 
-                if (error) {
-                    console.error("Error updating species data:", error);
-                } else {
-                    console.log("Species data updated successfully:", data);
-                    updateSuccessful = true;
+                                if (error) {
+                                    console.error("Error updating species data:", error);
+                                } else {
+                                    console.log("Species data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "specimen") {
+                                const specimenId = card.querySelector("#specimenIdField").textContent;
+                                const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+                                const varietyId = parseInt(card.querySelectorAll(".menu-button-container select")[1].value);
+                                const location = card.querySelectorAll(".input-field")[0].value.split(", ");
+                                const info = card.querySelectorAll("textarea")[0].value;
+                                const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+                                const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
+                                const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
+
+                                const { data, error } = await supabase
+                                    .from("botanical_specimen")
+                                    .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: "", is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating specimen data:", error);
+                                } else {
+                                    console.log("Specimen data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "genus") {
+                                const familyId = card.querySelector(".menu-button-container select").value;
+                                const genusName = card.querySelector(".input-field.italic").value;
+                                const info = card.querySelector("textarea").value;
+
+                                const { data, error } = await supabase
+                                    .from("taxon_genus")
+                                    .update({ family_id: familyId, name: genusName, info: info })
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating genus data:", error);
+                                } else {
+                                    console.log("Genus data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "family") {
+                                const orderId = card.querySelector(".menu-button-container select").value;
+                                const familyName = card.querySelector(".input-field.italic").value;
+                                const info = card.querySelector("textarea").value;
+
+                                const { data, error } = await supabase
+                                    .from("taxon_family")
+                                    .update({ order_id: orderId, name: familyName, info: info })
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating family data:", error);
+                                } else {
+                                    console.log("Family data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "order") {
+                                const classId = card.querySelector(".menu-button-container select").value;
+                                const orderName = card.querySelector(".input-field.italic").value;
+                                const info = card.querySelector("textarea").value;
+
+                                const { data, error } = await supabase
+                                    .from("taxon_order")
+                                    .update({ class_id: classId, name: orderName, info: info })
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating order data:", error);
+                                } else {
+                                    console.log("Order data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "class") {
+                                const phylumId = card.querySelector(".menu-button-container select").value;
+                                const className = card.querySelector(".input-field.italic").value;
+                                const info = card.querySelector("textarea").value;
+
+                                const { data, error } = await supabase
+                                    .from("taxon_class")
+                                    .update({ phylum_id: phylumId, name: className, info: info })
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating class data:", error);
+                                } else {
+                                    console.log("Class data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            } else if (type === "phylum") {
+                                const kingdomId = card.querySelector(".menu-button-container select").value;
+                                const phylumName = card.querySelector(".input-field.italic").value;
+                                const info = card.querySelector("textarea").value;
+
+                                const { data, error } = await supabase
+                                    .from("taxon_phylum")
+                                    .update({ kingdom_id: kingdomId, name: phylumName, info: info })
+                                    .eq("id", id);
+
+                                if (error) {
+                                    console.error("Error updating phylum data:", error);
+                                } else {
+                                    console.log("Phylum data updated successfully:", data);
+                                    updateSuccessful = true;
+                                }
+                            }
+
+                            if (updateSuccessful) {
+                                const feedbackMessage = card.querySelector(".feedback-message");
+                                feedbackMessage.style.display = "block";
+                                setTimeout(() => {
+                                    feedbackMessage.style.display = "none";
+                                }, 6000);
+                            }
+                        });
+                    });
                 }
-            } else if (type === "specimen") {
-                const specimenId = card.querySelector("#specimenIdField").textContent;
-                const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
-                const varietyId = parseInt(card.querySelectorAll(".menu-button-container select")[1].value);
-                const location = card.querySelectorAll(".input-field")[0].value.split(", ");
-                const info = card.querySelectorAll("textarea")[0].value;
-                const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
-                const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
-                const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
-
-                const { data, error } = await supabase
-                    .from("botanical_specimen")
-                    .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: "", is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating specimen data:", error);
-                } else {
-                    console.log("Specimen data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            } else if (type === "genus") {
-                const familyId = card.querySelector(".menu-button-container select").value;
-                const genusName = card.querySelector(".input-field.italic").value;
-                const info = card.querySelector("textarea").value;
-
-                const { data, error } = await supabase
-                    .from("taxon_genus")
-                    .update({ family_id: familyId, name: genusName, info: info })
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating genus data:", error);
-                } else {
-                    console.log("Genus data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            } else if (type === "family") {
-                const orderId = card.querySelector(".menu-button-container select").value;
-                const familyName = card.querySelector(".input-field.italic").value;
-                const info = card.querySelector("textarea").value;
-
-                const { data, error } = await supabase
-                    .from("taxon_family")
-                    .update({ order_id: orderId, name: familyName, info: info })
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating family data:", error);
-                } else {
-                    console.log("Family data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            } else if (type === "order") {
-                const classId = card.querySelector(".menu-button-container select").value;
-                const orderName = card.querySelector(".input-field.italic").value;
-                const info = card.querySelector("textarea").value;
-
-                const { data, error } = await supabase
-                    .from("taxon_order")
-                    .update({ class_id: classId, name: orderName, info: info })
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating order data:", error);
-                } else {
-                    console.log("Order data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            } else if (type === "class") {
-                const phylumId = card.querySelector(".menu-button-container select").value;
-                const className = card.querySelector(".input-field.italic").value;
-                const info = card.querySelector("textarea").value;
-
-                const { data, error } = await supabase
-                    .from("taxon_class")
-                    .update({ phylum_id: phylumId, name: className, info: info })
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating class data:", error);
-                } else {
-                    console.log("Class data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            } else if (type === "phylum") {
-                const kingdomId = card.querySelector(".menu-button-container select").value;
-                const phylumName = card.querySelector(".input-field.italic").value;
-                const info = card.querySelector("textarea").value;
-
-                const { data, error } = await supabase
-                    .from("taxon_phylum")
-                    .update({ kingdom_id: kingdomId, name: phylumName, info: info })
-                    .eq("id", id);
-
-                if (error) {
-                    console.error("Error updating phylum data:", error);
-                } else {
-                    console.log("Phylum data updated successfully:", data);
-                    updateSuccessful = true;
-                }
-            }
-
-            if (updateSuccessful) {
-                const feedbackMessage = card.querySelector(".feedback-message");
-                feedbackMessage.style.display = "block";
-                setTimeout(() => {
-                    feedbackMessage.style.display = "none";
-                }, 6000);
-            }
-        });
-    });
-}
 
     
                 fetchKingdoms();
