@@ -132,6 +132,17 @@
                 display: flex;
                 justify-content: space-around;
             }
+            .feedback-message {
+                grid-column: span 2;
+                display: none;
+                color: green;
+                text-align: center;
+                margin-top: 0px;
+                margin-bottom: 0px;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-around;
+            }
             .action-buttons button {
                 padding: 5px 5px;
                 border: 1px solid rgba(220, 207, 194, 1);
@@ -199,6 +210,14 @@
             .logo-container img {
                 width: 120px; /* Adjust as needed */
                 height: 120px; /* Adjust as needed */
+            }
+            .feedback-message {
+                display: none;
+                color: green;
+                text-align: center;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                font-weight: bold;
             }
         </style>
     </head>
@@ -705,10 +724,12 @@ async function fetchPhylumData() {
                         <p><strong>Common Name:</strong></p> <div><textarea class="input-field font-arial" style="height: 28px;">${species.common_name}</textarea></div>
                         <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${species.native_range}</textarea></div>
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${species.info}</textarea></div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${species.id}" data-type="species">Update</button>
                             <button>View Full Info</button>
                         </div>
+                        
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -727,10 +748,11 @@ async function fetchPhylumData() {
                             <div><strong>Tree:</strong> ${createToggleSwitch(specimen.is_tree)}</div>
                             <div><strong>Notable:</strong> ${createToggleSwitch(specimen.is_notable)}</div>
                         </div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${specimen.id}" data-type="specimen">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -744,10 +766,11 @@ async function fetchPhylumData() {
                         <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${genus.name}" /></div>
                         
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${genus.info}</textarea></div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${genus.id}" data-type="genus">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -761,10 +784,11 @@ async function fetchPhylumData() {
                         <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${family.name}" /></div>
                         
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${family.info}</textarea></div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${family.id}" data-type="family">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -778,10 +802,11 @@ async function fetchPhylumData() {
                         <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${order.name}" /></div>
                         
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${order.info}</textarea></div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${order.id}" data-type="order">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -795,10 +820,11 @@ async function fetchPhylumData() {
                         <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${classItem.name}" /></div>
                         
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${classItem.info}</textarea></div>
+                        
                         <div class="action-buttons">
                             <button class="update-button" data-id="${classItem.id}" data-type="class">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -812,10 +838,11 @@ async function fetchPhylumData() {
                         <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${phylum.name}" /></div>
                         
                         <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${phylum.info}</textarea></div>
+                        <div class="feedback-message">Update successful!</div>
                         <div class="action-buttons">
                             <button class="update-button" data-id="${phylum.id}" data-type="phylum">Update</button>
-                            <button>View Full Info</button>
                         </div>
+                        <div class="feedback-message">Update successful!</div>
                     `;
                     cardContainer.appendChild(card);
                 }
@@ -878,129 +905,147 @@ async function fetchPhylumData() {
                 }
     
                 function addUpdateFunctionality() {
-                    const updateButtons = document.querySelectorAll(".update-button");
-                    updateButtons.forEach(button => {
-                        button.addEventListener("click", async () => {
-                            const card = button.closest(".card");
-                            const id = button.getAttribute("data-id");
-                            const type = button.getAttribute("data-type");
-    
-                            if (type === "species") {
-                                const genusId = card.querySelector(".menu-button-container select").value;
-                                const speciesName = card.querySelector(".input-field.italic").value;
-                                const commonName = card.querySelector("textarea.font-arial").value;
-                                const nativeRange = card.querySelectorAll("textarea")[1].value;
-                                const info = card.querySelectorAll("textarea")[2].value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_species")
-                                    .update({ genus_id: genusId, name: speciesName, common_name: commonName, native_range: nativeRange, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating species data:", error);
-                                } else {
-                                    console.log("Species data updated successfully:", data);
-                                }
-                            } else if (type === "specimen") {
-                                const specimenId = card.querySelector("#specimenIdField").textContent;
-                                const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
-                                const varietyId = parseInt(card.querySelectorAll(".menu-button-container select")[1].value);
-                                const location = card.querySelectorAll(".input-field")[0].value.split(", ");
-                                const info = card.querySelectorAll("textarea")[0].value;
-                                const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
-                                const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
-                                const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
-    
-                                const { data, error } = await supabase
-                                    .from("botanical_specimen")
-                                    .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: "", is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating specimen data:", error);
-                                } else {
-                                    console.log("Specimen data updated successfully:", data);
-                                }
-                            } else if (type === "genus") {
-                                const familyId = card.querySelector(".menu-button-container select").value;
-                                const genusName = card.querySelector(".input-field.italic").value;
-                                const info = card.querySelector("textarea").value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_genus")
-                                    .update({ family_id: familyId, name: genusName, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating genus data:", error);
-                                } else {
-                                    console.log("Genus data updated successfully:", data);
-                                }
-                            } else if (type === "family") {
-                                const orderId = card.querySelector(".menu-button-container select").value;
-                                const familyName = card.querySelector(".input-field.italic").value;
-                                const info = card.querySelector("textarea").value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_family")
-                                    .update({ order_id: orderId, name: familyName, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating family data:", error);
-                                } else {
-                                    console.log("Family data updated successfully:", data);
-                                }
-                            } else if (type === "order") {
-                                const classId = card.querySelector(".menu-button-container select").value;
-                                const orderName = card.querySelector(".input-field.italic").value;
-                                const info = card.querySelector("textarea").value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_order")
-                                    .update({ class_id: classId, name: orderName, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating order data:", error);
-                                } else {
-                                    console.log("Order data updated successfully:", data);
-                                }
-                            } else if (type === "class") {
-                                const phylumId = card.querySelector(".menu-button-container select").value;
-                                const className = card.querySelector(".input-field.italic").value;
-                                const info = card.querySelector("textarea").value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_class")
-                                    .update({ phylum_id: phylumId, name: className, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating class data:", error);
-                                } else {
-                                    console.log("Class data updated successfully:", data);
-                                }
-                            } else if (type === "phylum") {
-                                const kingdomId = card.querySelector(".menu-button-container select").value;
-                                const phylumName = card.querySelector(".input-field.italic").value;
-                                const info = card.querySelector("textarea").value;
-    
-                                const { data, error } = await supabase
-                                    .from("taxon_phylum")
-                                    .update({ kingdom_id: kingdomId, name: phylumName, info: info })
-                                    .eq("id", id);
-    
-                                if (error) {
-                                    console.error("Error updating phylum data:", error);
-                                } else {
-                                    console.log("Phylum data updated successfully:", data);
-                                }
-                            }
-                        });
-                    });
+    const updateButtons = document.querySelectorAll(".update-button");
+    updateButtons.forEach(button => {
+        button.addEventListener("click", async () => {
+            const card = button.closest(".card");
+            const id = button.getAttribute("data-id");
+            const type = button.getAttribute("data-type");
+
+            let updateSuccessful = false;
+
+            if (type === "species") {
+                const genusId = card.querySelector(".menu-button-container select").value;
+                const speciesName = card.querySelector(".input-field.italic").value;
+                const commonName = card.querySelector("textarea.font-arial").value;
+                const nativeRange = card.querySelectorAll("textarea")[1].value;
+                const info = card.querySelectorAll("textarea")[2].value;
+
+                const { data, error } = await supabase
+                    .from("taxon_species")
+                    .update({ genus_id: genusId, name: speciesName, common_name: commonName, native_range: nativeRange, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating species data:", error);
+                } else {
+                    console.log("Species data updated successfully:", data);
+                    updateSuccessful = true;
                 }
+            } else if (type === "specimen") {
+                const specimenId = card.querySelector("#specimenIdField").textContent;
+                const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+                const varietyId = parseInt(card.querySelectorAll(".menu-button-container select")[1].value);
+                const location = card.querySelectorAll(".input-field")[0].value.split(", ");
+                const info = card.querySelectorAll("textarea")[0].value;
+                const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+                const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
+                const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
+
+                const { data, error } = await supabase
+                    .from("botanical_specimen")
+                    .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: "", is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating specimen data:", error);
+                } else {
+                    console.log("Specimen data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            } else if (type === "genus") {
+                const familyId = card.querySelector(".menu-button-container select").value;
+                const genusName = card.querySelector(".input-field.italic").value;
+                const info = card.querySelector("textarea").value;
+
+                const { data, error } = await supabase
+                    .from("taxon_genus")
+                    .update({ family_id: familyId, name: genusName, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating genus data:", error);
+                } else {
+                    console.log("Genus data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            } else if (type === "family") {
+                const orderId = card.querySelector(".menu-button-container select").value;
+                const familyName = card.querySelector(".input-field.italic").value;
+                const info = card.querySelector("textarea").value;
+
+                const { data, error } = await supabase
+                    .from("taxon_family")
+                    .update({ order_id: orderId, name: familyName, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating family data:", error);
+                } else {
+                    console.log("Family data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            } else if (type === "order") {
+                const classId = card.querySelector(".menu-button-container select").value;
+                const orderName = card.querySelector(".input-field.italic").value;
+                const info = card.querySelector("textarea").value;
+
+                const { data, error } = await supabase
+                    .from("taxon_order")
+                    .update({ class_id: classId, name: orderName, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating order data:", error);
+                } else {
+                    console.log("Order data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            } else if (type === "class") {
+                const phylumId = card.querySelector(".menu-button-container select").value;
+                const className = card.querySelector(".input-field.italic").value;
+                const info = card.querySelector("textarea").value;
+
+                const { data, error } = await supabase
+                    .from("taxon_class")
+                    .update({ phylum_id: phylumId, name: className, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating class data:", error);
+                } else {
+                    console.log("Class data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            } else if (type === "phylum") {
+                const kingdomId = card.querySelector(".menu-button-container select").value;
+                const phylumName = card.querySelector(".input-field.italic").value;
+                const info = card.querySelector("textarea").value;
+
+                const { data, error } = await supabase
+                    .from("taxon_phylum")
+                    .update({ kingdom_id: kingdomId, name: phylumName, info: info })
+                    .eq("id", id);
+
+                if (error) {
+                    console.error("Error updating phylum data:", error);
+                } else {
+                    console.log("Phylum data updated successfully:", data);
+                    updateSuccessful = true;
+                }
+            }
+
+            if (updateSuccessful) {
+                const feedbackMessage = card.querySelector(".feedback-message");
+                feedbackMessage.style.display = "block";
+                setTimeout(() => {
+                    feedbackMessage.style.display = "none";
+                }, 6000);
+            }
+        });
+    });
+}
+
     
                 fetchKingdoms();
                 fetchData();
