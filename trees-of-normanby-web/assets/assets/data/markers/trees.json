@@ -1,0 +1,483 @@
+[
+    {
+        "family": "Sapindaceae",
+        "genus": "Acer",
+        "species": "pectinatum subsp. forestii",
+        "cultivarOrVariety": "",
+        "name": "Wongka Maple",
+        "nativeRange": "Himalayas and nearby mountains in southwestern China, Myanmar, and the northeastern part of the Indian Subcontinent.",
+        "description": "",
+        "position": {
+            "lat": 53.638664237376815,
+            "lng": -0.6632482192557565
+        },
+        "tsr": 26.0,
+        "category": "trees"
+    },
+   
+    {
+        "family": "Fagaceae",
+        "genus": "Castanea",
+        "species": "sativa",
+        "cultivarOrVariety": "",
+        "name": "Sweet Chestnut",
+        "nativeRange": "Southern Europe and Asia.",
+        "description": "",
+        "position": {
+            "lat": 53.6359796,
+            "lng": -0.6575936
+        },
+        "tsr": 2.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Castanea",
+        "species": "sativa",
+        "cultivarOrVariety": "",
+        "name": "Sweet Chestnut",
+        "nativeRange": "Southern Europe and Asia.",
+        "description": "",
+        "position": {
+            "lat": 53.6378720,
+            "lng": -0.6603621
+        },
+        "tsr": 9.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Castanea",
+        "species": "sativa",
+        "cultivarOrVariety": "",
+        "name": "Sweet Chestnut",
+        "nativeRange": "Southern Europe and Asia.",
+        "description": "",
+        "position": {
+            "lat": 53.6384696,
+            "lng": -0.6606109
+        },
+        "tsr": 13.0,
+        "category": "trees"
+    },
+    {
+        "family": "Bignoniaceae",
+        "genus": "Catalpa",
+        "species": "x erubescens",
+        "cultivarOrVariety": "",
+        "name": "Indian Bean Tree, Hybrid Catalpa",
+        "nativeRange": "Unnatural hybrid between parent trees that originate in the United States and China.",
+        "description": "",
+        "position": {
+            "lat": 53.6380174,
+            "lng": -0.6613473
+        },
+        "tsr": 12.0,
+        "category": "trees"
+    },
+    {
+        "family": "Pinaceae",
+        "genus": "Cedrus",
+        "species": "deodara",
+        "cultivarOrVariety": "",
+        "name": "Deodar Cedar, Himalayan Cedar, Deodar",
+        "nativeRange": "Himalayas.",
+        "description": "",
+        "position": {
+            "lat": 53.6391522,
+            "lng": -0.6626622
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Pinaceae",
+        "genus": "Cedrus",
+        "species": "brevifolia",
+        "cultivarOrVariety": "",
+        "name": "Cyprus cedar",
+        "nativeRange": "The Troödos Mountains of central Cyprus.",
+        "description": "",
+        "position": {
+            "lat": 53.6382957,
+            "lng": -0.6619326
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Pinaceae",
+        "genus": "Cedrus",
+        "species": "atlantica",
+        "cultivarOrVariety": "",
+        "name": "Atlas cedar",
+        "nativeRange": "The Rif and Atlas Mountains of Morocco.",
+        "description": "",
+        "position": {
+            "lat": 53.6380379,
+            "lng": -0.6611152
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cannabaceae",
+        "genus": "Celtis",
+        "species": "australis (?)",
+        "cultivarOrVariety": "",
+        "name": "Hackberry",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.638833,
+            "lng": -0.6631245
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cercidiphyllaceae",
+        "genus": "Cercidiphyllum",
+        "species": "",
+        "cultivarOrVariety": "",
+        "name": "Katsura",
+        "nativeRange": "Japan and China.",
+        "description": "",
+        "position": {
+            "lat": 53.6387274056041,
+            "lng": -0.663371204131891
+        },
+        "tsr": 28.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fabaceae",
+        "genus": "Cercis",
+        "species": "siliquastrum",
+        "cultivarOrVariety": "",
+        "name": "Judas Tree",
+        "nativeRange": "Southern Europe and western Asia.",
+        "description": "",
+        "position": {
+            "lat": 53.6381055,
+            "lng": -0.6596972
+        },
+        "tsr": 36.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cupressaceae",
+        "genus": "Chamaecyparis",
+        "species": "lawsoniana",
+        "cultivarOrVariety": "",
+        "name": "Port Orford Cedar, Lawson Cypress",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.6384509,
+            "lng": -0.6615586
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Rosaceae",
+        "genus": "Crataemespilus",
+        "species": "grandiflora",
+        "cultivarOrVariety": "",
+        "name": "Hawthorn & Medlar Cross",
+        "nativeRange": "Intergeneric hybrid that naturally occurs extremely rarely.",
+        "description": "",
+        "position": {
+            "lat": 53.6385261093633,
+            "lng": -0.6598381573677
+        },
+        "tsr": 40.0,
+        "category": "trees"
+    },
+    {
+        "family": "Nyssaceae",
+        "genus": "Davidia",
+        "species": "involucrata",
+        "cultivarOrVariety": "",
+        "name": "Handkerchief Tree, Dove Tree, Ghost Tree",
+        "nativeRange": "South Central and Southeast China.",
+        "description": "",
+        "position": {
+            "lat": 53.6386793746226,
+            "lng": -0.659878676855929
+        },
+        "tsr": 39.0,
+        "category": "trees"
+    },
+    {
+        "family": "Nyssaceae",
+        "genus": "Davidia",
+        "species": "involucrata",
+        "cultivarOrVariety": "",
+        "name": "Handkerchief Tree, Dove Tree, Ghost Tree",
+        "nativeRange": "South Central and Southeast China.",
+        "description": "",
+        "position": {
+            "lat": 53.6386044419809,
+            "lng": -0.659608788895643
+        },
+        "tsr": 41.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Fagus",
+        "species": "sylvatica",
+        "cultivarOrVariety": "",
+        "name": "European Beech",
+        "nativeRange": "Sweden, Denmark, Norway, Germany, Poland, Switzerland, Bulgaria, eastern parts of Russia, Romania, through Europe to France, southern England, Spain and east to northwest Turkey.",
+        "description": "",
+        "position": {
+            "lat": 53.6397161754761,
+            "lng": -0.663370198964136
+        },
+        "tsr": 17.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Fagus",
+        "species": "sylvatica",
+        "cultivarOrVariety": "",
+        "name": "European Beech",
+        "nativeRange": "Sweden, Denmark, Norway, Germany, Poland, Switzerland, Bulgaria, eastern parts of Russia, Romania, through Europe to France, southern England, Spain and east to northwest Turkey.",
+        "description": "",
+        "position": {
+            "lat": 53.6377560591411,
+            "lng": -0.664127928303655
+        },
+        "tsr": 21.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cupressaceae",
+        "genus": "Hesperocyparis",
+        "species": "macrocarpa",
+        "cultivarOrVariety": "",
+        "name": "Monterey Cypress",
+        "nativeRange": "Endemic to the Central Coast of California.",
+        "description": "",
+        "position": {
+            "lat": 53.6366632863927,
+            "lng": -0.662060073499513
+        },
+        "tsr": 11.0,
+        "category": "trees"
+    },
+    {
+        "family": "Altingiaceae",
+        "genus": "Liquidambar",
+        "species": "styraciflua",
+        "cultivarOrVariety": "",
+        "name": "American Sweetgum",
+        "nativeRange": "Warm temperate areas of eastern North America and tropical montane regions of Mexico and Central America.",
+        "description": "",
+        "position": {
+            "lat": 53.6397311,
+            "lng": -0.6613879
+        },
+        "tsr": 43.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cupressaceae",
+        "genus": "Metasequoia",
+        "species": "glyptostroboides",
+        "cultivarOrVariety": "",
+        "name": "Dawn Redwood",
+        "nativeRange": "Endemic to wet lower slopes and montane river and stream valleys in the border region of Hubei and Hunan provinces and Chongqing municipality in south-central China.",
+        "description": "",
+        "position": {
+            "lat": 53.6393179964542,
+            "lng": -0.661522292528823
+        },
+        "tsr": 15.0,
+        "category": "trees"
+    },
+    {
+        "family": "Nothofagaceae",
+        "genus": "Nothofagus",
+        "species": "obliqua",
+        "cultivarOrVariety": "",
+        "name": "Patagonian Oak, Roble",
+        "nativeRange": "Central & South Central Chile to Argentina.",
+        "description": "",
+        "position": {
+            "lat": 53.6381845068907,
+            "lng": -0.663857257957482
+        },
+        "tsr": 20.0,
+        "category": "trees"
+    },
+    {
+        "family": "Salicaceae",
+        "genus": "Populus",
+        "species": "serotina (?)",
+        "cultivarOrVariety": "'Aurea'",
+        "name": "Poplar, Aspen, Cottonwood",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.6356203,
+            "lng": -0.6577570
+        },
+        "tsr": 3.0,
+        "category": "trees"
+    },
+    {
+        "family": "Salicaceae",
+        "genus": "Populus",
+        "species": "serotina (?)",
+        "cultivarOrVariety": "'Aurea'",
+        "name": "Poplar, Aspen, Cottonwood",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.6355649088951,
+            "lng": -0.657088573299513
+        },
+        "tsr": 6.0,
+        "category": "trees"
+    },
+    {
+        "family": "Pinaceae",
+        "genus": "Pseudotsuga",
+        "species": "menziesii",
+        "cultivarOrVariety": "",
+        "name": "Douglas Fir",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.6362623,
+            "lng": -0.6628285
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Quercus",
+        "species": "robur",
+        "cultivarOrVariety": "",
+        "name": "English Oak, Pedunculate Oak",
+        "nativeRange": "Most of Europe and western Asia.",
+        "description": "",
+        "position": {
+            "lat": 53.6360611,
+            "lng": -0.6563799
+        },
+        "tsr": 1.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fagaceae",
+        "genus": "Quercus",
+        "species": "palustris",
+        "cultivarOrVariety": "",
+        "name": "Pin Oak, Swamp Oak",
+        "nativeRange": "Eastern and central United States and the extreme south of Ontario, Canada.",
+        "description": "",
+        "position": {
+            "lat": 53.6354650,
+            "lng": -0.6577915
+        },
+        "tsr": 4.0,
+        "category": "trees"
+    },
+    {
+        "family": "Fabaceae",
+        "genus": "Robinia",
+        "species": "pseudoacacia",
+        "cultivarOrVariety": "",
+        "name": "Black Locust",
+        "nativeRange": "Eastern United States, but the exact native range is not accurately known as the tree has been cultivated and is currently found across the continent, in all the lower 48 states, eastern Canada and British Columbia.",
+        "description": "",
+        "position": {
+            "lat": 53.6387213,
+            "lng": -0.6620222
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cupressaceae",
+        "genus": "Sequoiadendron",
+        "species": "giganteum",
+        "cultivarOrVariety": "",
+        "name": "Giant Sequoia, Giant Redwood",
+        "nativeRange": "Western slopes of the Sierra Nevada mountain range of California",
+        "description": "Sequoiadendron giganteum specimens are the most massive trees on Earth and are among the oldest living organisms. The oldest known specemin is approximately 3200 years old. California has dry, windy and often hot weather conditions which can result in wildfires. S. giganteum has evolved to resist and even benefit from these conditions. The sap of this species contains tannic acid, which provides significant protection from fire damage and the seeds are often liberated from the cone by the heat of fire, where they can then germinate with little competition. The fibrous bark of this tree can become extremely thick which protects the underlying water mobilising tissue from intense heat. ",
+        "position": {
+            "lat": 53.6398205,
+            "lng": -0.6604581
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Cupressaceae",
+        "genus": "Taxodium",
+        "species": "distichum",
+        "cultivarOrVariety": "",
+        "name": "Swamp Cypress, Bald Cypress",
+        "nativeRange": "Southeastern United States.",
+        "description": "",
+        "position": {
+            "lat": 53.6386589,
+            "lng": -0.6605002
+        },
+        "tsr": 14.0,
+        "category": "trees"
+    },
+    {
+        "family": "Malvaceae",
+        "genus": "Tilia",
+        "species": "europaea (?)",
+        "cultivarOrVariety": "",
+        "name": "Lime",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.6377135,
+            "lng": -0.6587422
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    },
+    {
+        "family": "Trochodendraceae",
+        "genus": "Trochodendron",
+        "species": "araliodes",
+        "cultivarOrVariety": "",
+        "name": "Wheel Tree",
+        "nativeRange": "Japan, southern Korea and Taiwan.",
+        "description": "",
+        "position": {
+            "lat": 53.6382558,
+            "lng": -0.6597824
+        },
+        "tsr": 37.0,
+        "category": "trees"
+    },
+    {
+        "family": "Pinaceae",
+        "genus": "Tsuga",
+        "species": "",
+        "cultivarOrVariety": "",
+        "name": "Hemlock",
+        "nativeRange": "",
+        "description": "",
+        "position": {
+            "lat": 53.638462,
+            "lng": -0.662713
+        },
+        "tsr": 0.0,
+        "category": "trees"
+    }
+]
