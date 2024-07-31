@@ -313,20 +313,20 @@
                     if (mutation.addedNodes.length > 0) {
                         window.scrollTo({
                             top: document.body.scrollHeight,
-                            behavior: "auto"
+                            behavior: "smooth"
                         });
                     }
                 }
             });
 
-            observer.observe(cardContainer, { childList: true });
+            observer.observe(cardContainer, { childList: true, subtree: true });
 
             function addShowLocationButtonListener(card) {
                 const showLocationButton = card.querySelector("#show-location-button");
                 showLocationButton.addEventListener("click", () => {
                     const locationInput = card.querySelector(".input-field").value;
                     const [latitude, longitude] = locationInput.split(", ").map(coord => coord.trim());
-                    const url = `https://ultradian7.github.io/trees-of-normanby-web/index.html?lat=${latitude}&lng=${longitude}&zoom=17`;
+                    const url = `https://ultradian7.github.io/trees-of-normanby-web/index.html?lat=${latitude}&lng=${longitude}&zoom=17&show-marker=true`;
                     window.open(url, "_blank");
                 });
             }
@@ -338,9 +338,9 @@
                         const id = event.target.id.replace(/add-/, "");
                         const view = id.replace(/-button$/, "");
                         switchView(view);
-
-                })}
-            }
+                        setTimeout(() => {addNewCard();}, 300);
+                    })}
+                }
 
             async function fetchKingdoms() {
                 const { data: kingdomData, error } = await supabase.from("taxon_kingdom").select("id, name");
@@ -765,75 +765,75 @@
                 if (currentView === "species") {
                     const { data: speciesData, error } = await supabase.from("taxon_species").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = speciesData && speciesData.length > 0 ? speciesData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_species").insert([{ id: nextId , genus_id: 1}]);
+                    const { error: insertError } = await supabase.from("taxon_species").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new species row:", insertError);
                         return;
                     }
-                    createSpeciesCard({ id: nextId, genus_id: 1, name: "", common_name: "", native_range: "", info: "" });
+                    createSpeciesCard({ id: nextId, genus_id: 0, name: "", common_name: "", native_range: "", info: "" });
                 } else if (currentView === "specimen") {
                     const { data: specimenData, error } = await supabase.from("botanical_specimen").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = specimenData && specimenData.length > 0 ? specimenData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("botanical_specimen").insert([{ id: nextId, species_id: 1 }]);
+                    const { error: insertError } = await supabase.from("botanical_specimen").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new specimen row:", insertError);
                         return;
                     }
-                    createSpecimenCard({ id: nextId, latitude: 0.0, longitude: 0.0, info: "", species_id: 1 });
+                    createSpecimenCard({ id: nextId, latitude: 0, longitude: 0, info: "", species_id: 0 });
                 } else if (currentView === "variety") {
                     const { data: varietyData, error } = await supabase.from("taxon_variety").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = varietyData && varietyData.length > 0 ? varietyData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_variety").insert([{ id: nextId, species_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_variety").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new variety row:", insertError);
                         return;
                     }
-                    createVarietyCard({ id: nextId, name: "", info: "", species_id: 1 });
+                    createVarietyCard({ id: nextId, name: "", info: "", species_id: 0 });
                 } else if (currentView === "genus") {
                     const { data: genusData, error } = await supabase.from("taxon_genus").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = genusData && genusData.length > 0 ? genusData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_genus").insert([{ id: nextId, family_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_genus").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new genus row:", insertError);
                         return;
                     }
-                    createGenusCard({ id: nextId, name: "", info: "", family_id: 1 });
+                    createGenusCard({ id: nextId, name: "", info: "", family_id: 0 });
                 } else if (currentView === "family") {
                     const { data: familyData, error } = await supabase.from("taxon_family").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = familyData && familyData.length > 0 ? familyData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_family").insert([{ id: nextId, order_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_family").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new family row:", insertError);
                         return;
                     }
-                    createFamilyCard({ id: nextId, name: "", info: "", order_id: 1 });
+                    createFamilyCard({ id: nextId, name: "", info: "", order_id: 0 });
                 } else if (currentView === "order") {
                     const { data: orderData, error } = await supabase.from("taxon_order").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = orderData && orderData.length > 0 ? orderData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_order").insert([{ id: nextId, class_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_order").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new order row:", insertError);
                         return;
                     }
-                    createOrderCard({ id: nextId, name: "", info: "", class_id: 1 });
+                    createOrderCard({ id: nextId, name: "", info: "", class_id: 0 });
                 } else if (currentView === "class") {
                     const { data: classData, error } = await supabase.from("taxon_class").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = classData && classData.length > 0 ? classData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_class").insert([{ id: nextId, phylum_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_class").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new class row:", insertError);
                         return;
                     }
-                    createClassCard({ id: nextId, name: "", info: "", phylum_id: 1 });
+                    createClassCard({ id: nextId, name: "", info: "", phylum_id: 0 });
                 } else if (currentView === "phylum") {
                     const { data: phylumData, error } = await supabase.from("taxon_phylum").select("id").order("id", { ascending: false }).limit(1);
                     const nextId = phylumData && phylumData.length > 0 ? phylumData[0].id + 1 : 1;
-                    const { error: insertError } = await supabase.from("taxon_phylum").insert([{ id: nextId, kingdom_id: 1 }]);
+                    const { error: insertError } = await supabase.from("taxon_phylum").insert([{ id: nextId}]);
                     if (insertError) {
                         console.error("Error inserting new phylum row:", insertError);
                         return;
                     }
-                    createPhylumCard({ id: nextId, name: "", info: "", kingdom_id: 1 });
+                    createPhylumCard({ id: nextId, name: "", info: "", kingdom_id: 0 });
                 }
                 addUpdateFunctionality();
             }
@@ -843,7 +843,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Species #</strong></p> <div>${species.id}</div>
-                    <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(species.genus_id, genusMap)}<button class="add-button" id="add-genus-button">+</button></div>
+                    <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(species.genus_id, genusMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-genus-button">add</span></button></div>
                     <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${species.name}" /></div>
                     <p><strong>Common Name:</strong></p> <div><textarea class="input-field font-arial" style="height: 28px;">${species.common_name}</textarea></div>
                     <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${species.native_range}</textarea></div>
@@ -855,6 +855,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
 
             }
 
@@ -863,8 +864,8 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
-                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(specimen.species_id, speciesMap)}<button class="add-button" id="add-species-button"><span class="material-symbols-outlined">add</span></button></div>
-                    <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap)}<button class="add-button" id="add-variety-button"><span class="material-symbols-outlined">add</span></button></div>
+                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(specimen.species_id, speciesMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
+                    <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>
                     <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" class="input-field max-width font-arial" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${specimen.info}</textarea></div> 
                     <div class="switch-row">
@@ -881,6 +882,7 @@
                 cardContainer.appendChild(card);
 
                 addShowLocationButtonListener(card);
+                addTaxonButtonListener(card);
             }
 
 
@@ -889,7 +891,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Variety #</strong></p> <div>${variety.id}</div>
-                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(variety.species_id, speciesMap)}<button class="add-button" id="add-species-button">+</button></div>
+                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(variety.species_id, speciesMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
                     <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${variety.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${variety.info}</textarea></div>
@@ -900,6 +902,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
             function createGenusCard(genus) {
@@ -907,7 +910,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Genus #</strong></p> <div>${genus.id}</div>
-                    <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(genus.family_id, familyMap)}<button class="add-button" id="add-family-button">+</button></div>
+                    <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(genus.family_id, familyMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-family-button">add</span></button></div>
                     <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${genus.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${genus.info}</textarea></div>
@@ -918,6 +921,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
             function createFamilyCard(family) {
@@ -925,7 +929,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Family #</strong></p> <div>${family.id}</div>
-                    <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(family.order_id, orderMap)}<button class="add-button" id="add-order-button">+</button></div>
+                    <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(family.order_id, orderMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-order-button">add</span></button></div>
                     <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${family.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${family.info}</textarea></div>
@@ -936,6 +940,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
             function createOrderCard(order) {
@@ -943,7 +948,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Order #</strong></p> <div>${order.id}</div>
-                    <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(order.class_id, classMap)}<button class="add-button" id="add-class-button">+</button></div>
+                    <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(order.class_id, classMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-class-button">add</span></button></div>
                     <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${order.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${order.info}</textarea></div>
@@ -954,6 +959,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
             function createClassCard(classItem) {
@@ -961,7 +967,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Class #</strong></p> <div>${classItem.id}</div>
-                    <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(classItem.phylum_id, phylumMap)}<button class="add-button" id="add-phylum-button">+</button></div>
+                    <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(classItem.phylum_id, phylumMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-phylum-button">add</span></button></div>
                     <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${classItem.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${classItem.info}</textarea></div>
@@ -972,6 +978,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
             function createPhylumCard(phylum) {
@@ -979,7 +986,7 @@
                 card.className = "card";
                 card.innerHTML = `
                     <p><strong>Phylum #</strong></p> <div>${phylum.id}</div>
-                    <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(phylum.kingdom_id, createMap(kingdoms))}<button class="add-button" id="add-kingdom-button">+</button></div>
+                    <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(phylum.kingdom_id, createMap(kingdoms))}<button class="add-button"><span class="material-symbols-outlined" id="add-kingdom-button">add</span></button></div>
                     <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${phylum.name}" /></div>
                     
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${phylum.info}</textarea></div>
@@ -990,6 +997,7 @@
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+                addTaxonButtonListener(card);
             }
 
 
