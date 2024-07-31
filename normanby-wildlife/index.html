@@ -1124,7 +1124,7 @@
 
                             const { data, error } = await supabase
                                 .from("botanical_specimen")
-                                .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: "", is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
+                                .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: info, is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
                                 .eq("id", id);
 
                             if (error) {
