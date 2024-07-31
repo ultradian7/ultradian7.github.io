@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
     <title>Normanby Wildlife Database</title>
     <style>
         body {
@@ -10,6 +12,13 @@
             background-color: rgba(24, 24, 24, 1);
             color: rgba(220, 207, 194, 1);
             padding: 20px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 200,
+            'GRAD' 0,
+            'opsz' 20
         }
 
         h1{
@@ -25,7 +34,8 @@
         }
 
         .search-bar {
-            padding: 10px;
+            padding: 5px;
+            height: 20px;
             width: 200px;
             border: 1px solid rgba(220, 207, 194, 1);
             background-color: rgba(31, 31, 31, 1);
@@ -34,8 +44,9 @@
         }
 
         .filter-bar {
-            padding: 10px;
-            width: 200px;
+            padding: 5px;
+            height: 33px;
+            width: 140px;
             border: 1px solid rgba(220, 207, 194, 1);
             background-color: rgba(31, 31, 31, 1);
             color: rgba(220, 207, 194, 1);
@@ -178,7 +189,17 @@
         .view-selector {
             margin-bottom: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            font-size: 18;
+            font-weight: bold;
+        }
+        .view-selector-container {
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+        }
+        #viewSelector {
+            width: 120px;
         }
         .switch-row {
             display: flex;
@@ -234,24 +255,26 @@
     <div class="center-container">
         <input type="text" id="search" class="search-bar" placeholder="Search..." />
         <select id="kingdom-filter" class="filter-bar font-arial">
-            <option value="">All Kingdoms...</option>
+            <option value="">All Kingdoms</option>
         </select>
     </div>
     <div class="view-selector">
-        <select id="viewSelector" class="input-field max-width font-arial">
-            <option value="specimen">Select View...</option>
-            <option value="specimen">Specimen</option>
-            <option value="variety">Variety</option>
-            <option value="species">Species</option>
-            <option value="genus">Genus</option>
-            <option value="family">Family</option>
-            <option value="order">Order</option>
-            <option value="class">Class</option>
-            <option value="phylum">Phylum</option>
-        </select>
+        <div class="view-selector-container">
+            <span>View:</span>
+            <select id="viewSelector" class="input-field font-arial">
+                <option value="specimen">Specimen</option>
+                <option value="variety">Variety</option>
+                <option value="species">Species</option>
+                <option value="genus">Genus</option>
+                <option value="family">Family</option>
+                <option value="order">Order</option>
+                <option value="class">Class</option>
+                <option value="phylum">Phylum</option>
+            </select>
+        </div>
     </div>
     <div id="card-container" class="card-container"></div>
-    <button id="add-new-button" class="add-new-button">+</button>
+    <button id="add-new-button" class="add-new-button"><span class="material-symbols-outlined">add</span></button>
 
     <script type="module">
         import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -298,6 +321,27 @@
 
             observer.observe(cardContainer, { childList: true });
 
+            function addShowLocationButtonListener(card) {
+                const showLocationButton = card.querySelector("#show-location-button");
+                showLocationButton.addEventListener("click", () => {
+                    const locationInput = card.querySelector(".input-field").value;
+                    const [latitude, longitude] = locationInput.split(", ").map(coord => coord.trim());
+                    const url = `https://ultradian7.github.io/trees-of-normanby-web/index.html?lat=${latitude}&lng=${longitude}&zoom=17`;
+                    window.open(url, "_blank");
+                });
+            }
+
+            function addTaxonButtonListener(card){
+                const addButtons = card.querySelectorAll('[id*="add-"]');
+                for (const button of addButtons) {
+                    button.addEventListener("click", (event) => {
+                        const id = event.target.id.replace(/add-/, "");
+                        const view = id.replace(/-button$/, "");
+                        switchView(view);
+
+                })}
+            }
+
             async function fetchKingdoms() {
                 const { data: kingdomData, error } = await supabase.from("taxon_kingdom").select("id, name");
                 if (error) {
@@ -316,6 +360,7 @@
             function switchView(view) {
                 currentView = view;
                 fetchData();
+                viewSelector.value = view;
             }
 
             async function fetchData() {
@@ -422,6 +467,7 @@
                     id,
                     name,
                     species_id,
+                    info,
                     taxon_species!inner (
                         id,
                         name,
@@ -793,89 +839,63 @@
             }
 
             function createSpeciesCard(species) {
-                const id = species.id || '';
-                const genusId = species.genus_id || '';
-                const name = species.name || '';
-                const commonName = species.common_name || '';
-                const nativeRange = species.native_range || '';
-                const info = species.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Species #</strong></p> <div>${id}</div>
-                    <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(genusId, genusMap)}<button class="add-button" id="add-genus-button">+</button></div>
-                    <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
-                    <p><strong>Common Name:</strong></p> <div><textarea class="input-field font-arial" style="height: 28px;">${commonName}</textarea></div>
-                    <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${nativeRange}</textarea></div>
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Species #</strong></p> <div>${species.id}</div>
+                    <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(species.genus_id, genusMap)}<button class="add-button" id="add-genus-button">+</button></div>
+                    <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${species.name}" /></div>
+                    <p><strong>Common Name:</strong></p> <div><textarea class="input-field font-arial" style="height: 28px;">${species.common_name}</textarea></div>
+                    <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${species.native_range}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${species.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="species">Update</button>
+                        <button class="update-button" data-id="${species.id}" data-type="species">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
-                /*const addButtons = card.querySelectorAll('[id*="add-"]');
-                for (const button of addButtons) {
-                    button.addEventListener("click", (event) => {
-                        const id = event.target.id.replace(/add-/, "");
-                        const view = id.replace(/-button$/, "");
-                        switchView(view);
 
-                })}*/
             }
 
             function createSpecimenCard(specimen) {
-                const id = specimen.id || '';
-                const speciesId = specimen.species_id || '';
-                const varietyId = specimen.variety_id || '';
-                const latitude = specimen.latitude || '';
-                const longitude = specimen.longitude || '';
-                const info = specimen.info || '';
-                const isAccessible = specimen.is_accessible || false;
-                const isTree = specimen.is_tree || false;
-                const isNotable = specimen.is_notable || false;
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Specimen #</strong></p> <div id="specimenIdField">${id}</div>
-                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(speciesId, speciesMap)}<button class="add-button" id="add-species-button">+</button></div>
-                    <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(varietyId, varietyMap)}<button class="add-button" id="add-variety-button">+</button></div>
-                    <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" class="input-field max-width font-arial" value="${latitude}, ${longitude}"/><button class="add-button" id="show-location-button">Map</button></div>
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div> 
+                    <p><strong>Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
+                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(specimen.species_id, speciesMap)}<button class="add-button" id="add-species-button"><span class="material-symbols-outlined">add</span></button></div>
+                    <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap)}<button class="add-button" id="add-variety-button"><span class="material-symbols-outlined">add</span></button></div>
+                    <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" class="input-field max-width font-arial" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${specimen.info}</textarea></div> 
                     <div class="switch-row">
-                        <div><strong>Access:</strong> ${createToggleSwitch(isAccessible)}</div>
-                        <div><strong>Tree:</strong> ${createToggleSwitch(isTree)}</div>
-                        <div><strong>Notable:</strong> ${createToggleSwitch(isNotable)}</div>
+                        <div><strong>Access:</strong> ${createToggleSwitch(specimen.is_accessible)}</div>
+                        <div><strong>Tree:</strong> ${createToggleSwitch(specimen.is_tree)}</div>
+                        <div><strong>Notable:</strong> ${createToggleSwitch(specimen.is_notable)}</div>
                     </div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="specimen">Update</button>
+                        <button class="update-button" data-id="${specimen.id}" data-type="specimen">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
                 cardContainer.appendChild(card);
+
+                addShowLocationButtonListener(card);
             }
 
-            function createVarietyCard(variety) {
-                const id = variety.id || '';
-                const speciesId = variety.species_id || '';
-                const name = variety.name || '';
-                const info = variety.info || '';
 
+            function createVarietyCard(variety) {
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Variety #</strong></p> <div>${id}</div>
-                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(speciesId, speciesMap)}<button class="add-button" id="add-species-button">+</button></div>
-                    <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Variety #</strong></p> <div>${variety.id}</div>
+                    <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(variety.species_id, speciesMap)}<button class="add-button" id="add-species-button">+</button></div>
+                    <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${variety.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${variety.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="variety">Update</button>
+                        <button class="update-button" data-id="${variety.id}" data-type="variety">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
@@ -883,22 +903,17 @@
             }
 
             function createGenusCard(genus) {
-                const id = genus.id || '';
-                const familyId = genus.family_id || '';
-                const name = genus.name || '';
-                const info = genus.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Genus #</strong></p> <div>${id}</div>
-                    <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(familyId, familyMap)}<button class="add-button" id="add-family-button">+</button></div>
-                    <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Genus #</strong></p> <div>${genus.id}</div>
+                    <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(genus.family_id, familyMap)}<button class="add-button" id="add-family-button">+</button></div>
+                    <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${genus.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${genus.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="genus">Update</button>
+                        <button class="update-button" data-id="${genus.id}" data-type="genus">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
@@ -906,22 +921,17 @@
             }
 
             function createFamilyCard(family) {
-                const id = family.id || '';
-                const orderId = family.order_id || '';
-                const name = family.name || '';
-                const info = family.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Family #</strong></p> <div>${id}</div>
-                    <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(orderId, orderMap)}<button class="add-button" id="add-order-button">+</button></div>
-                    <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Family #</strong></p> <div>${family.id}</div>
+                    <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(family.order_id, orderMap)}<button class="add-button" id="add-order-button">+</button></div>
+                    <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${family.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${family.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="family">Update</button>
+                        <button class="update-button" data-id="${family.id}" data-type="family">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
@@ -929,22 +939,17 @@
             }
 
             function createOrderCard(order) {
-                const id = order.id || '';
-                const classId = order.class_id || '';
-                const name = order.name || '';
-                const info = order.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Order #</strong></p> <div>${id}</div>
-                    <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(classId, classMap)}<button class="add-button" id="add-class-button">+</button></div>
-                    <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Order #</strong></p> <div>${order.id}</div>
+                    <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(order.class_id, classMap)}<button class="add-button" id="add-class-button">+</button></div>
+                    <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${order.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${order.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="order">Update</button>
+                        <button class="update-button" data-id="${order.id}" data-type="order">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
@@ -952,22 +957,17 @@
             }
 
             function createClassCard(classItem) {
-                const id = classItem.id || '';
-                const phylumId = classItem.phylum_id || '';
-                const name = classItem.name || '';
-                const info = classItem.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Class #</strong></p> <div>${id}</div>
-                    <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(phylumId, phylumMap)}<button class="add-button" id="add-phylum-button">+</button></div>
-                    <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Class #</strong></p> <div>${classItem.id}</div>
+                    <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(classItem.phylum_id, phylumMap)}<button class="add-button" id="add-phylum-button">+</button></div>
+                    <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${classItem.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${classItem.info}</textarea></div>
                     
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="class">Update</button>
+                        <button class="update-button" data-id="${classItem.id}" data-type="class">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
@@ -975,22 +975,17 @@
             }
 
             function createPhylumCard(phylum) {
-                const id = phylum.id || '';
-                const kingdomId = phylum.kingdom_id || '';
-                const name = phylum.name || '';
-                const info = phylum.info || '';
-
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <p><strong>Phylum #</strong></p> <div>${id}</div>
-                    <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(kingdomId, createMap(kingdoms))}<button class="add-button" id="add-kingdom-button">+</button></div>
-                    <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${name}" /></div>
+                    <p><strong>Phylum #</strong></p> <div>${phylum.id}</div>
+                    <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(phylum.kingdom_id, createMap(kingdoms))}<button class="add-button" id="add-kingdom-button">+</button></div>
+                    <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${phylum.name}" /></div>
                     
-                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${info}</textarea></div>
+                    <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${phylum.info}</textarea></div>
                     <div class="feedback-message">Update successful!</div>
                     <div class="action-buttons">
-                        <button class="update-button" data-id="${id}" data-type="phylum">Update</button>
+                        <button class="update-button" data-id="${phylum.id}" data-type="phylum">Update</button>
                     </div>
                     <div class="feedback-message">Update successful!</div>
                 `;
