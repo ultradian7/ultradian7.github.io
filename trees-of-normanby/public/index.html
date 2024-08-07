@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <title>Normanby Wildlife Database</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: rgba(24, 24, 24, 1);
+            background-color: rgba(5, 5, 5, 1);
             color: rgba(220, 207, 194, 1);
             padding: 20px;
         }
@@ -38,7 +38,7 @@
             height: 20px;
             width: 200px;
             border: 1px solid rgba(220, 207, 194, 1);
-            background-color: rgba(31, 31, 31, 1);
+            background-color: rgba(11, 11, 11, 1);
             color: rgba(220, 207, 194, 1);
             border-radius: 5px;
         }
@@ -48,7 +48,7 @@
             height: 33px;
             width: 140px;
             border: 1px solid rgba(220, 207, 194, 1);
-            background-color: rgba(31, 31, 31, 1);
+            background-color: rgba(11, 11, 11, 1);
             color: rgba(220, 207, 194, 1);
             border-radius: 5px;
         }
@@ -78,8 +78,8 @@
         .input-field, select, textarea {
             width: 100%;
             padding: 5px;
-            border: 1px solid rgba(220, 207, 194, 1);
-            background-color: rgba(31, 31, 31, 1);
+            border: 2px solid rgba(220, 207, 194, 1);
+            background-color: rgba(11, 11, 11, 1);
             color: rgba(220, 207, 194, 1);
             border-radius: 3px;
             box-sizing: border-box;
@@ -156,8 +156,8 @@
         }
         .action-buttons button {
             padding: 5px 5px;
-            border: 1px solid rgba(220, 207, 194, 1);
-            background-color: rgba(31, 31, 31, 1);
+            border: 2px solid rgba(220, 207, 194, 1);
+            background-color: rgba(11, 11, 11, 1);
             color: rgba(220, 207, 194, 1);
             border-radius: 5px;
             cursor: pointer;
@@ -240,12 +240,60 @@
             margin-bottom: 10px;
             font-weight: bold;
         }
+        .thumbnail-container {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            cursor: grab;
+        }
+        .thumbnail-container:active {
+            cursor: grabbing;
+        }
+        .thumbnail {
+            width: 100px;   
+            height: 100px;
+            object-fit: cover;
+        }
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 5px;
+            width: 24px;
+            height: 24px;
+        }
+        .uploading-message {
+            display: flex;
+            align-items: center;
+            color: #ffae42;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .uploading-indicator {
+            width: 20px;
+            height: 20px;
+            border: 4px solid rgba(255, 174, 66, 0.2);
+            border-top: 4px solid #ffae42;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
 <body>
     <div class="logo-container">
-        <img src="https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/nhcp/images/nhcp-tree-1024x1024.png?t=2024-08-01T13%3A47%3A37.630Z" alt="NHCP Logo">
+        <img src="https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/nhcp/images/nhcp-tree-1024x1024.png" alt="NHCP Logo">
     </div>
 
     <div class="center-container">
@@ -276,6 +324,10 @@
     <div id="card-container" class="card-container"></div>
     <button id="add-new-button" class="add-new-button"><span class="material-symbols-outlined">add</span></button>
 
+    <div class="action-buttons">
+        <button id="logout-button">Logout</button>
+    </div>
+
     <script type="module">
         import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
@@ -288,6 +340,15 @@
             supabase.auth.getSession().then(({ data: { session } }) => {
                 if (!session) {
                     window.location.href = 'login.html';
+                }
+            });
+
+            document.getElementById('logout-button').addEventListener('click', async () => {
+                const { error } = await supabase.auth.signOut();
+                if (error) {
+                    console.error('Error logging out:', error);
+                } else {
+                    window.location.href = 'login.html'; // Redirect to login page
                 }
             });
 
@@ -529,6 +590,7 @@
                     is_accessible,
                     is_tree,
                     is_notable,
+                    images,
                     taxon_species!inner (
                         id,
                         name,
@@ -586,6 +648,7 @@
                 addSearchFunctionality();
                 addUpdateFunctionality();
             }
+
 
             async function fetchGenusData() {
                 const selectedKingdomId = kingdomFilter.value;
@@ -844,6 +907,21 @@
                 addUpdateFunctionality();
             }
 
+            async function updateImageOrder(specimenId, newOrder) {
+                const { data, error } = await supabase
+                    .from("botanical_specimen")
+                    .update({ images: JSON.stringify(newOrder) })
+                    .eq("id", specimenId);
+
+                if (error) {
+                    console.error("Error updating image order:", error);
+                } else {
+                    console.log("Image order updated successfully:", data);
+                }
+            }
+
+
+
             function createSpeciesCard(species) {
                 const card = document.createElement("div");
                 card.className = "card";
@@ -868,12 +946,29 @@
             function createSpecimenCard(specimen) {
                 const card = document.createElement("div");
                 card.className = "card";
+
+                // Parse images if available
+                let imageThumbnails = '';
+                if (specimen.images) {
+                    const imageUrls = JSON.parse(specimen.images);
+                    imageThumbnails = imageUrls.map(url => `
+                        <div class="thumbnail-container" data-url="${url}">
+                            <img src="${url}" class="thumbnail" alt="specimen image">
+                            <button class="remove-button" data-url="${url}">X</button>
+                        </div>
+                    `).join('');
+                }
+
                 card.innerHTML = `
                     <p><strong>Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
                     <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(specimen.species_id, speciesMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
                     <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>
                     <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" class="input-field max-width font-arial" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
                     <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${specimen.info}</textarea></div> 
+                    <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width font-arial" multiple /></div>
+                    <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>
+                    <div><strong>Current Images:</strong></div>
+                    <div id="sortable-images-${specimen.id}" class="image-thumbnails">${imageThumbnails}</div>
                     <div class="switch-row">
                         <div><strong>Access:</strong> ${createToggleSwitch(specimen.is_accessible)}</div>
                         <div><strong>Tree:</strong> ${createToggleSwitch(specimen.is_tree)}</div>
@@ -887,8 +982,17 @@
                 `;
                 cardContainer.appendChild(card);
 
+                new Sortable(document.getElementById(`sortable-images-${specimen.id}`), {
+                    animation: 150,
+                    onEnd: async function (evt) {
+                        const newOrder = Array.from(evt.to.children).map(child => child.getAttribute('data-url'));
+                        await updateImageOrder(specimen.id, newOrder);
+                    }
+                });
+
                 addShowLocationButtonListener(card);
                 addTaxonButtonListener(card);
+                addRemoveImageFunctionality(card, specimen.id);
             }
 
 
@@ -1089,6 +1193,48 @@
                 }
             }
 
+            function addRemoveImageFunctionality(card, specimenId) {
+                const removeButtons = card.querySelectorAll(".remove-button");
+                
+                removeButtons.forEach(button => {
+                    button.addEventListener("click", async () => {
+                        const imageUrl = button.getAttribute("data-url");
+                        
+                        // Fetch the current images from the database
+                        const { data: specimen, error: fetchError } = await supabase
+                            .from("botanical_specimen")
+                            .select("images")
+                            .eq("id", specimenId)
+                            .single();
+                        
+                        if (fetchError || !specimen.images) {
+                            console.error("Error fetching specimen images:", fetchError);
+                            return;
+                        }
+
+                        let imageUrls = JSON.parse(specimen.images);
+                        
+                        // Remove the selected image URL
+                        imageUrls = imageUrls.filter(url => url !== imageUrl);
+
+                        // Update the images column in the database
+                        const { data, error: updateError } = await supabase
+                            .from("botanical_specimen")
+                            .update({ images: imageUrls.length ? JSON.stringify(imageUrls) : null })
+                            .eq("id", specimenId);
+                        
+                        if (updateError) {
+                            console.error("Error updating specimen images:", updateError);
+                        } else {
+                            console.log("Image removed successfully:", data);
+                            // Remove the thumbnail element from the DOM
+                            button.closest('.thumbnail-container').remove();
+                        }
+                    });
+                });
+            }
+
+
 
             function addUpdateFunctionality() {
                 const updateButtons = document.querySelectorAll(".update-button");
@@ -1127,10 +1273,61 @@
                             const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
                             const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
                             const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
+                            const imageUpload = card.querySelector("#imageUpload");
+                            const uploadingMessage = card.querySelector(".uploading-message");
 
+                            // Show uploading message
+                            uploadingMessage.style.display = "flex";
+
+                            // Fetch current images from the database
+                            const { data: specimen, error: fetchError } = await supabase
+                                .from("botanical_specimen")
+                                .select("images")
+                                .eq("id", specimenId)
+                                .single();
+
+                            if (fetchError) {
+                                console.error("Error fetching specimen images:", fetchError);
+                                return;
+                            }
+
+                            // Parse the existing images or initialize an empty array
+                            let currentImages = specimen.images ? JSON.parse(specimen.images) : [];
+
+                            // Handle image upload to Supabase bucket and append to the current images
+                            if (imageUpload.files.length > 0) {
+                                for (const file of imageUpload.files) {
+                                    const { data, error } = await supabase.storage
+                                        .from("images")
+                                        .upload(`botanical_specimen/${specimenId}/${file.name}`, file);
+
+                                    if (error) {
+                                        console.error("Error uploading image:", error);
+                                        continue;
+                                    }
+                                    const publicUrl = supabase.storage
+                                        .from("images")
+                                        .getPublicUrl(`botanical_specimen/${specimenId}/${file.name}`).data.publicUrl;
+                                    currentImages.push(publicUrl);
+                                }
+                            }
+
+                            // Hide uploading message after upload is complete
+                            uploadingMessage.style.display = "none";
+
+                            // Update the images column in the database with the combined images
                             const { data, error } = await supabase
                                 .from("botanical_specimen")
-                                .update({ id: specimenId, species_id: speciesId, variety_id: varietyId, location: `POINT(${location[1]} ${location[0]})`, info: info, is_accessible: isAccessible, is_notable: isNotable, is_tree: isTree})
+                                .update({
+                                    species_id: speciesId,
+                                    variety_id: varietyId,
+                                    location: `POINT(${location[1]} ${location[0]})`,
+                                    info: info,
+                                    is_accessible: isAccessible,
+                                    is_notable: isNotable,
+                                    is_tree: isTree,
+                                    images: currentImages.length ? JSON.stringify(currentImages) : null,
+                                })
                                 .eq("id", id);
 
                             if (error) {
@@ -1139,6 +1336,15 @@
                                 console.log("Specimen data updated successfully:", data);
                                 updateSuccessful = true;
                             }
+
+                           
+                            if (error) {
+                                console.error("Error updating specimen data:", error);
+                            } else {
+                                console.log("Specimen data updated successfully:", data);
+                                updateSuccessful = true;
+                            }
+            
                         } else if (type === "genus") {
                             const familyId = card.querySelector(".menu-button-container select").value;
                             const genusName = card.querySelector(".input-field.italic").value;
