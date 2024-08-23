@@ -525,16 +525,17 @@
 
             async function fetchParkLocationData() {
                 const { data: locationData, error } = await supabase
-                    .from("park_locations").select(`
+                    .from("park_locations")
+                    .select(`
                         id,
                         name,
                         info,
                         tags,
                         location::geometry,
                         images,
+                        image_info,
                         is_accessible,
                         category_id,
-                        image_ingfo,
                         location_categories!inner (
                             id,
                             name,
@@ -548,6 +549,8 @@
                     return;
                 }
 
+                console.log("Fetched location data:", locationData);
+
                 const processedLocationData = locationData.map(location => {
                     const latitude = location.location ? parseFloat(location.location.coordinates[1]) : 0;
                     const longitude = location.location ? parseFloat(location.location.coordinates[0]) : 0;
@@ -558,12 +561,12 @@
                         longitude,
                         tags: location.tags ? location.tags.join(", ") : "" // Convert JSONB array to comma-separated string
                     };
-                })
+                });
 
                 processedLocationData.forEach(location => createParkLocationCard(location));
                 addSearchFunctionality();
                 addUpdateFunctionality();
-                }
+            }
 
 
 
