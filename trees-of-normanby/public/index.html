@@ -1064,11 +1064,21 @@
                 let imageThumbnails = '';
                 if (location.images) {
                     const imageFilenames = JSON.parse(location.images);
-                    imageThumbnails = imageFilenames.map(filename => {
+                    const imageDescriptions = JSON.parse(location.image_info || '[]');
+
+                    // Ensure descriptions array matches images array length
+                    while (imageDescriptions.length < imageFilenames.length) {
+                        imageDescriptions.push(''); // Fill missing descriptions with empty strings
+                    }
+
+                    imageThumbnails = imageFilenames.map((filename, index) => {
                         const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}park_locations/${location.id}/thumb_${filename}`;
+                        const imageDescription = imageDescriptions[index] || '';
+
                         return `
                             <div class="thumbnail-container" data-url="${filename}">
                                 <img src="${thumbnailUrl}" class="thumbnail" alt="location image">
+                                <textarea class="input-field image-description" placeholder="Enter description">${imageDescription}</textarea>
                                 <button class="remove-button" data-url="${filename}">X</button>
                             </div>
                         `;
@@ -1100,7 +1110,8 @@
                     animation: 150,
                     onEnd: async function (evt) {
                         const newOrder = Array.from(evt.to.children).map(child => child.getAttribute('data-url'));
-                        await updateImageOrder("park_locations", location.id, newOrder);
+                        const newDescriptionsOrder = Array.from(evt.to.children).map(child => child.querySelector('.image-description').value);
+                        await updateImageOrder("park_locations", location.id, newOrder, newDescriptionsOrder);
                     }
                 });
 
@@ -1108,6 +1119,7 @@
                 addTaxonButtonListener(card);
                 addRemoveImageFunctionality(card, "park_locations", location.id);
             }
+
 
             function createSpecimenCard(specimen) {
                 const card = document.createElement("div");
@@ -1824,12 +1836,11 @@
                             const imageUpload = card.querySelector("#imageUpload");
                             const uploadingMessage = card.querySelector(".uploading-message");
 
-                            // Show uploading message
                             uploadingMessage.style.display = "flex";
 
                             const { data: locationData, error: fetchError } = await supabase
                                 .from("park_locations")
-                                .select("images")
+                                .select("images, image_info")
                                 .eq("id", locationId)
                                 .single();
 
@@ -1839,20 +1850,29 @@
                             }
 
                             let currentImages = locationData.images ? JSON.parse(locationData.images) : [];
+                            let currentDescriptions = locationData.image_info ? JSON.parse(locationData.image_info) : [];
 
                             if (imageUpload.files.length > 0) {
                                 for (const file of imageUpload.files) {
                                     try {
                                         const { imageUrl } = await handleImageUpload(file, locationId, 'park_locations');
                                         currentImages.push(imageUrl);
+                                        currentDescriptions.push(""); // Add empty string for new images
                                     } catch (error) {
                                         console.error("Error uploading image:", error);
                                     }
                                 }
-                                imageUpload.value = "";
+                                imageUpload.value = ""; 
                             }
 
-                            // Hide uploading message after upload is complete
+                            const imageDescriptions = Array.from(card.querySelectorAll('.image-description')).map(input => input.value || "");
+
+                            if (imageDescriptions.length < currentImages.length) {
+                                for (let i = imageDescriptions.length; i < currentImages.length; i++) {
+                                    imageDescriptions.push("");
+                                }
+                            }
+
                             uploadingMessage.style.display = "none";
 
                             const { data, error } = await supabase
@@ -1865,6 +1885,7 @@
                                     is_accessible: isAccessible,
                                     category_id: categoryId,
                                     images: currentImages.length ? JSON.stringify(currentImages) : null,
+                                    image_info: JSON.stringify(imageDescriptions),
                                 })
                                 .eq("id", locationId);
 
@@ -1874,7 +1895,15 @@
                                 console.log("Location data updated successfully:", data);
                                 updateSuccessful = true;
                             }
+                        }
 
+                        if (updateSuccessful) {
+                            const feedbackMessage = card.querySelector(".feedback-message");
+                            feedbackMessage.style.display = "block";
+                            setTimeout(() => {
+                                feedbackMessage.style.display = "none";
+                            }, 6000);
+    
 
             
                         } else if (type === "genus") {
