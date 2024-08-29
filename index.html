@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+        <title>Ultradian7 Projects</title>
+        <style>
+            :root {
+                --my-yellow: rgb(206, 186, 132);
+                --my-dark-gray: rgb(31, 31, 31);
+                --my-gray: rgb(70, 70, 70);
+                --my-light-gray: rgb(100, 100, 100);
+                --my-blue: rgb(143, 219, 251);
+                --my-pink: rgb(196, 121, 209);
+                --my-orange: rgb(255, 178, 102);
+                --my-aqua: rgb(156, 236, 211);
+                --my-green: rgb(95, 151, 92);
+                color-scheme: only light;
+
+                --hexagon-size: 60px; /* Initial hexagon size */
+            }
+
+            .ubuntu-mono-regular {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 400;
+                font-style: normal;
+            }
+
+            .ubuntu-mono-bold {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 700;
+                font-style: normal;
+            }
+
+            .ubuntu-mono-regular-italic {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 400;
+                font-style: italic;
+            }
+
+            .ubuntu-mono-bold-italic {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 700;
+                font-style: italic;
+            }
+
+            body {
+                justify-content: center;
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                color: var(--my-yellow);
+                padding: 25px;
+                background-color: var(--my-dark-gray);
+                gap: 10px;
+                position: relative;
+                z-index: 1;
+                margin: 0;
+            }
+
+            .title {
+                font-size: 25px;
+            }
+
+            .header {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 700;
+                font-style: normal;
+                font-size: 55px;
+                margin-bottom: 35px;
+            }
+
+            .column {
+                gap: 20px;
+                flex-direction: column;
+            }
+
+            .background {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                overflow: hidden;
+            }
+
+            .entries-row {
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 400;
+                font-style: normal;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .c3 {
+                color: var(--my-blue);
+            }
+
+            .c2 {
+                color: var(--my-orange);
+            }
+
+            .c1 {
+                color: var(--my-pink);
+            }
+
+            a {
+                color: var(--my-pink);
+            }
+
+            .entry {
+                flex: 1 1 calc(30% - 20px);
+                padding: 10px;
+                border: 2px solid var(--my-yellow);
+                border-radius: 10px;
+                margin-bottom: 10px;
+                color: var(--my-blue);
+                line-height: 1.6;
+                font-size: 18px;
+            }
+
+            @media (max-width: 1080px) {
+                .entry {
+                    flex: 1 1 calc(45% - 20px);
+                }
+            }
+
+            @media (max-width: 600px) {
+                .entry {
+                    flex: 1 1 calc(100% - 20px);
+                }
+            }
+
+            footer {
+                margin-top: 10px;
+                border-top: 2px solid var(--my-yellow);
+                width: 100%;
+                text-align: center;
+                color: var(--my-yellow);
+                font-size: 18px;
+                font-family: "Ubuntu Mono", monospace;
+                font-weight: 400;
+                font-style: normal;
+            }
+
+            footer a {
+                color: var(--my-pink);
+                text-decoration: none;
+            }
+
+            footer a:hover {
+                text-decoration: underline;
+            }
+        </style>
+    </head>
+
+    <div class="background">
+        <svg-table></svg-table>
+    </div>
+
+    <body class="column">
+
+        <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
+        <div class="entries-row">
+
+            <div class="entry">
+                <a class="title" href="trees-of-normanby-web/index.html">Trees of Normanby</a>
+                <p>A detailed interactive map of notable trees at <a href="https://normanbyhall.co.uk">Normanby Park</a>, a cross platform app written with Flutter. Work in progress, link directs to a pre-alpha web version that runs in a browser, currently has native Android and Windows counterparts, iOS and macOS to come.</p>
+            </div>
+            <div class="entry">
+                <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
+                <p>A weird additive synthesizer that lets you define frequencies of all 128 MIDI notes. A work in progress, the link directs to a pre-alpha stage web assembly build of the instrument. Written with <a href="https://cmajor.dev/">Cmajor</a>, has native and plugin counterparts.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title" href="https://www.renoise.com/tools/modulation-device-presets">Renoise Tool:<br>Modulation Device Presets</a>
+                <p>Adds support in <a href="https://www.renoise.com"">Renoise</a> for Sample Modulation Device presets separate from Modulation Sets '.xrmo'. Now users can save and load individual device presets, device chains or complete filter sections as '.xrmd', '.xrmc' or '.xrmf'.</p>
+            </div>
+
+        </div>
+        <footer>
+            <p>Contact: <a href="mailto:contact@ultradian7.com">ultradian7@gmail.com</a></p>
+        </footer>
+        <script>
+            class SVGTable extends HTMLElement {
+                constructor() {
+                    super();
+                    this.attachShadow({ mode: "open" });
+                    this.svgNamespace = "http://www.w3.org/2000/svg";
+                    this.createTable();
+                }
+
+                createTable() {
+                    const style = document.createElement("style");
+                    style.textContent = `
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    `;
+
+                    const svg = document.createElementNS(this.svgNamespace, "svg");
+                    this.shadowRoot.appendChild(style);
+                    this.shadowRoot.appendChild(svg);
+
+                    // Create a table based on the screen size
+                    this.updateTable();
+                    window.addEventListener("resize", () => this.updateTable());
+                    window.addEventListener("scroll", () => this.updateTable());
+                }
+
+                getCssVariable(variable) {
+                    return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+                }
+
+                drawTable(svg, rows, cols, cellSize) {
+                    const strokeColor = this.getCssVariable("--my-gray");
+                    const fillColor = this.getCssVariable("--my-dark-gray");
+
+                    for (let row = 0; row < rows; row++) {
+                        for (let col = 0; col < cols; col++) {
+                            const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColor, fillColor);
+                            svg.appendChild(hexagonGroup);
+                        }
+                    }
+                }
+
+                createHexagonGroup(col, row, size, strokeColor, fillColor) {
+                    const group = document.createElementNS(this.svgNamespace, "g");
+                    const hexagon = this.createHexagon(col, row, size, strokeColor, fillColor);
+                    group.appendChild(hexagon);
+                    return group;
+                }
+
+                createHexagon(col, row, size, strokeColor, fillColor) {
+                    const points = this.calculateHexagonPoints(col, row, size);
+                    const hexagon = document.createElementNS(this.svgNamespace, "polygon");
+                    hexagon.setAttribute("points", points.join(" "));
+                    hexagon.setAttribute("stroke", strokeColor);
+                    hexagon.setAttribute("fill", fillColor);
+                    return hexagon;
+                }
+
+                calculateHexagonPoints(col, row, size) {
+                    const width = Math.sqrt(3) * size;
+                    const height = 2 * size;
+                    const xOffset = width * (col + 0.5 * (row % 2));
+                    const yOffset = height * (3 / 4) * row;
+
+                    return [
+                        [xOffset + width / 2, yOffset],
+                        [xOffset + width, yOffset + height / 4],
+                        [xOffset + width, yOffset + 3 * height / 4],
+                        [xOffset + width / 2, yOffset + height],
+                        [xOffset, yOffset + 3 * height / 4],
+                        [xOffset, yOffset + height / 4]
+                    ];
+                }
+
+                // Method to update the table
+                updateTable() {
+                    const svg = this.shadowRoot.querySelector("svg");
+                    // Clear existing SVG content
+                    while (svg.firstChild) {
+                        svg.removeChild(svg.firstChild);
+                    }
+                    // Get viewport size
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+
+                    // Get hexagon size from scroll position
+                    const scrollPosition = window.scrollY;
+                    const minSize = 30; // Minimum hexagon size
+                    const maxSize = 55; // Maximum hexagon size
+                    const cellSize = minSize + (maxSize - minSize) * (scrollPosition / (document.body.scrollHeight - window.innerHeight));
+
+                    // Calculate number of rows and columns based on the viewport size
+                    const cols = Math.ceil(width / (Math.sqrt(3) * cellSize));
+                    const rows = Math.ceil(height / (1.5 * cellSize)) + 1;
+
+                    // Draw new table
+                    this.drawTable(svg, rows, cols, cellSize);
+                }
+            }
+
+            customElements.define("svg-table", SVGTable);
+        </script>
+    </body>
+</html>
