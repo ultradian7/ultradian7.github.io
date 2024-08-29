@@ -104403,8 +104403,8 @@ return A.r(null,r)}})
 return A.t($async$BI,r)},
 au(){var s,r=this
 r.aJ()
-r.BI("assets/tiles/normanby-15-19-jpg.zip")
 r.axc()
+r.BI("assets/tiles/normanby-15-19-jpg.zip")
 r.DP()
 s=t.P
 A.aMB().aV(new A.aEy(r),s)
