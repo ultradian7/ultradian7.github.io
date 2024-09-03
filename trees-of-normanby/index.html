@@ -168,12 +168,21 @@
                     function addShowLocationButtonListener(card) {
                         const showLocationButton = card.querySelector("#show-location-button");
                         showLocationButton.addEventListener("click", () => {
+                            let markerName = "";
+
+                            if (currentView === "park_locations") {
+                                markerName = card.querySelector("#locationName").value;
+                            } else if (currentView === "specimen") {
+                                markerName = speciesMap[card.querySelectorAll(".menu-button-container select")[0].value] || "";
+                            }
+
                             const locationInput = card.querySelector("#locationField").value;
                             const [latitude, longitude] = locationInput.split(", ").map(coord => coord.trim());
-                            const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?lat=${latitude}&lng=${longitude}&zoom=17&show-marker=true`;
+                            const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?lat=${latitude}&lng=${longitude}&zoom=17&show-marker=true&marker-name=${encodeURIComponent(markerName)}`;
                             window.open(url, "_blank");
                         });
                     }
+
 
                     function addTaxonButtonListener(card){
                         const addButtons = card.querySelectorAll('[id*="add-"]');
