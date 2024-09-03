@@ -108,6 +108,20 @@
         // Set the initial view when the page loads
         updateFormView();
 
+        async function isDisplayNameTaken(displayName) {
+            const { data, error } = await supabase
+                .from('user_display_names')
+                .select('display_name')
+                .eq('display_name', displayName);
+
+            if (error) {
+                console.error('Error checking display name:', error);
+                return true; // Assume the name is taken if there's an error
+            }
+
+            return data.length > 0;
+        }
+
         submitButton.addEventListener('click', async () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -122,6 +136,17 @@
                 }
             } else {
                 const displayName = document.getElementById('display_name').value;
+                if (!displayName) {
+                    alert('Please enter a display name to sign up.');
+                    return;
+                }
+
+                const nameTaken = await isDisplayNameTaken(displayName);
+                if (nameTaken) {
+                    alert('Display name already taken. Please choose a different one.');
+                    return;
+                }
+
                 const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
