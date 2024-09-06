@@ -165,20 +165,65 @@
 
                     observer.observe(cardContainer, { childList: true, subtree: true });
 
+                    function generateJWT(header, payload, secret) {
+                        function base64Encode(str) {
+                            return btoa(unescape(encodeURIComponent(str)));
+                        }
+
+                        function signToken(header, payload, secret) {
+                            const headerBase64 = base64Encode(JSON.stringify(header));
+                            const payloadBase64 = base64Encode(JSON.stringify(payload));
+                            const signatureBase64 = base64Encode(headerBase64 + "." + payloadBase64 + "." + secret);
+                            return `${headerBase64}.${payloadBase64}.${signatureBase64}`;
+                        }
+
+                        return signToken(header, payload, secret);
+                    }
+
                     function addShowLocationButtonListener(card) {
                         const showLocationButton = card.querySelector("#show-location-button");
                         showLocationButton.addEventListener("click", () => {
                             let markerName = "";
+                            let altName = "";
+                            
+                            const header = {
+                                alg: "HS256",
+                                typ: "JWT",
+                            };
 
-                            if (currentView === "park_locations") {
-                                markerName = card.querySelector("#locationName").value;
-                            } else if (currentView === "specimen") {
-                                markerName = speciesMap[card.querySelectorAll(".menu-button-container select")[0].value] || "";
-                            }
 
+                            //if (currentView === "park_locations") {
+                            //    markerName = card.querySelector("#locationName").value;
+                            //} else if (currentView === "specimen") {
+                            //    speciesId = card.querySelector("#speciesIdMenu").value;   
+                            //}
+
+                            const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+                            const specimenId = parseInt(card.querySelector("#specimenIdField").textContent);
                             const locationInput = card.querySelector("#locationField").value;
                             const [latitude, longitude] = locationInput.split(", ").map(coord => coord.trim());
-                            const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?lat=${latitude}&lng=${longitude}&zoom=17&show-marker=true&marker-name=${encodeURIComponent(markerName)}`;
+                            const specimenInfo = card.querySelector("#specimenInfoField").value;
+                            const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+                            const imageFilenames = card.querySelector('.image-data').dataset.imageFilenames;
+                            const imageDescriptions = card.querySelector('.image-data').dataset.imageDescriptions;
+
+                            const payload = {
+                                lat: latitude,
+                                lng: longitude,
+                                speciesId: speciesId,
+                                specimenId: specimenId,
+                                specimenInfo: specimenInfo,
+                                isAccessible: isAccessible,
+                                images: imageFilenames,
+                                imageInfo: imageDescriptions,
+                                markerType: "Tree",
+                                showMarker: true,
+                                exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
+                            };
+
+                            const key = "key";
+                            const token = generateJWT(header, payload, key);
+                            const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?token=${encodeURIComponent(token)}`;
                             window.open(url, "_blank");
                         });
                     }
@@ -878,12 +923,12 @@
                         const supabaseStoragePrefix = "/storage/v1/object/public/images/";
 
                         let imageThumbnails = '';
-                        if (specimen.images) {
-                            const imageFilenames = JSON.parse(specimen.images);
-                            const imageDescriptions = JSON.parse(specimen.image_info || '[]');
+                        let imageFilenames = [];
+                        let imageDescriptions = [];
 
-                            console.log('Image filenames:', imageFilenames);
-                    console.log('Image descriptions:', imageDescriptions);
+                        if (specimen.images) {
+                            imageFilenames = JSON.parse(specimen.images);
+                            imageDescriptions = JSON.parse(specimen.image_info || '[]');
 
                             // Ensure descriptions array matches images array length
                             while (imageDescriptions.length < imageFilenames.length) {
@@ -906,10 +951,10 @@
 
                         card.innerHTML = `
                             <p><strong class="font-arial">Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
-                            <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(specimen.species_id, speciesMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
+                            <p><strong>Species:</strong></p> <div class="menu-button-container" id="speciesIdMenu">${createDropdown(specimen.species_id, speciesMap, "italic", `id="#speciesIdMenu"`)}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
                             <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>
                             <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width font-arial" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
-                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${specimen.info}</textarea></div> 
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" id="specimenInfoField" style="height: 120px;">${specimen.info}</textarea></div> 
                             <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width font-arial" multiple /></div>
                             <div><strong>Current Images:</strong></div>
                             <div id="sortable-images-${specimen.id}" class="image-thumbnails">${imageThumbnails}</div>
@@ -924,7 +969,12 @@
                             </div>
                             <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>
                             <div class="feedback-message">Update successful!</div>
-                        `;
+                            
+                            <!-- Hidden element to store image data -->
+                            <input type="hidden" class="image-data" 
+                                data-image-filenames='${JSON.stringify(imageFilenames)}' 
+                                data-image-descriptions='${JSON.stringify(imageDescriptions)}' />
+                                                    `;
                         cardContainer.appendChild(card);
 
                         new Sortable(document.getElementById(`sortable-images-${specimen.id}`), {
@@ -940,6 +990,7 @@
                         addTaxonButtonListener(card);
                         addRemoveImageFunctionality(card, "botanical_specimen", specimen.id);
                     }
+
 
 
                     function createVarietyCard(variety) {
@@ -1057,7 +1108,7 @@
                     }
 
 
-                    function createDropdown(selectedId, itemsMap, italic) {
+                    function createDropdown(selectedId, itemsMap, italic, dropdownId) {
                         if (!italic) {
                             italic = "";
                         }
@@ -1069,7 +1120,7 @@
                         dropdown += `<option value=""></option>`;
                         for (const [id, name] of itemsArray) {
                             const selected = id === (selectedId || "").toString() ? "selected" : "";
-                            dropdown += `<option value="${id}" ${selected} class="font-arial ${italic}">${name}</option>`;
+                            dropdown += `<option value="${id}" ${selected} class="font-arial ${italic}" ${dropdownId}>${name}</option>`;
                         }
                         dropdown += `</select>`;
                         return dropdown;
