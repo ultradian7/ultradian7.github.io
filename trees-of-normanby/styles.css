@@ -233,7 +233,7 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-bottom: 0px;
+    margin-bottom: 20px;
 }
 .logo-container img {
     width: 120px;   
