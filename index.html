@@ -188,7 +188,7 @@
             .thumbnail {
                 height: 200px;
                 flex: 0 0 200px;
-                border-radius: 5px;
+                border-radius: 16px;
                 object-fit: cover;
                 object-position: top;
                 cursor: pointer;
@@ -264,7 +264,7 @@
 
             <div class="entry">     
                 <a class="title" href="trees-of-normanby/web/index.html">Trees Of Normanby</a>
-                <p>An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a> that details notable trees, for Android, iOS and Web. Using your devices GPS, the app dispays your current location on the map so you can use it while walking around the park. Work in progress, link directs to an early Web for authorised users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.</p>
+                <p>An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a> that details notable trees,  for Android, iOS and Web. Using your devices GPS, the app dispays your current location on the map so you can use it while walking around the park. Work in progress, link directs to an early Web for authorised users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.</p>
                 <div class="thumbnail-container">
                     <img src="images/ton-screenshot-1.jpg" alt="Trees Of Normanby Screenshot 1" class="thumbnail" onclick="openModal('images/ton-screenshot-1.jpg')">
                     <img src="images/ton-screenshot-2.jpg" alt="Trees Of Normanby Screenshot 2" class="thumbnail" onclick="openModal('images/ton-screenshot-2.jpg')">
@@ -277,46 +277,84 @@
             </div>
             <div class="entry">
                 <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
-                <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios as decimals or fractions. WIP, the link directs to an early Web Assembly build. Written with <a href="https://cmajor.dev/">Cmajor</a>, has native and plugin counterparts. Features per harmonic amplitude modulation, playable tables to visualise note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows you precise frequency of each harmonic of every note. On screen grid note controller, optional commands to program sounds.</p>
+                <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios as decimals or fractions. WIP, the link directs to an early Web Assembly build. Written with <a href="https://cmajor.dev/">Cmajor</a>, has native and plugin counterparts. Features per harmonic amplitude modulation, playable tables to visualise note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows you precise frequency of each harmonic of every note. On screen grid note controller, optional commands to program sounds. There's no instructions yet but that shouldn't stop you from making something interesting with it.</p>
+                <div class="thumbnail-container">
+                    <img src="images/valuesynth-1.png" alt="ValueSynth Screenshot 1" class="thumbnail" onclick="openModal('images/valuesynth-1.png')">
+                </div>
             </div>
 
             <div class="entry">
                 <a class="title">freqToASCL</a>
-                <p>Create Ableton .ascl scale files from a list of frequencies, assigns frequency hz values to note names so that they appear in the piano roll editor.</p>
+                <p>Create Ableton .ascl scale files from a list of frequencies, assigns frequency hz values to note names that will appear in Abletons piano roll editor.</p>
             </div>
 
             <div class="entry">
                 <a class="title">Gallery Video Player</a>
                 <p>Gallery video player is an Android app which sets up the device as a video player for public spaces, so that users can only play and pause and not navigate away from the video. An optionl title screen image and be set, features an auto reset setting that will make the video reset to the title screen or first frame of the video. The app is currently being used in the Stubbs In The Stables display at Normanby Hall Country Park as part of The Anatomy Of The Horse, an exhibition celebrating the 300th birthday of anatomist and painter George Stubbs.</p>
+                <div class="thumbnail-container">
+                    <img src="images/gvp-1.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-1.jpg')">
+                </div>
             </div>
 
             <div class="entry">
                 <a class="title" href="https://www.renoise.com/tools/modulation-device-presets">Renoise Tool:<br>Modulation Device Presets</a>
                 <p>Adds support in <a href="https://www.renoise.com">Renoise</a> for Sample Modulation Device presets separately. As Renoise only support saving modulation devices in complete Modulation Sets .xrmo files, this tool extends functionality for users to save and load presets for individual devices, device chains or complete filter sections in new file types .xrmd, .xrmc or .xrmf, integrated to work consistently with native Renoise presets.</p>
+                <div class="thumbnail-container">
+                    <img src="images/mdp-menu.png" alt="MDP Menu Screenshot" class="thumbnail" onclick="openModal('images/mdp-menu.png')">
+                    <img src="images/mdp-ex1.png" alt="MDP Example File 1" class="thumbnail" onclick="openModal('images/mdp-ex1.png')">
+                    <img src="images/mdp-ex2.png" alt="MDP Example File 2" class="thumbnail" onclick="openModal('images/mdp-ex2.png')">
+                    <img src="images/mdp-ex3.png" alt="MDP Example File 3" class="thumbnail" onclick="openModal('images/mdp-ex3.png')">
+                </div>   
             </div>
 
             <div class="entry">
                 <a class="title">Renoise Tool:<br>FreqCtrl Magic Squares</a>
-                <p>An on screen button controller for Renoise, designed for freqLab istruments but can be used universally. Optional note layouts inspired by <a href="https://en.wikipedia.org/wiki/Magic_square">magic squares</a> of historical mathematics, including more recent discoveries by the brilliant <a href="https://jain108academy.com/magic-square-discoveries/">Jain108</a>.</p>
+                <p>An on screen button controller for Renoise, designed for freqLab istruments and ideally with a touchscreen but can be used universally. Optional note layouts inspired by <a href="https://en.wikipedia.org/wiki/Magic_square">magic squares</a> of historical mathematics, including more recent discoveries by the brilliant <a href="https://jain108academy.com/magic-square-discoveries/">Jain108</a>.</p>
+                <div class="thumbnail-container">
+                    <img src="images/freqctrl-1.png " alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqctrl-1.png')">
+                    <img src="images/freqctrl-3.png" alt="FreqCtrl Screenshot 3" class="thumbnail" onclick="openModal('images/freqctrl-3.png')">
+                    <img src="images/freqctrl-4.png" alt="FreqCtrl Screenshot 4"class="thumbnail" onclick="openModal('images/freqctrl-4.png')">
+                    <img src="images/freqctrl-2.png" alt="FreqCtrl Screenshot 2" class="thumbnail" onclick="openModal('images/freqctrl-2.png')">
+                    <img src="images/freqctrl-5.png" alt="FreqCtrl Screenshot 5"class="thumbnail" onclick="openModal('images/freqctrl-5.png')">
+                    <img src="images/freqctrl-6.png" alt="FreqCtrl Screenshot 6"class="thumbnail" onclick="openModal('images/freqctrl-6.png')">
+                    <img src="images/freqctrl-7.png" alt="FreqCtrl Screenshot 7"class="thumbnail" onclick="openModal('images/freqctrl-7.png')">
+                </div>   
             </div>
 
             <div class="entry">
                 <a class="title" >Renoise Tool:<br>FreqScale</a>
-                <p>A Renoise tool which allows you to create custom scales or tunings based on a list of frequencies.</p>
+                <p>A Renoise tool which allows you to create or modify scales and tunings, supports import and export for Scala .scl files. Resulting scale is given as interval (decimal), ratio (fraction), cents, distance and frequency. You can view a full MIDI note frequency dump for a scale and given base frequency.</p>
+                <div class="thumbnail-container">
+                    <img src="images/freqscale-cents.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqscale-cents.png')">
+                    <img src="images/freqscale-1.png" alt="FreqCtrl Screenshot 4"class="thumbnail" onclick="openModal('images/freqscale-1.png')">
+                    <img src="images/freqscale-2.png" alt="FreqCtrl Screenshot 2" class="thumbnail" onclick="openModal('images/freqscale-2.png')">
+                    <img src="images/freqscale-fract.png" alt="FreqCtrl Screenshot 3" class="thumbnail" onclick="openModal('images/freqscale-fract.png')">
+                </div>   
             </div>
 
             <div class="entry">
                 <a class="title" >Renoise Tool:<br>FreqLab Instrument Creator</a>
                 <p>Builds instruments by generating single cycle waveforms, user defines custom note frequencies for each sample and can generate and layer harmonics defined as decimal or fraction ratio. Supports importing Scala .scl files to insert octaves of frequencies with base note settings. It can auto generate phrases with pattern options, generate random set of frequencies from your pre set value bank. Settings for default sample options, automatically insert modulation devices.</p>
+                <div class="thumbnail-container">
+                    <img src="images/freqlab-1.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqlab-1.png')">
+                </div>  
             </div>
             
             <div class="entry">
                 <a class="title" >Renoise Tool:<br>FreqMath</a>
                 <p>A calculator for nine types of frequency related calculations. Results can be used can be used to automatically set Renoise sample options and device parameters.</p>
+                <div class="thumbnail-container">
+                    <img src="images/freqmath-welcome.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-welcome.png')">
+                    <img src="images/freqmath-calculations.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-calculations.png')">
+                    <img src="images/freqmath-sample-tuning.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-sample-tuning.png')">
+                    <img src="images/freqmath-modulation.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-modulation.png')">
+                    <img src="images/freqmath-calc-log.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-calc-log.png')">
+                    <img src="images/freqmath-notepad.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-notepad.png')">
+                </div>  
             </div>
 
             <div class="entry">
-                <a class="title" >Wave Generator</a>
+                <a class="title">Wave Generator</a>
                 <p>A waveform generator built in Max/MSP, allows you to create custom waveforms in a vector style for precision. Generate and save a batch of waveforms from a list of frequencies.</p>
             </div>
 
