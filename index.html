@@ -124,6 +124,7 @@
                 color: var(--my-blue);
                 line-height: 1.6;
                 font-size: 18px;
+                overflow: hidden;
             }
 
             @media (max-width: 1080px) {
@@ -158,6 +159,82 @@
             footer a:hover {
                 text-decoration: underline;
             }
+            .thumbnail-container {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                margin-top: 10px;
+                max-height: 220px;
+                padding-bottom: 5px;
+                scrollbar-width: thin;
+                scrollbar-color: var(--my-yellow) transparent;
+            }
+
+            .thumbnail {
+                height: 200px;
+                flex: 0 0 200px;
+                border-radius: 5px;
+                object-fit: cover;
+                object-position: top;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+
+            /*.thumbnail:hover {
+                transform: scale(1.1);
+            }*/
+            .thumbnail-container img {
+                max-width: 200px;
+                max-height: 200px;
+            }
+
+            .thumbnail-container::-webkit-scrollbar {
+                height: 8px; /* Height of the scrollbar */
+            }
+
+            .thumbnail-container::-webkit-scrollbar-thumb {
+                background-color: var(--my-yellow);
+                border-radius: 10px;
+            }
+
+            .thumbnail-container::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .modal {
+                display: none; 
+                position: fixed; 
+                z-index: 1000; 
+                padding-top: 100px; 
+                left: 0;
+                top: 0;
+                width: 100%; 
+                height: 100%; 
+                background-color: rgba(0,0,0,0.9);
+                justify-content: center;
+                align-items: center; /* Center the content vertically */
+                padding: 0; /* Remove any extra padding */
+            }
+            .modal-content {
+                display: block;
+                margin: auto;
+                margin-top: 30px;
+                max-width: 90%; /* Ensures the image fits within 90% of the viewport width */
+                max-height: 90%; /* Ensures the image fits within 90% of the viewport height */
+                width: auto; /* Auto width to maintain aspect ratio */
+                height: auto; /* Auto height to maintain aspect ratio */
+            }
+
+            .close {
+                position: absolute;
+                top: 15px;
+                right: 35px;
+                color: #f1f1f1;
+                font-size: 40px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
         </style>
     </head>
 
@@ -170,19 +247,70 @@
         <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
         <div class="entries-row">
 
-            <div class="entry">
-                <a class="title" href="trees-of-normanby-web/index.html">Trees of Normanby</a>
-                <p>A detailed interactive map of notable trees at <a href="https://normanbyhall.co.uk">Normanby Park</a>, a cross platform app written with Flutter. Work in progress, link directs to a pre-alpha web version that runs in a browser, currently has native Android and Windows counterparts, iOS and macOS to come.</p>
+            <div class="entry">     
+                <a class="title" href="trees-of-normanby/web/index.html">Trees Of Normanby</a>
+                <p>An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a>, detailing notable trees for Android, iOS and Web. Using your devices GPS, the app dispays your current location on the map so you can use it while walking around the park. Work in progress, link directs to an early Web for authorised users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.</p>
+                <div class="thumbnail-container">
+                    <img src="images/ton-screenshot-1.jpg" alt="Trees Of Normanby Screenshot 1" class="thumbnail" onclick="openModal('images/ton-screenshot-1.jpg')">
+                    <img src="images/ton-screenshot-2.jpg" alt="Trees Of Normanby Screenshot 2" class="thumbnail" onclick="openModal('images/ton-screenshot-2.jpg')">
+                    <img src="images/ton-screenshot-3.jpg" alt="Trees Of Normanby Screenshot 3" class="thumbnail" onclick="openModal('images/ton-screenshot-3.jpg')">
+                    <img src="images/ton-screenshot-4.jpg" alt="Trees Of Normanby Screenshot 4" class="thumbnail" onclick="openModal('images/ton-screenshot-4.jpg')">
+                    <img src="images/ton-screenshot-5.jpg" alt="Trees Of Normanby Screenshot 5" class="thumbnail" onclick="openModal('images/ton-screenshot-5.jpg')">
+                    <img src="images/ton-screenshot-6.jpg" alt="Trees Of Normanby Screenshot 6" class="thumbnail" onclick="openModal('images/ton-screenshot-6.jpg')">
+                    <img src="images/ton-screenshot-7.jpg" alt="Trees Of Normanby Screenshot 7" class="thumbnail" onclick="openModal('images/ton-screenshot-7.jpg')">
+                </div>
             </div>
             <div class="entry">
                 <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
-                <p>A weird additive synthesizer that lets you define frequencies of all 128 MIDI notes. A work in progress, the link directs to a pre-alpha stage web assembly build of the instrument. Written with <a href="https://cmajor.dev/">Cmajor</a>, has native and plugin counterparts.</p>
+                <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios as decimals or fractions. WIP, the link directs to an early Web Assembly build. Written with <a href="https://cmajor.dev/">Cmajor</a>, has native and plugin counterparts. Features per harmonic amplitude modulation, playable tables to visualise note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows you precise frequency of each harmonic of every note. On screen grid note controller, optional commands to program sounds.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title">freqToASCL</a>
+                <p>Create Ableton .ascl scale files from a list of frequencies, assigns frequency hz values to note names so that they appear in the piano roll editor.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title">Gallery Video Player</a>
+                <p>Gallery video player is an Android app which sets up the device as a video player for public spaces, so that users can only play and pause and not navigate away from the video. An optionl title screen image and be set, features an auto reset setting that will make the video reset to the title screen or first frame of the video. The app is currently being used in the Stubbs In The Stables display at Normanby Hall Country Park as part of The Anatomy Of The Horse, an exhibition celebrating the 300th birthday of anatomist and painter George Stubbs.</p>
             </div>
 
             <div class="entry">
                 <a class="title" href="https://www.renoise.com/tools/modulation-device-presets">Renoise Tool:<br>Modulation Device Presets</a>
-                <p>Adds support in <a href="https://www.renoise.com"">Renoise</a> for Sample Modulation Device presets separate from Modulation Sets '.xrmo'. Now users can save and load individual device presets, device chains or complete filter sections as '.xrmd', '.xrmc' or '.xrmf'.</p>
+                <p>Adds support in <a href="https://www.renoise.com">Renoise</a> for Sample Modulation Device presets separately. As Renoise only support saving modulation devices in complete Modulation Sets .xrmo files, this tool extends functionality for users to save and load presets for individual devices, device chains or complete filter sections in new file types .xrmd, .xrmc or .xrmf, integrated to work consistently with native Renoise presets.</p>
             </div>
+
+            <div class="entry">
+                <a class="title">Renoise Tool:<br>FreqCtrl Magic Squares</a>
+                <p>An on screen button controller for Renoise, designed for freqLab istruments but can be used universally. Optional note layouts inspired by <a href="https://en.wikipedia.org/wiki/Magic_square">magic squares</a> of historical mathematics, including more recent discoveries by the brilliant <a href="https://jain108academy.com/magic-square-discoveries/">Jain108</a>.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title" >Renoise Tool:<br>FreqScale</a>
+                <p>A Renoise tool which allows you to create custom scales or tunings based on a list of frequencies.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title" >Renoise Tool:<br>FreqLab Instrument Creator</a>
+                <p>Builds instruments by generating single cycle waveforms, user defines custom note frequencies for each sample and can generate and layer harmonics defined as decimal or fraction ratio. Supports importing Scala .scl files to insert octaves of frequencies with base note settings. It can auto generate phrases with pattern options, generate random set of frequencies from your pre set value bank. Settings for default sample options, automatically insert modulation devices.</p>
+            </div>
+            
+            <div class="entry">
+                <a class="title" >Renoise Tool:<br>FreqMath</a>
+                <p>A calculator for nine types of frequency related calculations. Results can be used can be used to automatically set Renoise sample options and device parameters.</p>
+            </div>
+
+            <div class="entry">
+                <a class="title" >Wave Generator</a>
+                <p>A waveform generator built in Max/MSP, allows you to create custom waveforms in a vector style for precision. Generate and save a batch of waveforms from a list of frequencies.</p>
+            </div>
+
+            <div id="imageModal" class="modal">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <img class="modal-content" id="modalImage">
+            </div>
+
+
 
         </div>
         <footer>
@@ -288,6 +416,15 @@
                     // Draw new table
                     this.drawTable(svg, rows, cols, cellSize);
                 }
+            }
+
+            function openModal(imageSrc) {
+                document.getElementById("imageModal").style.display = "block";
+                document.getElementById("modalImage").src = imageSrc;
+            }
+
+            function closeModal() {
+                document.getElementById("imageModal").style.display = "none";
             }
 
             customElements.define("svg-table", SVGTable);
