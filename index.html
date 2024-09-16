@@ -129,13 +129,21 @@
 
             @media (max-width: 1080px) {
                 .entry {
-                    flex: 1 1 calc(45% - 20px);
+                    flex: 1 1 calc(45% - 20px); /* Adjust for medium screens like tablets */
                 }
             }
 
-            @media (max-width: 600px) {
+            @media (max-width: 768px) {
                 .entry {
-                    flex: 1 1 calc(100% - 20px);
+                    flex: 1 1 calc(90% - 20px); /* For smaller screens like mobile, cards take up more width */
+                    font-size: 16px; /* Slightly reduce font size */
+                }
+            }
+
+            @media (max-width: 480px) {
+                .entry {
+                    flex: 1 1 calc(100% - 20px); /* For very small mobile screens, cards take up full width */
+                    font-size: 14px; /* Reduce font size further */
                 }
             }
 
