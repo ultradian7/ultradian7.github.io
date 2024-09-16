@@ -97,6 +97,10 @@
                 flex-wrap: wrap;
                 gap: 20px;
                 justify-content: center;
+                margin: 0; /* Reset any default margins */
+                padding: 0; /* Reset any default padding */
+                width: 100%; /* Ensure the container spans the full width */
+                box-sizing: border-box; /* Ensure padding is accounted for */
             }
 
             .c3 {
@@ -125,6 +129,9 @@
                 line-height: 1.6;
                 font-size: 18px;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box; /* Ensure padding and borders are included in the width */ 
             }
 
             @media (max-width: 1080px) {
@@ -136,14 +143,14 @@
             @media (max-width: 768px) {
                 .entry {
                     flex: 1 1 calc(90% - 20px); /* For smaller screens like mobile, cards take up more width */
-                    font-size: 16px; /* Slightly reduce font size */
+                    /*font-size: 16px;  Slightly reduce font size */
                 }
             }
 
             @media (max-width: 480px) {
                 .entry {
                     flex: 1 1 calc(100% - 20px); /* For very small mobile screens, cards take up full width */
-                    font-size: 14px; /* Reduce font size further */
+                    /*font-size: 14px;  Reduce font size further */
                 }
             }
 
