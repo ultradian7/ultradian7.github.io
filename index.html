@@ -73,11 +73,19 @@
                 font-size: 55px;
                 margin-bottom: 20px;
             }
-            .intro {
-                font-style: normal;
-                font-size: 18px;
+            .about {
+                flex: 1 1 calc(30% - 20px);
+                padding: 15px;
+                border: 2px solid var(--my-yellow);
+                border-radius: 10px;
+                margin-bottom: 10px;
                 color: var(--my-blue);
                 line-height: 1.6;
+                font-size: 18px;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                box-sizing: border-box;
             }
 
             .column {
@@ -128,7 +136,7 @@
 
             .entry {
                 flex: 1 1 calc(30% - 20px);
-                padding: 10px;
+                padding: 15px;
                 border: 2px solid var(--my-yellow);
                 border-radius: 10px;
                 margin-bottom: 10px;
@@ -210,6 +218,13 @@
                 max-height: 200px;
             }
 
+            .thumbnail-container video {
+                max-width: 200px;
+                max-height: 200px;
+                border-radius: 16px;
+                cursor: pointer;
+            }
+
             .thumbnail-container::-webkit-scrollbar {
                 height: 8px; /* Height of the scrollbar */
             }
@@ -221,6 +236,36 @@
 
             .thumbnail-container::-webkit-scrollbar-track {
                 background: transparent;
+            }
+
+            .video-thumbnail-wrapper {
+                position: relative;
+                display: inline-block;
+            }
+
+            .play-button {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, 0.7);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .play-button::before {
+                content: '';
+                display: block;
+                width: 0;
+                height: 0;
+                border-left: 15px solid rgba(0, 0, 0, 0.7);
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
             }
 
             .modal {
@@ -256,6 +301,9 @@
                 font-weight: bold;
                 cursor: pointer;
             }
+            .nav-links { margin-bottom: 20px; display: flex; gap: 20px; }
+            .nav-link { cursor: pointer; color: var(--my-pink); text-decoration: underline; font-size: 25px; }
+            .hidden { display: none; }
 
         </style>
     </head>
@@ -268,7 +316,13 @@
 
         <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
 
-        <div class="entries-row">
+        <div class="nav-links">
+            <span class="nav-link" onclick="showSection('projects')">Projects</span>
+            <span class="nav-link" onclick="showSection('about')">About</span>
+            <span class="nav-link"><a href="mailto:ultradian7@gmail.com">Contact</a></span>
+        </div>
+
+        <div class="entries-row" id="projects">
 
             <div class="entry">     
                 <a class="title" href="trees-of-normanby/web/index.html">Trees Of Normanby</a>
@@ -302,6 +356,14 @@
                 <p>Gallery video player is an Android app which sets up the device as a video player for public spaces, so that users can only play and pause and not navigate away from the video. An optionl title screen image and be set, features an auto reset setting that will make the video reset to the title screen or first frame of the video. The app is currently being used in the Stubbs In The Stables display at Normanby Hall Country Park as part of The Anatomy Of The Horse, an exhibition celebrating the 300th birthday of anatomist and painter George Stubbs.</p>
                 <div class="thumbnail-container">
                     <img src="images/gvp-1.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-1.jpg')">
+                    <div class="video-thumbnail-wrapper">
+                        <video class="thumbnail" onclick="openModal('video/gvp-stables.mp4', 'video')" muted>
+                            <source src="video/gvp-stables.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-button" onclick="openModal('video/gvp-stables.mp4', 'video')"></div>
+                    </div>
+
                 </div>
             </div>
 
@@ -393,7 +455,7 @@
 
             <div class="entry">
                 <a class="title" href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>
-                <p>I contributed a track for the <a href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a> compilation, curated by Grant Wilson-Claridge. The compilation is made up of tracks based on Colundi values which Grant describes as "128 resonant frequencies chosen via experimentation and philosophy, each relating to a specific human bio-resonance, or psychology, traditional mysticism or belief, physics, astronomy, maths, chemistry”. My track appears on the ambient themed Part 2.</p>
+                <p>I contributed a track on <a href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>, compiled by Grant Wilson-Claridge. The compilation is made up of tracks based on Colundi values which Grant describes as "128 resonant frequencies chosen via experimentation and philosophy, each relating to a specific human bio-resonance, or psychology, traditional mysticism or belief, physics, astronomy, maths, chemistry”. My track appears on the ambient themed Part 2.</p>
                 <div class="thumbnail-container">
                     <img src="images/colundi-everyone-1.jpg" alt="" class="thumbnail" onclick="openModal('images/colundi-everyone-1.jpg')">
                     <img src="images/colundi-everyone-2.jpg" alt="" class="thumbnail" onclick="openModal('images/colundi-everyone-2.jpg')">
@@ -409,15 +471,16 @@
             <div id="imageModal" class="modal" onclick="closeModal(event)">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <img class="modal-content" id="modalImage">
+                <video class="modal-content" id="modalVideo" controls style="display:none;"></video>
             </div>
 
 
 
         </div>
 
-        <div class="intro">Ultradian7 is an indie creator with roots in music, exploring creative projects across disciplines. The name <a href="https://en.wikipedia.org/wiki/Ultradian_rhythm">Ultradian</a> reffers to an ultradian rhythm which "is a recurrent period or cycle repeated throughout a 24-hour day." The number 7 holds personal significance and is the number of days in a week or "circadian" rhythm which ultradian cycles occur within, is often associated with luck, completeness and creativity, connected to <a href="https://en.wikipedia.org/wiki/Seven_Wonders_of_the_Ancient_World">the seven wonders</a> of the ancient world, the 7 colours of the <a href="https://en.wikipedia.org/wiki/Rainbow">rainbow</a> as divided by Isaac Newton. The <a href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">magic number 7</a> holds refference to the human brain tending to remember about 7 items in short-term memory.</div>
+        <div class="about" id="about"><a class="title">About Ultradian7</a><br>Ultradian7 is an indie creator with roots in music, exploring creative projects across disciplines. The name <a href="https://en.wikipedia.org/wiki/Ultradian_rhythm">Ultradian</a> reffers to an ultradian rhythm which "is a recurrent period or cycle repeated throughout a 24-hour day." The number 7 holds personal significance and is the number of days in a week or "circadian" rhythm which ultradian cycles occur within, is often associated with luck, completeness and creativity, connected to <a href="https://en.wikipedia.org/wiki/Seven_Wonders_of_the_Ancient_World">the seven wonders</a> of the ancient world, the 7 colours of the <a href="https://en.wikipedia.org/wiki/Rainbow">rainbow</a> as divided by Isaac Newton. The <a href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">magic number 7</a> holds refference to the human brain tending to remember about 7 items in short-term memory.</div>
         <footer>
-            <p>Contact: <a href="mailto:contact@ultradian7.com">ultradian7@gmail.com</a></p>
+            <p>Contact: <a href="mailto:ultradian7@gmail.com">ultradian7@gmail.com</a></p>
         </footer>
         <script>
             class SVGTable extends HTMLElement {
@@ -495,7 +558,6 @@
                     ];
                 }
 
-                // Method to update the table
                 updateTable() {
                     const svg = this.shadowRoot.querySelector("svg");
                     // Clear existing SVG content
@@ -516,21 +578,61 @@
                     const cols = Math.ceil(width / (Math.sqrt(3) * cellSize));
                     const rows = Math.ceil(height / (1.5 * cellSize)) + 1;
 
-                    // Draw new table
                     this.drawTable(svg, rows, cols, cellSize);
                 }
             }
 
-            function openModal(imageSrc) {
-                document.getElementById("imageModal").style.display = "block";
-                document.getElementById("modalImage").src = imageSrc;
+            function openModal(source, type = 'image') {
+                const modal = document.getElementById("imageModal");
+                const modalImage = document.getElementById("modalImage");
+                const modalVideo = document.getElementById("modalVideo");
+
+                // Reset modal content
+                modalImage.style.display = "none";
+                modalVideo.style.display = "none";
+                modalImage.src = "";
+                modalVideo.src = "";
+
+                // Show the modal
+                modal.style.display = "flex";
+
+                if (type === "image") {
+                    modalImage.src = source;
+                    modalImage.style.display = "block";
+                } else if (type === "video") {
+                    modalVideo.src = source;
+                    modalVideo.style.display = "block";
+                }
             }
 
-            function closeModal() {
-                document.getElementById("imageModal").style.display = "none";
+            function closeModal(event) {
+                const modal = document.getElementById("imageModal");
+                const modalImage = document.getElementById("modalImage");
+                const modalVideo = document.getElementById("modalVideo");
+
+                // Check if the clicked element is the modal or the close button
+                if (event.target === modal || event.target.classList.contains('close')) {
+                    // Close the modal and reset sources
+                    modal.style.display = "none";
+                    modalImage.src = "";
+                    modalVideo.src = "";
+                }
+            }
+
+            function showSection(sectionId) {
+                document.getElementById('projects').style.display = 'none';
+                document.getElementById('about').style.display = 'none';
+
+                if (sectionId === 'projects') {
+                    document.getElementById(sectionId).style.display = 'flex';
+                } else {
+                    document.getElementById(sectionId).style.display = 'block';
+                }
             }
 
             customElements.define("svg-table", SVGTable);
+
+            showSection('projects');
         </script>
     </body>
 </html>
