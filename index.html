@@ -66,21 +66,21 @@
                     font-size: 25px;
                 }
                 .header-wrapper {
-            display: flex;
-            justify-content: center; /* Center the wrapper within the body */
-            width: 100%;
-        }
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                }
 
-        .header {
-            font-family: "Ubuntu Mono", monospace;
-            font-weight: 700;
-            font-style: normal;
-            font-size: 55px;
-            margin-bottom: 20px;
-            text-align: left; /* Align text left within the header */
-            max-width: 100%; /* Ensure header doesn’t exceed screen width */
-            padding: 0 15px; /* Optional: Add padding for better appearance */
-        }
+                .header {
+                    font-family: "Ubuntu Mono", monospace;
+                    font-weight: 700;
+                    font-style: normal;
+                    font-size: 55px;
+                    margin-bottom: 20px;
+                    text-align: left;
+                    max-width: 100%;
+                    padding: 0 15px;
+                }
                 .about {
                     flex: 1 1 calc(30% - 20px);
                     padding: 15px;
@@ -176,6 +176,21 @@
                         /*font-size: 14px;  Reduce font size further */
                     }
                 }
+                .embed-container {
+                    width: 100%;
+                    text-align: center;
+                    margin-top: 10px;
+                }
+
+                .bandcamp-embed {
+                    width: 350px;
+                    height: 470px;
+                    border: 1px solid var(--my-pink);
+                    border-radius: 10px;
+                    margin: auto;
+                    padding: 3px;
+                    background-color: black;
+                }
 
                 footer {
                     margin-top: 10px;
@@ -202,15 +217,16 @@
                     overflow-x: auto;
                     gap: 20px;
                     margin-top: 10px;
-                    max-height: 220px;
+                    max-height: 360px;
                     padding-bottom: 5px;
                     scrollbar-width: thin;
                     scrollbar-color: var(--my-yellow) transparent;
                 }
 
                 .thumbnail {
-                    height: 200px;
-                    flex: 0 0 200px;
+                    height: 300px;
+                    width: 300px;
+                    flex: 0 0 300px;
                     border-radius: 6px;
                     object-fit: cover;
                     object-position: top;
@@ -225,14 +241,13 @@
                 }*/
 
                 .thumbnail-container img {
-                    max-width: 200px;
-                    max-height: 200px;
+                    max-width: 300px;
+                    max-height: 300px;
                 }
 
                 .thumbnail-container video {
-                    max-width: 200px;
-                    max-height: 200px;
-                    border-radius: 16px;
+                    max-width: 300px;
+                    max-height: 300px;
                     cursor: pointer;
                 }
 
@@ -259,9 +274,9 @@
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    width: 40px;
-                    height: 40px;
-                    background: rgba(255, 255, 255, 0.7);
+                    width: 70px;
+                    height: 70px;
+                    background: rgba(255, 255, 255, 0.6);
                     border-radius: 50%;
                     display: flex;
                     justify-content: center;
@@ -329,7 +344,6 @@
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    border: none; /* Remove iframe border */
                 }
 
                 .nav-links { margin-bottom: 20px; display: flex; gap: 20px; }
@@ -359,7 +373,9 @@
                     <a class="title" href="trees-of-normanby/web/index.html">Trees of Normanby</a>
                     <p>An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a> that details notable trees,  for Android, iOS and Web. Using your devices GPS, the app displays your current location on the map so you can use it while walking around the park. Knowledgeable arboriculturist and horticulturist <a href="https://www.inaturalist.org/observations?place_id=any&subview=map&user_id=bradcanfield&verifiable=any">Brad Canfield</a>, Normanby Park staff member, has produced informative content regards a selection of notable tree's.
                     <br>
-                    <br>Work in progress, the link directs to an in browser version for authorized users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.
+                    <br>I built a webpage interface for staff to manage the apps content without requiring any coding knowledge, so they can easily add new species information, specimen locations, images etc.
+                    <br>
+                    <br>Still in development, the link directs to an in browser version for authorized users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.
                     <br>
                     <br>Acknowledgement and thanks to Ben Buckley for his support and contribution to the apps content.</p>
                     <div class="thumbnail-container">
@@ -380,10 +396,10 @@
                     </div>
                 </div>
                 <div class="entry">
-                    <a class="title" href="valuesynth-web/index.html">ValueSynth</a>
-                    <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios as decimals or fractions. A work in progress, written with <a href="https://cmajor.dev/">Cmajor</a>.
+                    <a class="title">freqMajor</a>
+                    <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios with precision as decimals or fractions. A work in progress, written with <a href="https://cmajor.dev/">Cmajor</a>.
                         <br>
-                        <br>Features per harmonic amplitude modulation, playable tables to visualize note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows you precise frequency of each harmonic of every note. On screen grid note controller, optional commands to program sounds. There's no instructions yet but that shouldn't stop you from making something interesting with it.</p>
+                        <br>Features per harmonic amplitude modulation, playable tables to visualize note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows frequency of each harmonic in every note. On screen grid note controller, optional commands to program sounds.</p>
                     <div class="thumbnail-container">
                         <img src="images/valuesynth-1.png" alt="ValueSynth Screenshot 1" class="thumbnail" onclick="openModal('images/valuesynth-1.png')">
                         <img src="images/valuesynth-2.png" alt="ValueSynth Screenshot 2" class="thumbnail" onclick="openModal('images/valuesynth-2.png')">
@@ -399,7 +415,7 @@
                     <a class="title">Gallery Video Player</a>
                     <p>Gallery video player is an Android app designed to be used in public spaces, it restricts access to the device so the audience are able to play and pause the video only and not navigate away. An optional title screen image can be set, features an auto reset option that rests to the title screen or first frame of the video if paused for a specified amount of time.
                         <br>
-                        <br> The app was made for the North Lincolnshire Council Museum team and used to host a video for the Stubbs In The Stables display at <a href="https://normanbyhall.co.uk">Normanby Hall Country Park</a>, part of George Stubbs and the Anatomy of the Horse, an exhibition celebrating the 300th birthday of anatomist and painter <a href="https://en.wikipedia.org/wiki/George_Stubbs">George Stubbs</a>.</p>
+                        <br> The app was made for the North Lincolnshire Council Museum team and used in the "Stubbs In The Stables" display at <a href="https://normanbyhall.co.uk">Normanby Hall Country Park</a>, part of "George Stubbs and the Anatomy of the Horse, celebrating the 300th birthday of anatomist and painter <a href="https://en.wikipedia.org/wiki/George_Stubbs">George Stubbs</a>. The app was used to host video for <a href="https://uk.linkedin.com/in/gillianhiggins">Gillian Higgins</a> from <a href="https://www.horsesinsideout.com/">Horses Inside Out</a> and her making of the life size model on display.</p>
                     <div class="thumbnail-container">
                         <img src="images/gvp-1.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-1.jpg')">
                         <img src="images/gvp-stables.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-stables.jpg')">
@@ -479,7 +495,9 @@
                 <div class="entry">
                     <a class="title">Soundcloud</a>
                     <p>Some music I've made has been shared <a href="https://soundcloud.com/hexadecagon/tracks">here</a>, many tracks have been made private or removed, if you're looking for a track that was previously available you can <a href="mailto:contact@ultradian7.com">contact</a> me. <a href="https://soundcloud.com/hexadecagon88/tracks">Here</a>'s another page I created to upload old music from when I first started doing electronic music.</p>
-                    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1274945167&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/hexadecagon" title="DW" target="_blank" style="color: #cccccc; text-decoration: none;">DW</a> · <a href="https://soundcloud.com/hexadecagon/sets/tracks" title="tracks" target="_blank" style="color: #cccccc; text-decoration: none;">tracks</a></div>
+                    <div class="embed-container">
+                        <iframe width="350" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1274945167&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/hexadecagon" title="DW" target="_blank" style="color: #cccccc; text-decoration: none;">DW</a> · <a href="https://soundcloud.com/hexadecagon/sets/tracks" title="tracks" target="_blank" style="color: #cccccc; text-decoration: none;">tracks</a></div>
+                    </div>
                 </div>
 
                 <div class="entry">
@@ -488,14 +506,16 @@
                     <br>
                     <br>"Dopodomani is released in the spirit of friendship, generosity, and charity. The charity that we selected was Hunger Relief International, because feeding the poor around the world is so important. www.hungerreliefinternational.org"</p>
 
-                    <iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=3945448493/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=1044002998/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani by dzc</a></iframe>
+                    <div class="embed-container">
+                        <iframe class="bandcamp-embed" src="https://bandcamp.com/EmbeddedPlayer/album=3945448493/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=1044002998/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani by dzc</a></iframe>
+                    </div>
                 </div>
 
                 <div class="entry">
                     <a class="title" href="https://www.youtube.com/watch?v=hllbOOG6_Eo">Krys Kona - Novality</a>
                     <p>Novality from <a href="https://www.youtube.com/@kryskonaimage">Krys Kona</a>'s Fashion / No Fashion series. "Solitude, melancholy, and the sense of time and space". They used some of my music for the audio.</p>
                     <div class="video-wrapper">
-                        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/hllbOOG6_Eo?si=Xy0xG3GAhsIyhDEd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/hllbOOG6_Eo?si=Xy0xG3GAhsIyhDEd" title="Novality" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="thumbnail-container">
                     </div>  
@@ -506,7 +526,9 @@
                     <p>My track appears on <a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II</a>, an <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation mastered by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) featuring artwork by <a href="https://www.thedesignersrepublic.com/ian-anderson">Ian Anderson</a> (<a href="https://www.thedesignersrepublic.com">Designers Republic</a>).
                     <br>
                     <br>"We present to you 31 tracks from 31 different artists all over the world. All proceeds from this album will be donated to the WHO COVID-19 Response fund."</p>
-                    <iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=3908410935/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=902166844/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II by Dec</a></iframe>
+                    <div class="embed-container">
+                        <iframe class="bandcamp-embed" src="https://bandcamp.com/EmbeddedPlayer/album=3908410935/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=902166844/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II by Dec</a></iframe>
+                    </div>
                 </div>
 
                 <div class="entry">
@@ -522,7 +544,9 @@
                 <div class="entry">
                     <a class="title" href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>
                     <p>An ambient track I produced appears on <a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>, an <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation, mastered by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) artwork produced by Nicolas Silesi.</p>
-                    <iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=3177415462/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=580789529/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before the Moon by Dec</a></iframe>
+                    <div class="embed-container">
+                        <iframe class="bandcamp-embed" src="https://bandcamp.com/EmbeddedPlayer/album=3177415462/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=580789529/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before the Moon by Dec</a></iframe>
+                    </div>
                 </div>
 
                 <div class="entry">
