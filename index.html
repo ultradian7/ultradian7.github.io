@@ -220,7 +220,7 @@
                     scrollbar-color: var(--my-yellow) transparent;
                     /*border: 2px solid rgb(124, 77, 133);*/
                     border-radius: 10px;
-                    background-color: rgba(30, 20, 0, 0.628);
+                    background-color: rgba(185, 147, 71, 0.164);
                     
                 }
 
@@ -549,12 +549,12 @@
                 <div class="entry">
                     <a class="title" href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>
                     <p>I contributed music to <a href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>, compiled by Grant Wilson-Claridge. Made up of tracks based on Colundi values, "128 resonant frequencies chosen via experimentation and philosophy, each relating to a specific human bio-resonance, or psychology, traditional mysticism or belief, physics, astronomy, maths, chemistry”.</p>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6dzJ4AeDirY6syN7mMoDrD?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                     <div class="thumbnail-container">
                         <img src="https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg')">
                         <img src="https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg')">
                         <img src="https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg')">
-                    </div>  
-                    <iframe class="embed" src="https://open.spotify.com/embed/track/6dzJ4AeDirY6syN7mMoDrD?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                    </div>
                 </div>
                 
                 <div id="imageModal" class="modal" onclick="closeModal(event)">
@@ -593,42 +593,15 @@
                         this.shadowRoot.appendChild(style);
                         this.shadowRoot.appendChild(svg);
 
-                        // Create a table based on the screen size
+                        this.svgElement = svg; // Store the reference for later use
+
                         this.updateTable();
-                        window.addEventListener("resize", () => this.updateTable());
-                        window.addEventListener("scroll", () => this.updateTable());
+                        window.addEventListener("resize", this.updateTable.bind(this));
+                        window.addEventListener("scroll", this.onScroll.bind(this));
                     }
 
                     getCssVariable(variable) {
                         return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
-                    }
-
-                    drawTable(svg, rows, cols, cellSize) {
-                        const strokeColor = this.getCssVariable("--my-gray");
-                        const fillColor = this.getCssVariable("--my-dark-gray");
-
-                        for (let row = 0; row < rows; row++) {
-                            for (let col = 0; col < cols; col++) {
-                                const hexagonGroup = this.createHexagonGroup(col, row, cellSize, strokeColor, fillColor);
-                                svg.appendChild(hexagonGroup);
-                            }
-                        }
-                    }
-
-                    createHexagonGroup(col, row, size, strokeColor, fillColor) {
-                        const group = document.createElementNS(this.svgNamespace, "g");
-                        const hexagon = this.createHexagon(col, row, size, strokeColor, fillColor);
-                        group.appendChild(hexagon);
-                        return group;
-                    }
-
-                    createHexagon(col, row, size, strokeColor, fillColor) {
-                        const points = this.calculateHexagonPoints(col, row, size);
-                        const hexagon = document.createElementNS(this.svgNamespace, "polygon");
-                        hexagon.setAttribute("points", points.join(" "));
-                        hexagon.setAttribute("stroke", strokeColor);
-                        hexagon.setAttribute("fill", fillColor);
-                        return hexagon;
                     }
 
                     calculateHexagonPoints(col, row, size) {
@@ -647,29 +620,63 @@
                         ];
                     }
 
-                    updateTable() {
-                        const svg = this.shadowRoot.querySelector("svg");
-                        // Clear existing SVG content
-                        while (svg.firstChild) {
-                            svg.removeChild(svg.firstChild);
+                    onScroll() {
+                        if (!this.scrollPending) {
+                            this.scrollPending = true;
+                            requestAnimationFrame(this.updateTable.bind(this));
                         }
-                        // Get viewport size
+                    }
+
+                    updateTable() {
+                        this.scrollPending = false; // Reset scroll flag
+                        const svg = this.svgElement;
+
+                        // Clear existing SVG content only if necessary
+                        if (!this.hexagonGroup) {
+                            this.hexagonGroup = document.createElementNS(this.svgNamespace, "g");
+                            svg.appendChild(this.hexagonGroup);
+                        }
+
                         const width = window.innerWidth;
                         const height = window.innerHeight;
 
-                        // Get hexagon size from scroll position
                         const scrollPosition = window.scrollY;
-                        const minSize = 30; // Minimum hexagon size
-                        const maxSize = 55; // Maximum hexagon size
+                        const minSize = 194;
+                        const maxSize = 35;
                         const cellSize = minSize + (maxSize - minSize) * (scrollPosition / (document.body.scrollHeight - window.innerHeight));
 
-                        // Calculate number of rows and columns based on the viewport size
-                        const cols = Math.ceil(width / (Math.sqrt(3) * cellSize));
-                        const rows = Math.ceil(height / (1.5 * cellSize)) + 1;
+                        const initialAngle = 45;
+                        const rotationAngle = initialAngle + scrollPosition / 30; // Adjust scroll factor to control rotation speed
 
-                        this.drawTable(svg, rows, cols, cellSize);
+                        const strokeColor = this.getCssVariable("--my-gray");
+                        const fillColor = this.getCssVariable("--my-dark-gray");
+
+                        const cols = Math.ceil((width * 1.5) / (Math.sqrt(3) * cellSize));
+                        const rows = Math.ceil((height * 1.5) / (1.5 * cellSize));
+
+                        this.hexagonGroup.setAttribute("transform", `rotate(${rotationAngle} ${width / 2} ${height / 2})`);
+
+                        // Draw hexagons only when the hexagon points change
+                        if (!this.hexagonPointsCache || this.cellSize !== cellSize) {
+                            this.cellSize = cellSize;
+                            this.hexagonGroup.innerHTML = ""; // Clear previous hexagons
+
+                            for (let row = -rows; row <= rows; row++) {
+                                for (let col = -cols; col <= cols; col++) {
+                                    const points = this.calculateHexagonPoints(col, row, cellSize);
+                                    const hexagon = document.createElementNS(this.svgNamespace, "polygon");
+                                    hexagon.setAttribute("points", points.join(" "));
+                                    hexagon.setAttribute("stroke", strokeColor);
+                                    hexagon.setAttribute("fill", fillColor);
+                                    this.hexagonGroup.appendChild(hexagon);
+                                }
+                            }
+                        }
                     }
                 }
+
+
+
 
                 function openModal(source, type = 'image') {
                     const modal = document.getElementById("imageModal");
