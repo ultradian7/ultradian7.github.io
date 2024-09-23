@@ -38,33 +38,24 @@ if (loginForm) {
         const password = document.getElementById('password').value;
         const messageDiv = document.getElementById('message');
 
-        try {
-            // Destructure the response to get 'data' and 'error'
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+        // Destructure the response to get 'data' and 'error'
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
 
-            // Log the response for debugging
-            console.log("SignIn Response:", { data, error });
-
-            if (error) {
-                messageDiv.textContent = 'Login failed: ' + error.message;
-            } else if (data && data.session) {
-                // Access the user ID correctly from 'data.session'
-                currentUserId = data.session.user.id;
-                showProjectsView();
-            } else {
-                // Handle unexpected response structure
-                messageDiv.textContent = 'Unexpected response structure';
-            }
-        } catch (err) {
-            console.error('Error during login:', err);
-            messageDiv.textContent = 'An unexpected error occurred during login.';
+        if (error) {
+            messageDiv.textContent = 'Login failed: ' + error.message;
+        } else if (data && data.session) {
+            // Access the user ID correctly from 'data.session'
+            currentUserId = data.session.user.id;
+            showProjectsView();
+        } else {
+            // Handle unexpected response structure
+            messageDiv.textContent = 'Unexpected response structure';
         }
     });
 }
-
 
 
 if (createProjectButton) {

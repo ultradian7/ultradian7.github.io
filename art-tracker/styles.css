@@ -14,6 +14,7 @@ html, body {
     padding: 0;
     height: 100%;
     overflow: hidden; /* Prevent body from scrolling */
+    overflow-y: auto; /* Use auto or visible for vertical overflow */
 }
 
 .container {
