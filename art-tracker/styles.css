@@ -1,0 +1,377 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Prevent body from scrolling */
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 400px;
+    text-align: center;
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: 100vh; /* Full viewport height */
+    position: relative;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    align-self: flex-start;
+    margin: 10px 0 5px;
+}
+
+input[type="email"],
+input[type="password"],
+textarea,
+input[type="text"],
+input[type="number"],
+input[type="file"],
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+#message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+#gallery {
+    margin-top: 20px;
+}
+
+#imageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.image-item {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.image-details {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.details {
+    margin-top: 5px;
+    text-align: left;
+}
+
+#logout {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#logout:hover {
+    background-color: #c9302c;
+}
+
+.session-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.session-image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.session-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.session-details div {
+    margin-bottom: 5px;
+}
+
+.project-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    position: relative;
+}
+
+.project-image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.project-name {
+    flex-grow: 1;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.session-count {
+    font-size: 14px;
+    color: #666;
+    margin-right: 10px;
+}
+
+.complete-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    color: #ff4c4c; /* Red color for the delete button */
+    font-size: 20px; /* Size of the X symbol */
+    font-weight: bold; /* Make it bold */
+    cursor: pointer;
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    width: 30px; /* Set a specific width */
+    height: 30px; /* Set a specific height */
+    line-height: 30px; /* Align the text vertically */
+    text-align: center; /* Center the text horizontally */
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: rgba(255, 76, 76, 0.1); /* Add a light background on hover */
+    color: #d42e2e; /* Darker red on hover */
+}
+
+.project-item, .session-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+    text-align: left;    
+    justify-content: flex-start;
+}
+
+.project-item .delete-button,
+.session-item .delete-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+
+.complete-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.complete-checkbox,
+.delete-button {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.project-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-details div {
+    margin-bottom: 5px;
+}
+
+.project-name,
+.session-count {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+
+.project-name,
+.session-count,
+#projectTitle {
+    text-align: center;
+    margin-right: auto;
+}
+
+.project-complete-status {
+    font-size: 14px;
+    color: #4cae4c;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.project-incomplete-status {
+    font-size: 14px;
+    color: #d9534f;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.project-visible-private {
+    font-size: 14px;
+    color: #422ff0;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.project-visible-public {
+    font-size: 14px;
+    color: #d9e554;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.complete-label {
+    margin-right: 5px;
+}
+
+.toggle-complete-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.project-image-preview {
+    width: 100px; /* Define the desired width */
+    height: 100px; /* Define the desired height */
+    overflow: hidden; /* Ensure content fits within the defined dimensions */
+    border-radius: 4px; /* Optional: to add some styling to the image container */
+}
+
+.project-image-preview img {
+    width: 100%; /* Image takes full width of the container */
+    height: 100%; /* Image takes full height of the container */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+    border-radius: 4px; /* Optional: to add some styling to the image */
+}
+
+
+#projectsList, #sessionsList {
+    padding-left: 10px; /* Additional padding for overall alignment */
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.8); /* Black with opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    margin-top: 60px;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    border: 5px solid #fff; /* Optional: border for image */
+    border-radius: 10px; /* Optional: rounded corners */
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+}

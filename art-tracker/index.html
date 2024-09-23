@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Project Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/pica@8.0.0/dist/pica.min.js"></script>
+</head>
+<body>
+    <div class="container" id="login-container" style="display: none;">
+        <h1>Login to Artist Project Manager</h1>
+        <form id="loginForm">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
+            <div id="message"></div>
+        </form>
+    </div>
+
+    <!-- Projects View -->
+    <div class="container" id="projects-container" style="display: none;">
+        <h1>Your Projects</h1>
+        <button id="createProjectButton">Create New Project</button>
+        <div id="projectsList"></div>
+        <form id="projectForm" style="display: none;">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required>
+            <button type="submit">Create Project</button>
+            <div id="projectMessage"></div>
+        </form>
+        <button id="logout">Logout</button>
+    </div>
+
+    <!-- Sessions View -->
+    <div class="container" id="sessions-container" style="display: none;">
+        <h1 id="projectTitle">Project Sessions</h1>
+        <button id="createSessionButton">Upload New Session</button>
+        <div id="sessionsList"></div>
+        <div id="complete-toggle-container">
+            <input type="checkbox" id="completeToggle" class="complete-checkbox">
+            <label for="completeToggle">Mark as Complete</label>
+        </div>
+        <button id="backToProjects">Back to Projects</button>
+    </div>
+
+<!-- Session Upload View -->
+<div class="container" id="upload-session-container" style="display: none;">
+    <h1>Upload Session</h1>
+    <button id="backToSessions">Back to Sessions</button>
+    <div class="upload-container">
+        <form id="uploadForm">
+            <label for="goals">Session Goals:</label>
+            <textarea id="goals" name="goals" rows="3" placeholder="What were your goals for this session?" required></textarea>
+
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" name="duration" placeholder="e.g., 1h 30m or 90m" required>
+
+            <label for="materials">Media:</label>
+            <input type="text" id="materials" name="materials" placeholder="e.g., Oil Paint, Watercolor, Digital" required>
+
+            <label for="result">Result:</label>
+            <textarea id="result" name="result" rows="3" placeholder="Describe the outcome of this session, how you felt you met your goals" required></textarea>
+
+            <label for="imageUpload">Upload Image:</label>
+            <input type="file" id="imageUpload" name="image" accept="image/*" required>
+
+            <button type="submit">Upload Session</button>
+        </form>
+    </div>
+    <div id="gallery">
+        <h2>Your Uploaded Sessions</h2>
+        <div id="imageContainer"></div>
+    </div>
+</div>
+
+
+
+
+    <div id="imageModal" class="modal">
+        <span id="closeModal" class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+    
+    
+    <script type="module" src="index.js"></script>
+</body>
+</html>
