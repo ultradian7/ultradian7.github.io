@@ -38,19 +38,25 @@ if (loginForm) {
         const password = document.getElementById('password').value;
         const messageDiv = document.getElementById('message');
 
-        const { error, session } = await supabase.auth.signInWithPassword({
+        // Destructure the response to get 'data' and 'error'
+        const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password
         });
 
         if (error) {
             messageDiv.textContent = 'Login failed: ' + error.message;
-        } else {
-            currentUserId = session.user.id;
+        } else if (data && data.session) {
+            // Access the user ID correctly from 'data.session'
+            currentUserId = data.session.user.id;
             showProjectsView();
+        } else {
+            // Handle unexpected response structure
+            messageDiv.textContent = 'Unexpected response structure';
         }
     });
 }
+
 
 if (createProjectButton) {
     createProjectButton.addEventListener('click', () => {
