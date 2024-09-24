@@ -39,8 +39,7 @@ h1, h2 {
 }
 h1 {
     position: sticky;
-    top: 10px; 
-    z-index: 1000;
+    /*top: 10px;*/ 
     /*padding-top: 20px;  Add padding to avoid being cut off */
 }
 
@@ -213,7 +212,7 @@ button:hover {
     border: none;
     color: #ff4c4c; /* Red color for the delete button */
     font-size: 20px; /* Size of the X symbol */
-    font-weight: bold; /* Make it bold */
+    font-weight: bold;  /*Make it bold */
     cursor: pointer;
     padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
@@ -229,9 +228,10 @@ button:hover {
 }
 
 .delete-button:hover {
-    background-color: rgba(255, 76, 76, 0.1); /* Add a light background on hover */
+    background-color: rgba(255, 76, 76, 0.1); /* Light background on hover */
     color: #d42e2e; /* Darker red on hover */
 }
+
 
 .project-item, .session-item {
     display: flex;
@@ -252,6 +252,7 @@ button:hover {
     right: 10px;
     top: 10px;
 }
+
 
 
 .complete-checkbox {

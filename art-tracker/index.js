@@ -257,25 +257,14 @@ async function fetchProjects() {
     console.log("Fetching projects for user ID:", currentUserId);
     const { data, error } = await supabase
         .from('projects')
-        .select(`
-            id,
-            name,
-            complete,
-            public,
-            sessions (
-                id,
-                image,
-                created_at
-            )
-        `)
+        .select(`id, name, complete, public, sessions (id, image, created_at)`)
         .eq('user_id', currentUserId);
 
     if (error) {
         console.error('Error fetching projects:', error);
     } else {
         const projectsList = document.getElementById('projectsList');
-        
-       
+
         if (projectsList) {
             projectsList.innerHTML = '';
 
@@ -283,7 +272,7 @@ async function fetchProjects() {
                 const sessionCount = project.sessions.length;
                 const recentSession = project.sessions.length > 0 ? getMostRecentSession(project.sessions) : null;
                 const projectImageUrl = recentSession ? getSessionImageUrl(recentSession.image) : 'default_project_image_url.jpg';
-                
+
                 console.log("Project fetched:", project);
                 const projectItem = document.createElement('div');
                 projectItem.className = 'project-item';
@@ -295,20 +284,18 @@ async function fetchProjects() {
                 const projectVisibleClass = project.public ? 'project-visible-public' : 'project-visible-private';
 
                 projectItem.innerHTML = `
-                <div class="project-image-preview">
-                    <img src="${projectImageUrl}" alt="Project Image" />
-                </div>
-                <div class="project-details">
-                    <div class="project-name">${project.name}</div>
-                    <div class="session-count">Sessions: ${sessionCount}</div>
-                    <div class="${projectStatusClass}">${projectStatus}</div>
-                    <div class="${projectVisibleClass}">${projectVisible}</div>
-                </div>
-                <button class="delete-button">X</button>
-            `;
-            
-   
-            
+    <div class="project-image-preview">
+        <img src="${projectImageUrl}" alt="Project Image" />
+    </div>
+    <div class="project-details">
+        <div class="project-name">${project.name}</div>
+        <div class="session-count">Sessions: ${sessionCount}</div>
+        <div class="${projectStatusClass}">${projectStatus}</div>
+        <div class="${projectVisibleClass}">${projectVisible}</div>
+    </div>
+    <button class="delete-button">x</button> <!-- Keep the class identical -->
+`;
+
 
                 projectItem.addEventListener('click', () => {
                     selectedProjectId = project.id;
@@ -316,17 +303,22 @@ async function fetchProjects() {
                     showSessionsView();
                 });
 
+                // Add delete event listener to the delete button
+                const deleteButton = projectItem.querySelector('.delete-button');
+                deleteButton.addEventListener('click', async (e) => {
+                    e.stopPropagation(); // Prevent the click event from propagating to projectItem click
+                    await deleteProject(project.id); // Call delete project function
+                });
+
                 projectsList.appendChild(projectItem);
             });
-            
         }
-        addImageModalFunctionality();
+        addImageModalFunctionality(); // Ensure modal functionality is reattached
     }
-    
 }
 
 
-// Function to delete a project and its related sessions and images
+
 async function deleteProject(projectId) {
     try {
         // Fetch all sessions associated with the project
