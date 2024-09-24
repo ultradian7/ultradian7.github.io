@@ -24,13 +24,13 @@ html, body {
 .container {
     background-color: #fff;
     padding: 20px;
-    padding-top: 40px;
+    padding-top: 50px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 400px;
     text-align: center;
     overflow-y: auto; /* Enable vertical scrolling */
-    height: 100vh; /* Full viewport height */
+    height: auto; 
     position: relative;
 }
 
@@ -39,7 +39,7 @@ h1, h2 {
 }
 h1 {
     position: sticky;
-    top: 0; 
+    top: 10px; 
     z-index: 1000;
     padding-top: 20px; /* Add padding to avoid being cut off */
 }
