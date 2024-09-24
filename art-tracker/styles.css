@@ -40,6 +40,7 @@ h1, h2 {
 h1 {
     position: sticky;
     /*top: 10px;*/ 
+    z-index: 1;
     /*padding-top: 20px;  Add padding to avoid being cut off */
 }
 
@@ -351,7 +352,7 @@ button:hover {
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 9999; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
