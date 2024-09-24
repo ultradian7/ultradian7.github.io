@@ -473,10 +473,10 @@ function showProjectsView() {
 async function showSessionsView() {
     console.log("Showing Sessions View");
 
-    // Fetch the current project details including name and complete status
+    // Fetch the current project details including name, complete status, and public status
     const { data, error } = await supabase
         .from('projects')
-        .select('name, complete')
+        .select('name, complete, public')
         .eq('id', selectedProjectId)
         .single();
 
@@ -487,25 +487,46 @@ async function showSessionsView() {
         currentProjectComplete = data.complete;
 
         // Update the project title in the sessions view
-        const projectTitle = document.getElementById('projectTitle');
-        if (projectTitle) {
-            projectTitle.textContent = data.name;
-        }
-    }
+        const projectNameText = document.getElementById('projectNameText');
+        const projectNameInput = document.getElementById('projectNameInput');
+        const editProjectNameButton = document.getElementById('editProjectNameButton');
 
-    // Update the checkbox state
-    const completeToggle = document.getElementById('completeToggle');
-    completeToggle.checked = currentProjectComplete;
+        if (projectNameText && projectNameInput && editProjectNameButton) {
+            projectNameText.textContent = data.name;
+            projectNameInput.value = data.name;
+
+            // Toggle edit state
+            editProjectNameButton.addEventListener('click', () => {
+                const isEditable = projectNameInput.style.display === 'none';
+                projectNameText.style.display = isEditable ? 'none' : 'inline';
+                projectNameInput.style.display = isEditable ? 'inline' : 'none';
+                editProjectNameButton.textContent = isEditable ? '💾' : '✏️';
+                if (!isEditable) updateProjectName(); // Save if exiting edit mode
+            });
+
+            // Save project name when hitting enter key
+            projectNameInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    updateProjectName();
+                }
+            });
+        }
+
+        // Update the checkbox state
+        const completeToggle = document.getElementById('completeToggle');
+        completeToggle.checked = currentProjectComplete;
+
+        const privateToggle = document.getElementById('privateToggle');
+        privateToggle.checked = !data.public;  // public is false means private is true
+    }
 
     // Display the 'sessions-container'
     toggleView('sessions-container');
 
-    // Add event listener to handle toggle changes
+    // Add event listener to handle toggle changes for project completion
     completeToggle.addEventListener('change', async function() {
         const isComplete = completeToggle.checked;
-
         try {
-            // Update the project's complete status in the database
             const { error } = await supabase
                 .from('projects')
                 .update({ complete: isComplete })
@@ -522,8 +543,61 @@ async function showSessionsView() {
         }
     });
 
+    // Add event listener to handle toggle changes for project privacy
+    const privateToggle = document.getElementById('privateToggle');
+    privateToggle.addEventListener('change', async function() {
+        const isPrivate = privateToggle.checked;
+        try {
+            const { error } = await supabase
+                .from('projects')
+                .update({ public: !isPrivate })  // Update public status based on isPrivate
+                .eq('id', selectedProjectId);
+
+            if (error) {
+                console.error('Error updating project visibility:', error);
+                alert('Failed to update project visibility. Please try again.');
+            } else {
+                console.log(`Project ID: ${selectedProjectId} marked as ${isPrivate ? 'Private' : 'Public'}`);
+            }
+        } catch (err) {
+            console.error('Error marking project as private:', err);
+        }
+    });
+
     // Fetch and display sessions
     await fetchSessions();
+}
+
+/**
+ * Function to update the project name in the database
+ */
+async function updateProjectName() {
+    const projectNameInput = document.getElementById('projectNameInput');
+    const projectNameText = document.getElementById('projectNameText');
+    const editProjectNameButton = document.getElementById('editProjectNameButton');
+
+    if (projectNameInput && projectNameText) {
+        const newName = projectNameInput.value.trim();
+        try {
+            const { error } = await supabase
+                .from('projects')
+                .update({ name: newName })
+                .eq('id', selectedProjectId);
+
+            if (error) {
+                console.error('Error updating project name:', error);
+                alert('Failed to update project name. Please try again.');
+            } else {
+                projectNameText.textContent = newName;
+                projectNameText.style.display = 'inline';
+                projectNameInput.style.display = 'none';
+                editProjectNameButton.textContent = '✏️';
+                console.log(`Project ID: ${selectedProjectId} name updated to "${newName}"`);
+            }
+        } catch (err) {
+            console.error('Error updating project name:', err);
+        }
+    }
 }
 
 
@@ -678,3 +752,4 @@ function addImageModalFunctionality() {
         }
     });
 }
+

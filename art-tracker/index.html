@@ -6,8 +6,12 @@
     <title>Artist Project Manager</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/pica@8.0.0/dist/pica.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+    </style>
 </head>
 <body>
+
     <div class="container" id="login-container" style="display: none;">
         <h1>Login to Artist Project Manager</h1>
         <form id="loginForm">
@@ -38,13 +42,23 @@
 
     <!-- Sessions View -->
     <div class="container" id="sessions-container" style="display: none;">
-        <h1 id="projectTitle">Project Sessions</h1>
+        <h1 id="projectTitle" class="project-title-container">
+            <span id="projectNameText"></span>
+            <input type="text" id="projectNameInput" style="display: none;">
+            <button id="editProjectNameButton" class="edit-button">✏️</button>
+        </h1>
+        
         <button id="createSessionButton">Upload New Session</button>
         <div id="sessionsList"></div>
         <div id="complete-toggle-container">
             <input type="checkbox" id="completeToggle" class="complete-checkbox">
             <label for="completeToggle">Mark as Complete</label>
         </div>
+        <div id="private-toggle-container">
+            <input type="checkbox" id="privateToggle" class="complete-checkbox">
+            <label for="privateToggle">Mark as Private</label>
+        </div>
+        
         <button id="backToProjects">Back to Projects</button>
     </div>
 
