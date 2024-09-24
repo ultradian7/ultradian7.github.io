@@ -24,7 +24,7 @@ html, body {
 .container {
     background-color: #fff;
     padding: 20px;
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 400px;
@@ -41,7 +41,7 @@ h1 {
     position: sticky;
     top: 10px; 
     z-index: 1000;
-    padding-top: 20px; /* Add padding to avoid being cut off */
+    /*padding-top: 20px;  Add padding to avoid being cut off */
 }
 
 form {
