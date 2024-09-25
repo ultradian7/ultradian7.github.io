@@ -16,6 +16,7 @@
 
 h1{
     font-size: 24px;
+    font-weight: 500;
 }
 
 #projectName{
@@ -48,7 +49,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Space between the text and the color picker */
+    gap: 15px; /* Space between the text and the color picker */
 }
 
 html, body {
@@ -61,6 +62,7 @@ html, body {
     font-weight: 500;
     font-style: normal;
     background-color: var(--background-gray);
+    line-height: 1.4;
 }
 
 
@@ -81,6 +83,7 @@ html, body {
     text-align: center;
     overflow-y: auto; /* Enable vertical scrolling */   
     position: relative;
+    line-height: 1.4;
 }
 
 
@@ -442,6 +445,14 @@ button:hover {
     width: auto; /* Auto width for the inner content */
 }
 
+#createProjectButton,
+#createSessionButton {
+    font-size: 24px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
 .edit-button {
     background: none;
     border: none;
@@ -493,7 +504,7 @@ button:hover {
 #projectNameText {
     text-align: center; /* Center the text */
     white-space: nowrap;
-    color: black;
+    color: black;   
 }
 
 /* Styles for the toggle icons */
