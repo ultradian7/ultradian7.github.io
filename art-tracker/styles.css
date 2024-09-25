@@ -1,10 +1,24 @@
 :root {
     --background-gray: #868686;
-    --container-gray: #bdbdbd;
-    --item-gray: #d4d4d4;
-    --my-dark-gray: #1f1f1f;
+    --container-gray: #b7b7b7;
+    --item-gray: #ffffff;
     color-scheme: only light;
 }
+
+#themePallete{
+    font-size: 50px;
+}
+
+
+#themeColorPicker {
+    cursor: pointer;
+    width: 30px; /* Smaller size */
+    height: 30px;
+    border: none;
+    padding: 0;
+    margin-left: 10px;
+}
+
 
 body {
     font-family: Arial, sans-serif;
@@ -16,6 +30,13 @@ body {
     align-items: center;
     height: 100vh;
     
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between the text and the color picker */
 }
 
 html, body {
@@ -65,7 +86,6 @@ input[type="text"],
 input[type="number"],
 input[type="file"],
 button {
-    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -225,8 +245,7 @@ button:hover {
     align-items: center;
     margin-bottom: 10px;
     padding: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
+    border-radius: 15px;
     background-color: var(--item-gray);
     position: relative;
     text-align: left;    
@@ -307,7 +326,7 @@ button:hover {
 
 .project-visible-public {
     font-size: 14px;
-    color: #fffb00;
+    color: #ff7300;
     margin-right: 10px;
     font-weight: 700;
 }
@@ -445,3 +464,31 @@ button:hover {
     font-size: 14px;
 }
 
+
+/* Styles for the toggle icons */
+.toggle-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.toggle-icon {
+    font-size: 16px; /* Increase size for visibility */
+    cursor: pointer;
+    margin-right: 10px; /* Space between icon and label */
+    user-select: none; /* Prevent text selection */
+}
+
+.toggle-icon.active {
+    color: #4cae4c; /* Green for active state */
+}
+
+.toggle-icon.inactive {
+    color: #d9534f; /* Red for inactive state */
+}
+
+
+.weight-600 {
+    font-weight: 600;
+}

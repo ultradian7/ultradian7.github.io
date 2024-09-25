@@ -11,6 +11,7 @@ let selectedProjectId = null;
 let currentProjectComplete = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
+    
     const { data, error } = await supabase.auth.getSession();
 
     if (data && data.session) {
@@ -413,10 +414,10 @@ async function fetchSessions() {
 
                 // Include the result field in the session details
                 sessionDetails.innerHTML = `
-                    <div>Session ${index + 1}: ${durationFormatted}</div>                    
-                    <div>Media: ${session.media}</div>
-                    <div>Goals: ${session.goals}</div>
-                    <div>Result: ${session.result}</div>
+                    <div>#️⃣: <span class="weight-600">${index + 1}</span> &#128355 ${durationFormatted}</div>
+                    <div>🖌️: ${session.media}</div>
+                    <div>🏆: ${session.goals}</div>
+                    <div>✔️: ${session.result}</div>
                 `;
 
                 sessionItem.appendChild(sessionImage); // Append the image to session item
@@ -467,11 +468,46 @@ async function deleteSession(sessionId, imageName) {
 
 
 
-function showProjectsView() {
+async function showProjectsView() {
     console.log("Showing Projects View");
-    fetchProjects();
-    toggleView('projects-container');
+
+    // Fetch the user's saved theme color from the database
+    try {
+        const { data, error } = await supabase
+            .from('user_settings')
+            .select('colour_theme')
+            .eq('user_id', currentUserId)
+            .single();
+
+        if (error) {
+            console.error('Failed to fetch theme color:', error);
+        } else if (data && data.colour_theme) {
+            const userColor = data.colour_theme;
+
+            // Define base gray colors
+            const baseGray = {
+                '--background-gray': '#868686',
+                '--container-gray': '#d8d8d8',
+                '--item-gray': '#efeded'
+            };
+
+            // Generate distinct blended colors based on the user's saved color
+            const blendedColors = generateBlendedColors(baseGray, userColor);
+
+            // Apply the saved blended colors to the CSS variables
+            for (const [key, value] of Object.entries(blendedColors)) {
+                document.documentElement.style.setProperty(key, value);
+            }
+        }
+    } catch (err) {
+        console.error('Error fetching theme color:', err);
+    }
+
+    // Continue with other project view setup logic...
+    fetchProjects(); // Fetch and display projects
+    toggleView('projects-container'); // Show the projects view
 }
+
 
 async function showSessionsView() {
     console.log("Showing Sessions View");
@@ -519,20 +555,23 @@ async function showSessionsView() {
             });
         }
 
-        // Update the checkbox state for complete and private status
+        // Update the icons' initial state
         const completeToggle = document.getElementById('completeToggle');
-        completeToggle.checked = currentProjectComplete;
+        completeToggle.textContent = currentProjectComplete ? '✔️' : '❌';
+        completeToggle.className = currentProjectComplete ? 'toggle-icon active' : 'toggle-icon inactive';
 
         const privateToggle = document.getElementById('privateToggle');
-        privateToggle.checked = !data.public; // public is false means private is true
+        privateToggle.textContent = data.public ? '❌' : '✔️'; // public is false means private is true
+        privateToggle.className = data.public ? 'toggle-icon inactive' : 'toggle-icon active';
     }
 
     // Display the 'sessions-container'
     toggleView('sessions-container');
 
     // Add event listener to handle toggle changes for project completion
-    completeToggle.addEventListener('change', async function() {
-        const isComplete = completeToggle.checked;
+    const completeToggle = document.getElementById('completeToggle');
+    completeToggle.addEventListener('click', async function() {
+        const isComplete = completeToggle.textContent === '❌';
         try {
             const { error } = await supabase
                 .from('projects')
@@ -543,6 +582,8 @@ async function showSessionsView() {
                 console.error('Error updating project status:', error);
                 alert('Failed to update project status. Please try again.');
             } else {
+                completeToggle.textContent = isComplete ? '✔️' : '❌';
+                completeToggle.className = isComplete ? 'toggle-icon active' : 'toggle-icon inactive';
                 console.log(`Project ID: ${selectedProjectId} marked as ${isComplete ? 'Complete' : 'Incomplete'}`);
             }
         } catch (err) {
@@ -551,8 +592,9 @@ async function showSessionsView() {
     });
 
     // Add event listener to handle toggle changes for project privacy
-    privateToggle.addEventListener('change', async function() {
-        const isPrivate = privateToggle.checked;
+    const privateToggle = document.getElementById('privateToggle');
+    privateToggle.addEventListener('click', async function() {
+        const isPrivate = privateToggle.textContent === '❌'; // ❌ means currently public, so change to private
         try {
             const { error } = await supabase
                 .from('projects')
@@ -563,6 +605,8 @@ async function showSessionsView() {
                 console.error('Error updating project visibility:', error);
                 alert('Failed to update project visibility. Please try again.');
             } else {
+                privateToggle.textContent = isPrivate ? '✔️' : '❌';
+                privateToggle.className = isPrivate ? 'toggle-icon active' : 'toggle-icon inactive';
                 console.log(`Project ID: ${selectedProjectId} marked as ${isPrivate ? 'Private' : 'Public'}`);
             }
         } catch (err) {
@@ -573,6 +617,7 @@ async function showSessionsView() {
     // Fetch and display sessions
     await fetchSessions();
 }
+
 
 /**
  * Function to toggle the edit state of the project name.
@@ -769,4 +814,133 @@ function addImageModalFunctionality() {
         }
     });
 }
+
+// Improved blending function to generate distinct variations
+function generateBlendedColors(baseColor, userColor) {
+    // Define different blend percentages for each shade
+    const blendPercentages = {
+        '--background-gray': 0.3, // Lighter blend
+        '--container-gray': 0.5, // Medium blend
+        '--item-gray': 0.7 // Darker blend
+    };
+
+    // Generate blended colors based on the defined percentages
+    const blendedColors = {};
+    for (const [key, percentage] of Object.entries(blendPercentages)) {
+        blendedColors[key] = blendColors(userColor, baseColor[key], percentage);
+    }
+
+    return blendedColors;
+}
+
+// Improved blendColors function with enhanced contrast calculation
+function blendColors(color1, color2, percentage) {
+    const f = parseInt(color1.slice(1), 16);
+    const t = parseInt(color2.slice(1), 16);
+    const R1 = f >> 16, G1 = f >> 8 & 0x00FF, B1 = f & 0x0000FF;
+    const R2 = t >> 16, G2 = t >> 8 & 0x00FF, B2 = t & 0x0000FF;
+
+    // Adjust blending based on luminance difference to create more contrast
+    const luminance1 = 0.299 * R1 + 0.587 * G1 + 0.114 * B1;
+    const luminance2 = 0.299 * R2 + 0.587 * G2 + 0.114 * B2;
+
+    const contrastAdjustment = luminance1 > luminance2 ? percentage : 1 - percentage;
+
+    const R = Math.round(R2 + (R1 - R2) * contrastAdjustment);
+    const G = Math.round(G2 + (G1 - G2) * contrastAdjustment);
+    const B = Math.round(B2 + (B1 - B2) * contrastAdjustment);
+
+    return `#${(0x1000000 + (R << 16) + (G << 8) + B).toString(16).slice(1)}`;
+}
+
+
+// Function to handle the color selection and apply it automatically
+document.getElementById('themeColorPicker').addEventListener('input', async (event) => {
+    const userColor = event.target.value;
+
+    // Define base gray colors
+    const baseGray = {
+        '--background-gray': '#868686',
+        '--container-gray': '#d8d8d8',
+        '--item-gray': '#efeded'
+    };
+
+    // Generate distinct blended colors based on the user's selected color
+    const blendedColors = generateBlendedColors(baseGray, userColor);
+
+    // Apply the new blended colors to the CSS variables
+    for (const [key, value] of Object.entries(blendedColors)) {
+        document.documentElement.style.setProperty(key, value);
+    }
+
+    // Save the selected color theme to the database
+    try {
+        const { error } = await supabase
+            .from('user_settings')
+            .upsert({ 
+                user_id: currentUserId, 
+                colour_theme: userColor 
+            }, { onConflict: ['user_id'] });
+
+        if (error) {
+            console.error('Failed to save theme color:', error);
+            alert('Failed to save theme color. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error saving theme color:', err);
+        alert('An error occurred while saving the theme color. Please try again.');
+    }
+});
+
+async function applySavedTheme() {
+    // Fetch the user's saved theme color from the database
+    try {
+        const { data, error } = await supabase
+            .from('user_settings')
+            .select('colour_theme')
+            .eq('user_id', currentUserId)
+            .single();
+
+        if (error) {
+            console.error('Failed to fetch theme color:', error);
+        } else if (data && data.colour_theme) {
+            const userColor = data.colour_theme;
+
+            // Define base gray colors
+            const baseGray = {
+                '--background-gray': '#868686',
+                '--container-gray': '#d8d8d8',
+                '--item-gray': '#efeded'
+            };
+
+            // Generate distinct blended colors based on the user's saved color
+            const blendedColors = generateBlendedColors(baseGray, userColor);
+
+            // Apply the saved blended colors to the CSS variables
+            for (const [key, value] of Object.entries(blendedColors)) {
+                document.documentElement.style.setProperty(key, value);
+            }
+
+            // Update the color picker value to reflect the saved color
+            const themeColorPicker = document.getElementById('themeColorPicker');
+            if (themeColorPicker) {
+                themeColorPicker.value = userColor;
+            }
+        }
+    } catch (err) {
+        console.error('Error fetching theme color:', err);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (data && data.session) {
+        currentUserId = data.session.user.id;
+        applySavedTheme(); // Apply the saved theme on login
+        showProjectsView();
+    } else {
+        showLoginView();
+    }
+});
 

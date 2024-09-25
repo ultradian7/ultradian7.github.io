@@ -12,6 +12,8 @@
 </head>
 <body>
 
+
+
     <div class="container" id="login-container" style="display: none;">
         <h1>Login to Artist Project Manager</h1>
         <form id="loginForm">
@@ -28,7 +30,10 @@
 
     <!-- Projects View -->
     <div class="container" id="projects-container" style="display: none;">
-        <h1>Your Projects</h1>
+        <h1>
+            Your Projects
+            <input type="color" id="themeColorPicker" value="#ff0000" title="Pick a theme color">
+        </h1>
         <button id="createProjectButton">Create New Project</button>
         <div id="projectsList"></div>
         <!-- Project Form -->
@@ -56,14 +61,18 @@
         
         <button id="createSessionButton">Upload New Session</button>
         <div id="sessionsList"></div>
-        <div id="complete-toggle-container">
-            <input type="checkbox" id="completeToggle" class="complete-checkbox">
-            <label for="completeToggle">Mark as Complete</label>
+
+        <div id="complete-toggle-container" class="toggle-icon-container">
+            <span id="completeToggle" class="toggle-icon">❌</span>
+            <label for="completeToggle">Project Completed</label>
         </div>
-        <div id="private-toggle-container">
-            <input type="checkbox" id="privateToggle" class="complete-checkbox">
-            <label for="privateToggle">Mark as Private</label>
+
+        <div id="private-toggle-container" class="toggle-icon-container">
+            <span id="privateToggle" class="toggle-icon">❌</span>
+            <label for="privateToggle">Project is Private</label>
         </div>
+
+
         
         <button id="backToProjects">Back to Projects</button>
     </div>
