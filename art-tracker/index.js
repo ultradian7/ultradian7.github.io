@@ -287,6 +287,8 @@ async function fetchProjects() {
                 const projectVisible = project.public ? 'Public' : 'Private';
                 const projectVisibleClass = project.public ? 'project-visible-public' : 'project-visible-private';
 
+                const projectVisibleIcon = project.public ? '🔓' : '🔒' ;
+
                 projectItem.innerHTML = `
                     <div class="project-image-preview">
                         <img src="${projectImageUrl}" alt="Project Image" />
@@ -294,9 +296,9 @@ async function fetchProjects() {
                     <div class="project-details">
                         <div class="project-name">${project.name}</div>
                         <div class="project-description">${project.description || 'No description provided.'}</div> <!-- Display the description -->
-                        <div class="session-count">Sessions: ${sessionCount}</div>
+                        <div class="session-count">🖼️: ${sessionCount}</div>
                         <div class="${projectStatusClass}">${projectStatus}</div>
-                        <div class="${projectVisibleClass}">${projectVisible}</div>
+                        <div class="${projectVisibleClass}">${projectVisibleIcon} ${projectVisible}</div>
                     </div>
                     <button class="delete-button">x</button>
                 `;
@@ -414,7 +416,7 @@ async function fetchSessions() {
 
                 // Include the result field in the session details
                 sessionDetails.innerHTML = `
-                    <div>#️⃣: <span class="weight-600">${index + 1}     &#128355</span> ${durationFormatted}</div>
+                    <div>#️⃣: <span class="weight-600">${index + 1}</span> ⏱️ ${durationFormatted}</div>
                     <div>🖌️: ${session.media}</div>
                     <div>🏆: ${session.goals}</div>
                     <div>✔️: ${session.result}</div>

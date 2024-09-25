@@ -76,11 +76,10 @@ html, body {
     padding: 20px;
     /*padding-top: 50px;*/
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 400px;
+    height: 100%;
     text-align: center;
-    overflow-y: auto; /* Enable vertical scrolling */
-    height: auto; 
+    overflow-y: auto; /* Enable vertical scrolling */   
     position: relative;
 }
 
@@ -228,7 +227,7 @@ button:hover {
 .delete-button {
     background: none;
     border: none;
-    color: #ff4c4c; /* Red color for the delete button */
+    color: background-color: var(--background-inv);
     font-size: 20px; /* Size of the X symbol */
     font-weight: 600;  /*Make it bold */
     cursor: pointer;
@@ -246,7 +245,7 @@ button:hover {
 }
 
 .delete-button:hover {
-    background-color: rgba(255, 76, 76, 0.1); /* Light background on hover */
+    background-color: var(--container-inv);
     color: #d42e2e; /* Darker red on hover */
 }
 
@@ -427,31 +426,36 @@ button:hover {
   }
 
   
-/* Container to align the project title and edit button */
-.project-title-container {
+  .project-title-wrapper {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0; /* Space between the name and button */
-    text-align: center;
-
+    justify-content: center; /* Center the inner content wrapper */
+    width: 100%; /* Full width to center content */
+    text-align: center; /* Ensure text is centered */
+    margin-bottom: 20px;
 }
 
-/* Adjust the edit button size and positioning */
+.project-title-content {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between button and text */
+    max-width: 600px; /* Optional: Limit the width of the title content */
+    width: auto; /* Auto width for the inner content */
+}
+
 .edit-button {
     background: none;
     border: none;
     color: #4cae4c;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
-    width: auto; /* Let the width adapt to the content */
-    padding: 10px;  /* Remove default padding */
-    margin: 0;   /* Remove default margin */
-    line-height: 1; /* Adjust line-height to match the character */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 .edit-button:hover {
-    color: #5cb85c;
+    color: var(--container-inv);
 }
 
 #projectNameInput, #projectDescription, #projectNameText {
@@ -462,6 +466,7 @@ button:hover {
     flex: 1; /* Allow input to take remaining space */
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
+    flex-grow: 1;
 }
 
 #projectName {
@@ -470,7 +475,7 @@ button:hover {
 
 #projectDescription {
     width: 100%;
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -479,6 +484,17 @@ button:hover {
     font-size: 14px;
 }
 
+
+#projectNameInput {
+    display: inline;
+}
+
+
+#projectNameText {
+    text-align: center; /* Center the text */
+    white-space: nowrap;
+    color: black;
+}
 
 /* Styles for the toggle icons */
 .toggle-icon-container {

@@ -30,11 +30,10 @@
 
     <!-- Projects View -->
     <div class="container" id="projects-container" style="display: none;">
-        <h1>
-            Your Projects
-            <input type="color" id="themeColorPicker" value="#ff0000" title="Pick a theme color">
+        <h1>    
+            <input type="color" id="themeColorPicker" value="#ff0000" title="Pick a theme color">⚙️
         </h1>
-        <button id="createProjectButton">Create New Project</button>
+        <button id="createProjectButton">New Project</button>
         <div id="projectsList"></div>
         <!-- Project Form -->
         <form id="projectForm" style="display: none;">
@@ -50,13 +49,15 @@
 
     <!-- Sessions View -->
     <div class="container" id="sessions-container" style="display: none;">
-        <h1 id="projectTitle" class="project-title-container">
-            <div id="projectNameText"></div>
-            <input type="text" id="projectNameInput" style="display: none;">
-            <button id="editProjectNameButton" class="edit-button">✏️</button>
+        <h1 class="project-title-wrapper">
+            <div class="project-title-content">
+                <button id="editProjectNameButton" class="edit-button">✏️</button>
+                <div id="projectNameText">Project Name</div>
+                <input type="text" id="projectNameInput" style="display: none;">
+            </div>
         </h1>
         
-        <button id="createSessionButton">Upload New Session</button>
+        <button id="createSessionButton">🖼️ Add Session</button>
         <div id="sessionsList"></div>
 
         <div id="complete-toggle-container" class="toggle-icon-container">
