@@ -69,10 +69,12 @@ if (projectForm) {
         event.preventDefault();
 
         const projectName = document.getElementById('projectName').value;
+        const projectDescription = document.getElementById('projectDescription').value; // Get the project description
         const projectMessage = document.getElementById('projectMessage');
 
         const { error } = await supabase.from('projects').insert([{ 
             name: projectName,
+            description: projectDescription, // Insert the description field
             user_id: currentUserId
         }]);
 
@@ -86,6 +88,7 @@ if (projectForm) {
         }
     });
 }
+
 
 if (uploadForm) {
     uploadForm.addEventListener('submit', async function(event) {
@@ -257,7 +260,7 @@ async function fetchProjects() {
     console.log("Fetching projects for user ID:", currentUserId);
     const { data, error } = await supabase
         .from('projects')
-        .select(`id, name, complete, public, sessions (id, image, created_at)`)
+        .select(`id, name, description, complete, public, sessions (id, image, created_at)`)
         .eq('user_id', currentUserId);
 
     if (error) {
@@ -266,12 +269,12 @@ async function fetchProjects() {
         const projectsList = document.getElementById('projectsList');
 
         if (projectsList) {
-            projectsList.innerHTML = '';
+            projectsList.innerHTML = ''; // Clear the previous projects
 
             data.forEach(project => {
                 const sessionCount = project.sessions.length;
                 const recentSession = project.sessions.length > 0 ? getMostRecentSession(project.sessions) : null;
-                const projectImageUrl = recentSession ? getSessionImageUrl(recentSession.image) : 'default_project_image_url.jpg';
+                const projectImageUrl = recentSession ? getSessionImageUrl(recentSession.image) : 'images/banans.jpg';
 
                 console.log("Project fetched:", project);
                 const projectItem = document.createElement('div');
@@ -284,18 +287,18 @@ async function fetchProjects() {
                 const projectVisibleClass = project.public ? 'project-visible-public' : 'project-visible-private';
 
                 projectItem.innerHTML = `
-    <div class="project-image-preview">
-        <img src="${projectImageUrl}" alt="Project Image" />
-    </div>
-    <div class="project-details">
-        <div class="project-name">${project.name}</div>
-        <div class="session-count">Sessions: ${sessionCount}</div>
-        <div class="${projectStatusClass}">${projectStatus}</div>
-        <div class="${projectVisibleClass}">${projectVisible}</div>
-    </div>
-    <button class="delete-button">x</button> <!-- Keep the class identical -->
-`;
-
+                    <div class="project-image-preview">
+                        <img src="${projectImageUrl}" alt="Project Image" />
+                    </div>
+                    <div class="project-details">
+                        <div class="project-name">${project.name}</div>
+                        <div class="project-description">${project.description || 'No description provided.'}</div> <!-- Display the description -->
+                        <div class="session-count">Sessions: ${sessionCount}</div>
+                        <div class="${projectStatusClass}">${projectStatus}</div>
+                        <div class="${projectVisibleClass}">${projectVisible}</div>
+                    </div>
+                    <button class="delete-button">x</button>
+                `;
 
                 projectItem.addEventListener('click', () => {
                     selectedProjectId = project.id;
@@ -410,7 +413,7 @@ async function fetchSessions() {
 
                 // Include the result field in the session details
                 sessionDetails.innerHTML = `
-                    <div><strong>Session ${index + 1}:</strong> ${durationFormatted}</div>                    
+                    <div>Session ${index + 1}: ${durationFormatted}</div>                    
                     <div>Media: ${session.media}</div>
                     <div>Goals: ${session.goals}</div>
                     <div>Result: ${session.result}</div>
@@ -476,7 +479,7 @@ async function showSessionsView() {
     // Fetch the current project details including name, complete status, and public status
     const { data, error } = await supabase
         .from('projects')
-        .select('name, complete, public')
+        .select('name, description, complete, public')
         .eq('id', selectedProjectId)
         .single();
 
@@ -486,38 +489,42 @@ async function showSessionsView() {
     } else {
         currentProjectComplete = data.complete;
 
-        // Update the project title in the sessions view
+        // Update the project title and description in the sessions view
         const projectNameText = document.getElementById('projectNameText');
         const projectNameInput = document.getElementById('projectNameInput');
         const editProjectNameButton = document.getElementById('editProjectNameButton');
 
         if (projectNameText && projectNameInput && editProjectNameButton) {
+            // Reset the edit state
             projectNameText.textContent = data.name;
             projectNameInput.value = data.name;
+            projectNameText.style.display = 'inline';
+            projectNameInput.style.display = 'none';
+            editProjectNameButton.textContent = '✏️';
 
-            // Toggle edit state
-            editProjectNameButton.addEventListener('click', () => {
-                const isEditable = projectNameInput.style.display === 'none';
-                projectNameText.style.display = isEditable ? 'none' : 'inline';
-                projectNameInput.style.display = isEditable ? 'inline' : 'none';
-                editProjectNameButton.textContent = isEditable ? '💾' : '✏️';
-                if (!isEditable) updateProjectName(); // Save if exiting edit mode
+            // Remove previous event listeners to prevent duplicate bindings
+            editProjectNameButton.replaceWith(editProjectNameButton.cloneNode(true));
+            const newEditButton = document.getElementById('editProjectNameButton');
+
+            // Add the event listener to the new button
+            newEditButton.addEventListener('click', () => {
+                toggleEditProjectName(projectNameText, projectNameInput, newEditButton);
             });
 
             // Save project name when hitting enter key
             projectNameInput.addEventListener('keyup', (event) => {
                 if (event.key === 'Enter') {
-                    updateProjectName();
+                    updateProjectName(projectNameText, projectNameInput, newEditButton);
                 }
             });
         }
 
-        // Update the checkbox state
+        // Update the checkbox state for complete and private status
         const completeToggle = document.getElementById('completeToggle');
         completeToggle.checked = currentProjectComplete;
 
         const privateToggle = document.getElementById('privateToggle');
-        privateToggle.checked = !data.public;  // public is false means private is true
+        privateToggle.checked = !data.public; // public is false means private is true
     }
 
     // Display the 'sessions-container'
@@ -544,13 +551,12 @@ async function showSessionsView() {
     });
 
     // Add event listener to handle toggle changes for project privacy
-    const privateToggle = document.getElementById('privateToggle');
     privateToggle.addEventListener('change', async function() {
         const isPrivate = privateToggle.checked;
         try {
             const { error } = await supabase
                 .from('projects')
-                .update({ public: !isPrivate })  // Update public status based on isPrivate
+                .update({ public: !isPrivate }) // Update public status based on isPrivate
                 .eq('id', selectedProjectId);
 
             if (error) {
@@ -569,15 +575,24 @@ async function showSessionsView() {
 }
 
 /**
- * Function to update the project name in the database
+ * Function to toggle the edit state of the project name.
  */
-async function updateProjectName() {
-    const projectNameInput = document.getElementById('projectNameInput');
-    const projectNameText = document.getElementById('projectNameText');
-    const editProjectNameButton = document.getElementById('editProjectNameButton');
+function toggleEditProjectName(projectNameText, projectNameInput, editButton) {
+    const isEditable = projectNameInput.style.display === 'none';
+    projectNameText.style.display = isEditable ? 'none' : 'inline';
+    projectNameInput.style.display = isEditable ? 'inline' : 'none';
+    editButton.textContent = isEditable ? '💾' : '✏️';
+    if (!isEditable) {
+        updateProjectName(projectNameText, projectNameInput, editButton); // Save if exiting edit mode
+    }
+}
 
-    if (projectNameInput && projectNameText) {
-        const newName = projectNameInput.value.trim();
+/**
+ * Function to update the project name in the database.
+ */
+async function updateProjectName(projectNameText, projectNameInput, editButton) {
+    const newName = projectNameInput.value.trim();
+    if (newName && newName !== projectNameText.textContent) {
         try {
             const { error } = await supabase
                 .from('projects')
@@ -589,15 +604,17 @@ async function updateProjectName() {
                 alert('Failed to update project name. Please try again.');
             } else {
                 projectNameText.textContent = newName;
-                projectNameText.style.display = 'inline';
-                projectNameInput.style.display = 'none';
-                editProjectNameButton.textContent = '✏️';
                 console.log(`Project ID: ${selectedProjectId} name updated to "${newName}"`);
             }
         } catch (err) {
             console.error('Error updating project name:', err);
         }
     }
+
+    // Reset the view mode
+    projectNameText.style.display = 'inline';
+    projectNameInput.style.display = 'none';
+    editButton.textContent = '✏️';
 }
 
 

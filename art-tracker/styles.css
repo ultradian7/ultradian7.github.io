@@ -1,6 +1,14 @@
+:root {
+    --background-gray: #868686;
+    --container-gray: #bdbdbd;
+    --item-gray: #d4d4d4;
+    --my-dark-gray: #1f1f1f;
+    color-scheme: only light;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #000000;
     margin: 0;
     padding: 0;
     display: flex;
@@ -19,12 +27,13 @@ html, body {
     font-family: "IBM Plex Mono", monospace;
     font-weight: 400;
     font-style: normal;
+    background-color: var(--background-gray);
 }
 
 
 
 .container {
-    background-color: #fff;
+    background-color: var(--container-gray);
     padding: 20px;
     /*padding-top: 50px;*/
     border-radius: 8px;
@@ -36,15 +45,7 @@ html, body {
     position: relative;
 }
 
-h1, h2 {
-    margin-bottom: 20px;
-}
-h1 {
-    position: sticky;
-    /*top: 10px;*/ 
-    z-index: 1;
-    /*padding-top: 20px;  Add padding to avoid being cut off */
-}
+
 
 form {
     display: flex;
@@ -74,6 +75,7 @@ button {
     font-weight: 500;
     font-size: 16px;
     font-style: normal;
+    background-color: #f0f0f0;  
 }
 
 textarea {
@@ -148,17 +150,6 @@ button:hover {
     background-color: #c9302c;
 }
 
-.session-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    position: relative;
-}
 
 .session-image-preview {
     width: 100px;
@@ -176,17 +167,6 @@ button:hover {
     margin-bottom: 5px;
 }
 
-.project-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    position: relative;
-}
 
 .project-image-preview {
     width: 100px;
@@ -200,6 +180,7 @@ button:hover {
     flex-grow: 1;
     margin-right: 10px;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .session-count {
@@ -244,12 +225,13 @@ button:hover {
     align-items: center;
     margin-bottom: 10px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: var(--item-gray);
     position: relative;
     text-align: left;    
     justify-content: flex-start;
+    cursor: pointer;
 }
 
 .project-item .delete-button,
@@ -283,45 +265,56 @@ button:hover {
 }
 
 .project-name,
-.session-count {
+.session-count,
+.project-description {
     flex-grow: 1;
     margin-right: 10px;
 }
 
+.project-description {
+    font-size: 14px;
+    font-weight: 400;
+}
 
 .project-name,
-.session-count,
-#projectTitle {
+.session-count {
     text-align: center;
     margin-right: auto;
+    
+
 }
 
 .project-complete-status {
     font-size: 14px;
     color: #4cae4c;
     margin-right: 10px;
+    font-weight: 700;
 }
 
 .project-incomplete-status {
     font-size: 14px;
     color: #d9534f;
     margin-right: 10px;
+    font-weight: 700;
 }
 
 .project-visible-private {
     font-size: 14px;
     color: #422ff0;
     margin-right: 10px;
+    font-weight: 700;
 }
 
 .project-visible-public {
     font-size: 14px;
-    color: #d9e554;
+    color: #fffb00;
     margin-right: 10px;
+    font-weight: 700;
 }
 
 .complete-label {
     margin-right: 5px;
+    font-weight: 500;
 }
 
 .toggle-complete-container {
@@ -331,11 +324,13 @@ button:hover {
     justify-content: center;
 }
 
+
 .project-image-preview {
     width: 100px; /* Define the desired width */
     height: 100px; /* Define the desired height */
     overflow: hidden; /* Ensure content fits within the defined dimensions */
     border-radius: 4px; /* Optional: to add some styling to the image container */
+    margin-right: 15px;
 }
 
 .project-image-preview img {
@@ -429,12 +424,24 @@ button:hover {
     color: #5cb85c;
 }
 
-#projectNameInput, #projectTitle{
+#projectNameInput, #projectDescription, #projectNameText {
     font-size: 24px;
     padding: 5px;
     margin-top: 15px;
+    margin-bottom: 15px;
     flex: 1; /* Allow input to take remaining space */
     font-family: "IBM Plex Mono", monospace;
     font-weight: 600;
-    font-style: normal;
 }
+
+#projectDescription {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing */
+    font-weight: 400;
+    font-size: 14px;
+}
+

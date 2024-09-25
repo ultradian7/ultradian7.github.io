@@ -31,19 +31,25 @@
         <h1>Your Projects</h1>
         <button id="createProjectButton">Create New Project</button>
         <div id="projectsList"></div>
+        <!-- Project Form -->
         <form id="projectForm" style="display: none;">
             <label for="projectName">Project Name:</label>
             <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required>
+            
+            <label for="projectDescription">Project Description:</label>
+            <textarea id="projectDescription" name="projectDescription" rows="3" placeholder="Enter project description"></textarea>
+            
             <button type="submit">Create Project</button>
             <div id="projectMessage"></div>
         </form>
+            
         <button id="logout">Logout</button>
     </div>
 
     <!-- Sessions View -->
     <div class="container" id="sessions-container" style="display: none;">
         <h1 id="projectTitle" class="project-title-container">
-            <span id="projectNameText"></span>
+            <div id="projectNameText"></div>
             <input type="text" id="projectNameInput" style="display: none;">
             <button id="editProjectNameButton" class="edit-button">✏️</button>
         </h1>
