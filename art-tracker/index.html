@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/pica@8.0.0/dist/pica.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
-    </style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+        </style>
 </head>
 <body>
 
@@ -38,11 +38,8 @@
         <div id="projectsList"></div>
         <!-- Project Form -->
         <form id="projectForm" style="display: none;">
-            <label for="projectName">Project Name:</label>
             <input type="text" id="projectName" name="projectName" placeholder="Enter project name" required>
-            
-            <label for="projectDescription">Project Description:</label>
-            <textarea id="projectDescription" name="projectDescription" rows="3" placeholder="Enter project description"></textarea>
+            <textarea id="projectDescription" name="projectDescription" rows="3" placeholder="Enter project description"></textarea>    
             
             <button type="submit">Create Project</button>
             <div id="projectMessage"></div>

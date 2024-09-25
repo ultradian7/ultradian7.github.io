@@ -414,7 +414,7 @@ async function fetchSessions() {
 
                 // Include the result field in the session details
                 sessionDetails.innerHTML = `
-                    <div>#️⃣: <span class="weight-600">${index + 1}</span> &#128355 ${durationFormatted}</div>
+                    <div>#️⃣: <span class="weight-600">${index + 1}     &#128355</span> ${durationFormatted}</div>
                     <div>🖌️: ${session.media}</div>
                     <div>🏆: ${session.goals}</div>
                     <div>✔️: ${session.result}</div>
@@ -471,42 +471,67 @@ async function deleteSession(sessionId, imageName) {
 async function showProjectsView() {
     console.log("Showing Projects View");
 
-    // Fetch the user's saved theme color from the database
     try {
+        // Fetch both colour_theme and colour_inv from user_settings table
         const { data, error } = await supabase
             .from('user_settings')
-            .select('colour_theme')
+            .select('colour_theme, colour_inv')
             .eq('user_id', currentUserId)
             .single();
 
         if (error) {
-            console.error('Failed to fetch theme color:', error);
-        } else if (data && data.colour_theme) {
-            const userColor = data.colour_theme;
-
-            // Define base gray colors
-            const baseGray = {
-                '--background-gray': '#868686',
-                '--container-gray': '#d8d8d8',
-                '--item-gray': '#efeded'
-            };
-
-            // Generate distinct blended colors based on the user's saved color
-            const blendedColors = generateBlendedColors(baseGray, userColor);
-
-            // Apply the saved blended colors to the CSS variables
-            for (const [key, value] of Object.entries(blendedColors)) {
-                document.documentElement.style.setProperty(key, value);
-            }
+            console.error('Failed to fetch theme colors:', error);
+            return;
         }
+
+        // Define fallback colors in case the database doesn't return any
+        const userColor = data ? data.colour_theme : '#000000'; // Default to black
+        const invColor = data ? data.colour_inv : generateComplementaryColor(userColor); // Generate complementary if not available
+
+        const themeColorPicker = document.getElementById('themeColorPicker');
+        themeColorPicker.value = userColor;
+
+        console.log('User Color:', userColor);
+        console.log('Inverse Color:', invColor);
+
+        // Define base gray colors
+        const baseGray = {
+            '--background-gray': '#868686',
+            '--container-gray': '#b7b7b7',
+            '--item-gray': '#ffffff',
+            '--text-input-gray': '#ececec'
+        };
+
+        // Generate blended colors based on userColor
+        const blendedColors = generateBlendedColors(baseGray, userColor);
+
+        // Generate complementary colors for inverse theme based on invColor
+        const complementaryColors = {};
+        for (const [key, color] of Object.entries(blendedColors)) {
+            complementaryColors[`${key.replace('gray', 'inv')}`] = generateComplementaryColor(color);
+        }
+
+        // Apply the theme colors to the stylesheet
+        for (const [key, value] of Object.entries(blendedColors)) {
+            document.documentElement.style.setProperty(key, value);
+        }
+
+        // Apply the complementary colors (inverse theme)
+        for (const [key, value] of Object.entries(complementaryColors)) {
+            document.documentElement.style.setProperty(key, value);
+        }
+
+        // Apply the primary inverse color directly as well for uniformity
+        document.documentElement.style.setProperty('--background-inv', invColor);
     } catch (err) {
-        console.error('Error fetching theme color:', err);
+        console.error('Error fetching theme colors:', err);
     }
 
-    // Continue with other project view setup logic...
-    fetchProjects(); // Fetch and display projects
-    toggleView('projects-container'); // Show the projects view
+    // Continue with showing projects
+    fetchProjects();
+    toggleView('projects-container');
 }
+
 
 
 async function showSessionsView() {
@@ -815,13 +840,13 @@ function addImageModalFunctionality() {
     });
 }
 
-// Improved blending function to generate distinct variations
 function generateBlendedColors(baseColor, userColor) {
     // Define different blend percentages for each shade
     const blendPercentages = {
         '--background-gray': 0.3, // Lighter blend
         '--container-gray': 0.5, // Medium blend
-        '--item-gray': 0.7 // Darker blend
+        '--item-gray': 0.7, // Darker blend
+        '--text-input-gray': 0.9 // Specific blend for text input
     };
 
     // Generate blended colors based on the defined percentages
@@ -832,6 +857,7 @@ function generateBlendedColors(baseColor, userColor) {
 
     return blendedColors;
 }
+
 
 // Improved blendColors function with enhanced contrast calculation
 function blendColors(color1, color2, percentage) {
@@ -854,43 +880,54 @@ function blendColors(color1, color2, percentage) {
 }
 
 
-// Function to handle the color selection and apply it automatically
 document.getElementById('themeColorPicker').addEventListener('input', async (event) => {
     const userColor = event.target.value;
 
-    // Define base gray colors
+    // Define base gray colors including the new text-input-gray
     const baseGray = {
         '--background-gray': '#868686',
-        '--container-gray': '#d8d8d8',
-        '--item-gray': '#efeded'
+        '--container-gray': '#b7b7b7',
+        '--item-gray': '#ffffff',
+        '--text-input-gray': '#ececec'
     };
 
     // Generate distinct blended colors based on the user's selected color
     const blendedColors = generateBlendedColors(baseGray, userColor);
 
-    // Apply the new blended colors to the CSS variables
+    // Generate complementary colors for the inverse variables
+    const complementaryColors = {};
+    for (const [key, color] of Object.entries(blendedColors)) {
+        complementaryColors[`${key.replace('gray', 'inv')}`] = generateComplementaryColor(color);
+    }
+
+    // Apply the new blended colors and complementary colors to the CSS variables
     for (const [key, value] of Object.entries(blendedColors)) {
         document.documentElement.style.setProperty(key, value);
     }
+    for (const [key, value] of Object.entries(complementaryColors)) {
+        document.documentElement.style.setProperty(key, value);
+    }
 
-    // Save the selected color theme to the database
+    // Save the selected color theme and complementary color to the database
     try {
         const { error } = await supabase
             .from('user_settings')
             .upsert({ 
                 user_id: currentUserId, 
-                colour_theme: userColor 
+                colour_theme: userColor, 
+                colour_inv: complementaryColors['--background-inv'] // Save one complementary color as example
             }, { onConflict: ['user_id'] });
 
         if (error) {
-            console.error('Failed to save theme color:', error);
-            alert('Failed to save theme color. Please try again.');
+            console.error('Failed to save theme colors:', error);
+            alert('Failed to save theme colors. Please try again.');
         }
     } catch (err) {
-        console.error('Error saving theme color:', err);
-        alert('An error occurred while saving the theme color. Please try again.');
+        console.error('Error saving theme colors:', err);
+        alert('An error occurred while saving the theme colors. Please try again.');
     }
 });
+
 
 async function applySavedTheme() {
     // Fetch the user's saved theme color from the database
@@ -943,4 +980,61 @@ document.addEventListener('DOMContentLoaded', async () => {
         showLoginView();
     }
 });
+
+// Function to convert a hex color to HSL
+function hexToHsl(hex) {
+    hex = hex.replace(/^#/, '');
+    let r = parseInt(hex.substring(0, 2), 16) / 255;
+    let g = parseInt(hex.substring(2, 4), 16) / 255;
+    let b = parseInt(hex.substring(4, 6), 16) / 255;
+
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0;
+    } else {
+        let d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+// Function to convert HSL to hex
+function hslToHex(h, s, l) {
+    s /= 100;
+    l /= 100;
+    let c = (1 - Math.abs(2 * l - 1)) * s;
+    let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    let m = l - c / 2;
+    let r = 0, g = 0, b = 0;
+
+    if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+    else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+    else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+    else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+    else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+    else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+
+    r = Math.round((r + m) * 255);
+    g = Math.round((g + m) * 255);
+    b = Math.round((b + m) * 255);
+
+    return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
+}
+
+// Function to generate a complementary color
+function generateComplementaryColor(hexColor) {
+    const hsl = hexToHsl(hexColor);
+    let complementaryHue = (hsl.h + 180) % 360;
+    return hslToHex(complementaryHue, hsl.s, hsl.l);
+}
 
