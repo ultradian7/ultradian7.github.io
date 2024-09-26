@@ -742,7 +742,7 @@ function showLoginView() {
 }
 
 function toggleView(visibleContainerId) {
-    const containers = ['projects-container', 'sessions-container', 'session-container', 'login-container', "upload-session-container"];
+    const containers = ['projects-container', 'sessions-container', 'session-container', 'login-container', "upload-session-container", "settings-container"];
     containers.forEach(containerId => {
         const container = document.getElementById(containerId);
         if (container) {
@@ -989,6 +989,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         showProjectsView();
     } else {
         showLoginView();
+    }
+
+    const settingsButton = document.getElementById('settingsButton');
+    const settingsContainer = document.getElementById('settings-container');
+    const closeSettingsButton = document.getElementById('closeSettingsButton');
+    const projectsContainer = document.getElementById('projects-container');
+
+    // Check if elements exist before adding event listeners
+    if (settingsButton && settingsContainer && closeSettingsButton && projectsContainer) {
+        // Open settings view when clicking the settings button
+        settingsButton.addEventListener('click', () => {
+            settingsContainer.style.display = 'flex';
+            projectsContainer.style.display = 'none';
+        });
+
+        // Close settings view when clicking the close button
+        closeSettingsButton.addEventListener('click', () => {
+            settingsContainer.style.display = 'none';
+            projectsContainer.style.display = 'block';
+        });
+    } else {
+        console.error("Some elements are missing. Please check your HTML structure.");
     }
 });
 

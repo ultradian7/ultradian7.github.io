@@ -79,7 +79,7 @@ html, body {
     padding: 20px;
     /*padding-top: 50px;*/
     border-radius: 8px;
-    width: 400px;
+    width: 600px;
     height: 100%;
     text-align: center;
     overflow-y: auto; /* Enable vertical scrolling */   
@@ -481,11 +481,87 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3142);
 }
 
+#loginIcons{
+    font-size: 32px;
+}
+
 #settingsButton {
-    padding-top: 20px;
+    position: absolute; /* Position it absolutely */
+    top: 20px; /* Adjust the distance from the top */
+    right: 20px; /* Adjust the distance from the right */
     background: none;
     font-size: 28px;
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+    z-index: 1000; /* Ensure it is on top of other elements */
 }
+
+#settingsButton:hover {
+    color: var(--container-inv); /* Optional: Change color on hover */
+}
+
+/* Settings Container Styles */
+.settings-container {
+    position: fixed; /* Ensure it covers the whole page */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    z-index: 1001; /* Above the rest of the page */
+}
+
+/* Center content with a background */
+.settings-options {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%; /* Make it responsive */
+    max-width: 500px; /* Limit the maximum width */
+}
+
+/* Style for the h2 heading inside settings */
+.settings-container h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+/* Style for the label and color picker */
+.settings-options label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.settings-options input[type="color"] {
+    width: 50px;
+    height: 50px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Close button styles */
+#closeSettingsButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#closeSettingsButton:hover {
+    background-color: #c9302c;
+}
+
 
 .edit-button {
     background: none;
