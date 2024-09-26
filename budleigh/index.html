@@ -15,12 +15,12 @@
 
 
     <div class="container" id="login-container" style="display: none;">
-        <h1>Login to Artist Project Manager</h1>
-        <form id="loginForm">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        
+        <form id="loginForm" class="login-form">
 
-            <label for="password">Password:</label>
+            <h1>Login to Budleigh</h1>
+            
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
             <button type="submit">Login</button>
@@ -31,7 +31,7 @@
     <!-- Projects View -->
     <div class="container" id="projects-container" style="display: none;">
         <h1>    
-            <input type="color" id="themeColorPicker" value="#ff0000" title="Pick a theme color">⚙️
+            <input type="color" id="themeColorPicker" value="#ff0000" title="Pick a theme color"><button id="settingsButton">⚙️</button>
         </h1>
         <h1>Projects<button id="createProjectButton">+</button></h1>
         <div id="projectsList"></div>

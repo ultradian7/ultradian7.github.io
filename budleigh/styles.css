@@ -184,6 +184,26 @@ button:hover {
 }
 
 
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+
 .session-image-preview {
     width: 100px;
     height: 100px;
@@ -257,6 +277,7 @@ button:hover {
     text-align: left;    
     justify-content: flex-start;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.618);
 }
 
 .project-item .delete-button,
@@ -264,6 +285,7 @@ button:hover {
     position: absolute;
     right: 10px;
     top: 10px;
+    
 }
 
 
@@ -451,6 +473,19 @@ button:hover {
     margin-bottom: 5px;
 }
 
+#createProjectButton,
+#createSessionButton,
+#backToProjects,
+#logout{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3142);
+}
+
+#settingsButton {
+    padding-top: 20px;
+    background: none;
+    font-size: 28px;
+}
+
 .edit-button {
     background: none;
     border: none;
@@ -461,6 +496,7 @@ button:hover {
     margin: 0;
     display: flex;
     align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3142);
 }
 
 .edit-button:hover {
