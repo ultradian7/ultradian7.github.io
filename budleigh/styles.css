@@ -1,0 +1,534 @@
+:root {
+    --background-gray: #868686;
+    --container-gray: #b7b7b7;
+    --item-gray: #ffffff;
+    --text-input-gray: #ececec;
+    --background-inv: #868686;
+    --container-inv: #b7b7b7;
+    --item-inv: #ffffff;
+    --text-input-inv: #ececec;
+    color-scheme: only light;
+}
+
+#themePallete{
+    font-size: 50px;
+}
+
+h1{
+    font-size: 24px;
+    font-weight: 500;
+}
+
+#projectName{
+    text-align: left;
+}
+
+#themeColorPicker {
+    cursor: pointer;
+    width: 30px; /* Smaller size */
+    height: 30px;
+    border: none;
+    padding: 0;
+    margin-left: 10px;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Space between the text and the color picker */
+}
+
+html, body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: hidden;
+    margin: 0;          /* Remove default margin */
+    padding: 0;         /* Remove default padding */
+    width: 100%;
+    height: 100%;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    background-color: var(--background-gray);
+    line-height: 1.4;
+}
+
+
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.container {
+    background-color: var(--container-gray);
+    padding: 20px;
+    /*padding-top: 50px;*/
+    border-radius: 8px;
+    width: 400px;
+    height: 100%;
+    text-align: center;
+    overflow-y: auto; /* Enable vertical scrolling */   
+    position: relative;
+    line-height: 1.4;
+}
+
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    align-self: flex-start;
+    margin: 10px 0 5px;
+}
+
+input[type="email"],
+input[type="password"],
+textarea,
+input[type="text"],
+input[type="number"],
+input[type="file"],
+button {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    font-style: normal;
+    background-color: var(--text-input-gray);  
+}
+
+textarea {
+    resize: vertical;
+    background-color: var(--text-input-gray);  
+}
+
+button {
+    background-color: var(--background-inv);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--container-inv);
+}
+
+#message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+#gallery {
+    margin-top: 20px;
+}
+
+#imageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.image-item {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.image-details {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.details {
+    margin-top: 5px;
+    text-align: left;
+}
+
+#logout {
+    margin-top: 5px;
+}
+
+
+.session-image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 6px;
+}
+
+.session-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.session-details div {
+    margin-bottom: 5px;
+}
+
+
+.project-name {
+    flex-grow: 1;
+    margin-right: 10px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.session-count {
+    font-size: 14px;
+    color: #666;
+    margin-right: 10px;
+}
+
+.complete-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    color: background-color: var(--background-inv);
+    font-size: 20px; /* Size of the X symbol */
+    font-weight: 600;  /*Make it bold */
+    cursor: pointer;
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    width: 30px; /* Set a specific width */
+    height: 30px; /* Set a specific height */
+    line-height: 30px; /* Align the text vertically */
+    text-align: center; /* Center the text horizontally */
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+    background-color: var(--container-inv);
+    color: #d42e2e; /* Darker red on hover */
+}
+
+
+.project-item, .session-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: var(--item-gray);
+    position: relative;
+    text-align: left;    
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.project-item .delete-button,
+.session-item .delete-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+
+
+.complete-checkbox {
+    margin-right: 10px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.complete-checkbox,
+.delete-button {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.project-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-details div {
+    margin-bottom: 5px;
+}
+
+.project-name,
+.session-count,
+.project-description {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.project-description {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.project-name,
+.session-count {
+    text-align: center;
+    margin-right: auto;
+    
+
+}
+
+.project-complete-status {
+    font-size: 14px;
+    color: #4cae4c;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.project-incomplete-status {
+    font-size: 14px;
+    color: #d9534f;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.project-visible-private {
+    font-size: 14px;
+    color: #422ff0;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.project-visible-public {
+    font-size: 14px;
+    color: #ff7300;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.complete-label {
+    margin-right: 5px;
+    font-weight: 500;
+}
+
+.toggle-complete-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+
+.project-image-preview {
+    width: 100px; /* Define the desired width */
+    height: 100px; /* Define the desired height */
+    object-fit: cover;
+    overflow: hidden; /* Ensure content fits within the defined dimensions */
+    border-radius: 5px; /* Optional: to add some styling to the image container */
+    margin-right: 15px;
+    position: relative;
+    min-width: 100px; 
+}
+
+
+.project-image-preview img {
+    width: 100%; /* Image takes full width of the container */
+    height: 100%; /* Image takes full height of the container */
+    object-fit: cover; /* Maintain aspect ratio while covering the container */
+    border-radius: 5px; /* Optional: to add some styling to the image */
+
+}
+
+
+#projectsList, #sessionsList {
+    padding-left: 10px; /* Additional padding for overall alignment */
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.8); /* Black with opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    margin-top: 60px;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+}
+.user-info {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+
+
+.ibm-plex-mono-regular {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  
+  .project-title-wrapper {
+    display: flex;
+    justify-content: center; /* Center the inner content wrapper */
+    width: 100%; /* Full width to center content */
+    text-align: center; /* Ensure text is centered */
+    margin-bottom: 20px;
+}
+
+.project-title-content {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between button and text */
+    max-width: 600px; /* Optional: Limit the width of the title content */
+    width: auto; /* Auto width for the inner content */
+}
+
+#createProjectButton,
+#createSessionButton {
+    font-size: 24px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.edit-button {
+    background: none;
+    border: none;
+    color: #4cae4c;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.edit-button:hover {
+    color: var(--container-inv);
+}
+
+#projectNameInput, #projectDescription, #projectNameText {
+    font-size: 24px;
+    padding: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    flex: 1; /* Allow input to take remaining space */
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+#projectName {
+    margin: 0;
+}
+
+#projectDescription {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical; /* Allow vertical resizing */
+    font-weight: 500;
+    font-size: 14px;
+}
+
+
+#projectNameInput {
+    display: inline;
+}
+
+
+#projectNameText {
+    text-align: center; /* Center the text */
+    white-space: nowrap;
+    color: black;   
+}
+
+/* Styles for the toggle icons */
+.toggle-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.toggle-icon {
+    font-size: 16px; /* Increase size for visibility */
+    cursor: pointer;
+    margin-right: 10px; /* Space between icon and label */
+    user-select: none; /* Prevent text selection */
+}
+
+.toggle-icon.active {
+    color: #4cae4c; /* Green for active state */
+}
+
+.toggle-icon.inactive {
+    color: #d9534f; /* Red for inactive state */
+}
+
+
+.weight-600 {
+    font-weight: 600;
+}
