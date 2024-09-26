@@ -742,7 +742,7 @@ function showLoginView() {
 }
 
 function toggleView(visibleContainerId) {
-    const containers = ['projects-container', 'sessions-container', 'session-container', 'login-container', "upload-session-container", "settings-container"];
+    const containers = ['projects-container', 'sessions-container', 'session-container', 'login-container', "upload-session-container"];
     containers.forEach(containerId => {
         const container = document.getElementById(containerId);
         if (container) {
@@ -991,27 +991,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         showLoginView();
     }
 
-    const settingsButton = document.getElementById('settingsButton');
+     const settingsButton = document.getElementById('settingsButton');
     const settingsContainer = document.getElementById('settings-container');
-    const closeSettingsButton = document.getElementById('closeSettingsButton');
     const projectsContainer = document.getElementById('projects-container');
+    const backToProjectsButton = document.getElementById('backToProjectsButton');
+    const themeColorPicker = document.getElementById('themeColorPicker');
 
-    // Check if elements exist before adding event listeners
-    if (settingsButton && settingsContainer && closeSettingsButton && projectsContainer) {
-        // Open settings view when clicking the settings button
-        settingsButton.addEventListener('click', () => {
-            settingsContainer.style.display = 'flex';
-            projectsContainer.style.display = 'none';
-        });
+    // Show the settings view
+    settingsButton.addEventListener('click', () => {
+        projectsContainer.style.display = 'none';
+        settingsContainer.style.display = 'flex';
+    });
 
-        // Close settings view when clicking the close button
-        closeSettingsButton.addEventListener('click', () => {
-            settingsContainer.style.display = 'none';
-            projectsContainer.style.display = 'block';
-        });
-    } else {
-        console.error("Some elements are missing. Please check your HTML structure.");
-    }
+    // Go back to projects view
+    backToProjectsButton.addEventListener('click', () => {
+        settingsContainer.style.display = 'none';
+        projectsContainer.style.display = 'block';
+    });
+
+    // Handle theme color change
+    themeColorPicker.addEventListener('input', async (event) => {
+        const userColor = event.target.value;
+
+        // Define base gray colors including the new text-input-gray
+        const baseGray = {
+            '--background-gray': '#868686',
+            '--container-gray': '#b7b7b7',
+            '--item-gray': '#ffffff',
+            '--text-input-gray': '#ececec'
+        };
+
+        // Generate distinct blended colors based on the user's selected color
+        const blendedColors = generateBlendedColors(baseGray, userColor);
+
+        // Apply the new blended colors to the CSS variables
+        for (const [key, value] of Object.entries(blendedColors)) {
+            document.documentElement.style.setProperty(key, value);
+        }
+
+        // Save the selected color theme to the database
+        try {
+            const { error } = await supabase
+                .from('user_settings')
+                .upsert({ 
+                    user_id: currentUserId, 
+                    colour_theme: userColor 
+                }, { onConflict: ['user_id'] });
+
+            if (error) {
+                console.error('Failed to save theme color:', error);
+                alert('Failed to save theme color. Please try again.');
+            }s
+        } catch (err) {
+            console.error('Error saving theme color:', err);
+            alert('An error occurred while saving the theme color. Please try again.');
+        }
+    });
 });
 
 // Function to convert a hex color to HSL

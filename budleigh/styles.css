@@ -79,7 +79,7 @@ html, body {
     padding: 20px;
     /*padding-top: 50px;*/
     border-radius: 8px;
-    width: 600px;
+    width: 400px;
     height: 100%;
     text-align: center;
     overflow-y: auto; /* Enable vertical scrolling */   
@@ -500,72 +500,60 @@ button:hover {
     color: var(--container-inv); /* Optional: Change color on hover */
 }
 
-/* Settings Container Styles */
-.settings-container {
-    position: fixed; /* Ensure it covers the whole page */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-    display: flex; /* Use flexbox for centering */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
-    z-index: 1001; /* Above the rest of the page */
-}
-
-/* Center content with a background */
-.settings-options {
-    background: #fff;
-    padding: 30px;
+/* Container styling for the settings view */
+#settings-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--container-gray);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 90%; /* Make it responsive */
-    max-width: 500px; /* Limit the maximum width */
+    margin: 20px auto;
+    max-width: 400px;
+    width: 100%;
 }
 
-/* Style for the h2 heading inside settings */
-.settings-container h2 {
-    color: #fff;
+/* Settings item styling */
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     margin-bottom: 20px;
 }
 
-/* Style for the label and color picker */
-.settings-options label {
-    display: block;
-    margin-bottom: 10px;
+.settings-item label {
     font-size: 16px;
     color: #333;
 }
 
-.settings-options input[type="color"] {
-    width: 50px;
-    height: 50px;
-    border: none;
+#themeColorPicker {
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border: none;
 }
 
-/* Close button styles */
-#closeSettingsButton {
-    margin-top: 20px;
+/* Back to Projects button styling */
+#backToProjectsButton {
     padding: 10px 20px;
-    background-color: #d9534f;
+    background-color: #4cae4c;
+    color: #fff;
     border: none;
-    color: white;
     cursor: pointer;
     border-radius: 4px;
+    font-size: 16px;
 }
 
-#closeSettingsButton:hover {
-    background-color: #c9302c;
+#backToProjectsButton:hover {
+    background-color: #45a045;
 }
 
 
 .edit-button {
     background: none;
-    border: none;
     color: #4cae4c;
     font-size: 20px;
     cursor: pointer;
@@ -573,7 +561,6 @@ button:hover {
     margin: 0;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3142);
 }
 
 .edit-button:hover {
