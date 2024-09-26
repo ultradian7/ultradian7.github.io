@@ -54,6 +54,7 @@ h1 {
 
 html, body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: hidden;
     margin: 0;          /* Remove default margin */
     padding: 0;         /* Remove default padding */
     width: 100%;
@@ -200,14 +201,6 @@ button:hover {
     margin-bottom: 5px;
 }
 
-
-.project-image-preview {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-right: 15px;
-    border-radius: 5px;
-}
 
 .project-name {
     flex-grow: 1;
@@ -360,16 +353,21 @@ button:hover {
 .project-image-preview {
     width: 100px; /* Define the desired width */
     height: 100px; /* Define the desired height */
+    object-fit: cover;
     overflow: hidden; /* Ensure content fits within the defined dimensions */
-    border-radius: 4px; /* Optional: to add some styling to the image container */
+    border-radius: 5px; /* Optional: to add some styling to the image container */
     margin-right: 15px;
+    position: relative;
+    min-width: 100px; 
 }
+
 
 .project-image-preview img {
     width: 100%; /* Image takes full width of the container */
     height: 100%; /* Image takes full height of the container */
     object-fit: cover; /* Maintain aspect ratio while covering the container */
-    border-radius: 4px; /* Optional: to add some styling to the image */
+    border-radius: 5px; /* Optional: to add some styling to the image */
+
 }
 
 
