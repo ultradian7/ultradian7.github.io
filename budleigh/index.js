@@ -588,8 +588,14 @@ async function showSessionsView() {
         completeToggle.className = currentProjectComplete ? 'toggle-icon active' : 'toggle-icon inactive';
 
         const privateToggle = document.getElementById('privateToggle');
-        privateToggle.textContent = data.public ? '❌' : '✔️'; // public is false means private is true
+        
+        const privateToggleLabel = document.getElementById('privateToggleLabel');
+
+        privateToggle.textContent = data.public ? '🔒' : '🔓'; // public is false means private is true
         privateToggle.className = data.public ? 'toggle-icon inactive' : 'toggle-icon active';
+        privateToggleLabel.textContent = data.public ? 'Project is Private' : 'Project is Public';
+        
+        
     }
 
     // Display the 'sessions-container'
@@ -620,8 +626,9 @@ async function showSessionsView() {
 
     // Add event listener to handle toggle changes for project privacy
     const privateToggle = document.getElementById('privateToggle');
+    const privateToggleLabel = document.getElementById('privateToggleLabel');
     privateToggle.addEventListener('click', async function() {
-        const isPrivate = privateToggle.textContent === '❌'; // ❌ means currently public, so change to private
+        const isPrivate = privateToggle.textContent === '🔓'; // 🔓 means currently public, so change to private
         try {
             const { error } = await supabase
                 .from('projects')
@@ -632,8 +639,10 @@ async function showSessionsView() {
                 console.error('Error updating project visibility:', error);
                 alert('Failed to update project visibility. Please try again.');
             } else {
-                privateToggle.textContent = isPrivate ? '✔️' : '❌';
+                privateToggle.textContent = isPrivate ? '🔒' : '🔓';
                 privateToggle.className = isPrivate ? 'toggle-icon active' : 'toggle-icon inactive';
+                privateToggleLabel.textContent = isPrivate ? 'Project is Private' : 'Project is Public';
+                
                 console.log(`Project ID: ${selectedProjectId} marked as ${isPrivate ? 'Private' : 'Public'}`);
             }
         } catch (err) {
