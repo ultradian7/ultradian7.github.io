@@ -79,7 +79,7 @@ html, body {
     padding: 20px;
     /*padding-top: 50px;*/
     border-radius: 8px;
-    width: 400px;
+    max-width: 600px;
     height: 100%;
     text-align: center;
     overflow-y: auto; /* Enable vertical scrolling */   
