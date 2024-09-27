@@ -23,7 +23,7 @@ h1{
     text-align: left;
 }
 
-#themeColorPicker {
+#themeColourPicker {
     cursor: pointer;
     width: 30px; /* Smaller size */
     height: 30px;
@@ -529,7 +529,7 @@ button:hover {
     color: #333;
 }
 
-#themeColorPicker {
+#themeColourPicker {
     cursor: pointer;
     width: 40px;
     height: 40px;

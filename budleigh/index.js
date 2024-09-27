@@ -482,21 +482,21 @@ async function showProjectsView() {
             .single();
 
         if (error) {
-            console.error('Failed to fetch theme colors:', error);
+            console.error('Failed to fetch theme colours:', error);
             return;
         }
 
-        // Define fallback colors in case the database doesn't return any
-        const userColor = data ? data.colour_theme : '#000000'; // Default to black
-        const invColor = data ? data.colour_inv : generateComplementaryColor(userColor); // Generate complementary if not available
+        // Define fallback colours in case the database doesn't return any
+        const userColour = data ? data.colour_theme : '#000000'; // Default to black
+        const invColour = data ? data.colour_inv : generateComplementaryColour(userColour); // Generate complementary if not available
 
-        const themeColorPicker = document.getElementById('themeColorPicker');
-        themeColorPicker.value = userColor;
+        const themeColourPicker = document.getElementById('themeColourPicker');
+        themeColourPicker.value = userColour;
 
-        console.log('User Color:', userColor);
-        console.log('Inverse Color:', invColor);
+        console.log('User Colour:', userColour);
+        console.log('Inverse Colour:', invColour);
 
-        // Define base gray colors
+        // Define base gray colours
         const baseGray = {
             '--background-gray': '#868686',
             '--container-gray': '#b7b7b7',
@@ -504,29 +504,29 @@ async function showProjectsView() {
             '--text-input-gray': '#ececec'
         };
 
-        // Generate blended colors based on userColor
-        const blendedColors = generateBlendedColors(baseGray, userColor);
+        // Generate blended colours based on userColour
+        const blendedColours = generateBlendedColours(baseGray, userColour);
 
-        // Generate complementary colors for inverse theme based on invColor
-        const complementaryColors = {};
-        for (const [key, color] of Object.entries(blendedColors)) {
-            complementaryColors[`${key.replace('gray', 'inv')}`] = generateComplementaryColor(color);
+        // Generate complementary colours for inverse theme based on invColour
+        const complementaryColours = {};
+        for (const [key, colour] of Object.entries(blendedColours)) {
+            complementaryColours[`${key.replace('gray', 'inv')}`] = generateComplementaryColour(colour);
         }
 
-        // Apply the theme colors to the stylesheet
-        for (const [key, value] of Object.entries(blendedColors)) {
+        // Apply the theme colours to the stylesheet
+        for (const [key, value] of Object.entries(blendedColours)) {
             document.documentElement.style.setProperty(key, value);
         }
 
-        // Apply the complementary colors (inverse theme)
-        for (const [key, value] of Object.entries(complementaryColors)) {
+        // Apply the complementary colours (inverse theme)
+        for (const [key, value] of Object.entries(complementaryColours)) {
             document.documentElement.style.setProperty(key, value);
         }
 
-        // Apply the primary inverse color directly as well for uniformity
-        document.documentElement.style.setProperty('--background-inv', invColor);
+        // Apply the primary inverse colour directly as well for uniformity
+        document.documentElement.style.setProperty('--background-inv', invColour);
     } catch (err) {
-        console.error('Error fetching theme colors:', err);
+        console.error('Error fetching theme colours:', err);
     }
 
     // Continue with showing projects
@@ -851,7 +851,7 @@ function addImageModalFunctionality() {
     });
 }
 
-function generateBlendedColors(baseColor, userColor) {
+function generateBlendedColours(baseColour, userColour) {
     // Define different blend percentages for each shade
     const blendPercentages = {
         '--background-gray': 0.3, // Lighter blend
@@ -860,20 +860,20 @@ function generateBlendedColors(baseColor, userColor) {
         '--text-input-gray': 0.9 // Specific blend for text input
     };
 
-    // Generate blended colors based on the defined percentages
-    const blendedColors = {};
+    // Generate blended colours based on the defined percentages
+    const blendedColours = {};
     for (const [key, percentage] of Object.entries(blendPercentages)) {
-        blendedColors[key] = blendColors(userColor, baseColor[key], percentage);
+        blendedColours[key] = blendColours(userColour, baseColour[key], percentage);
     }
 
-    return blendedColors;
+    return blendedColours;
 }
 
 
-// Improved blendColors function with enhanced contrast calculation
-function blendColors(color1, color2, percentage) {
-    const f = parseInt(color1.slice(1), 16);
-    const t = parseInt(color2.slice(1), 16);
+// Improved blendColours function with enhanced contrast calculation
+function blendColours(colour1, colour2, percentage) {
+    const f = parseInt(colour1.slice(1), 16);
+    const t = parseInt(colour2.slice(1), 16);
     const R1 = f >> 16, G1 = f >> 8 & 0x00FF, B1 = f & 0x0000FF;
     const R2 = t >> 16, G2 = t >> 8 & 0x00FF, B2 = t & 0x0000FF;
 
@@ -891,10 +891,10 @@ function blendColors(color1, color2, percentage) {
 }
 
 
-document.getElementById('themeColorPicker').addEventListener('input', async (event) => {
-    const userColor = event.target.value;
+document.getElementById('themeColourPicker').addEventListener('input', async (event) => {
+    const userColour = event.target.value;
 
-    // Define base gray colors including the new text-input-gray
+    // Define base gray colours including the new text-input-gray
     const baseGray = {
         '--background-gray': '#868686',
         '--container-gray': '#b7b7b7',
@@ -902,46 +902,46 @@ document.getElementById('themeColorPicker').addEventListener('input', async (eve
         '--text-input-gray': '#ececec'
     };
 
-    // Generate distinct blended colors based on the user's selected color
-    const blendedColors = generateBlendedColors(baseGray, userColor);
+    // Generate distinct blended colours based on the user's selected colour
+    const blendedColours = generateBlendedColours(baseGray, userColour);
 
-    // Generate complementary colors for the inverse variables
-    const complementaryColors = {};
-    for (const [key, color] of Object.entries(blendedColors)) {
-        complementaryColors[`${key.replace('gray', 'inv')}`] = generateComplementaryColor(color);
+    // Generate complementary colours for the inverse variables
+    const complementaryColours = {};
+    for (const [key, colour] of Object.entries(blendedColours)) {
+        complementaryColours[`${key.replace('gray', 'inv')}`] = generateComplementaryColour(colour);
     }
 
-    // Apply the new blended colors and complementary colors to the CSS variables
-    for (const [key, value] of Object.entries(blendedColors)) {
+    // Apply the new blended colours and complementary colours to the CSS variables
+    for (const [key, value] of Object.entries(blendedColours)) {
         document.documentElement.style.setProperty(key, value);
     }
-    for (const [key, value] of Object.entries(complementaryColors)) {
+    for (const [key, value] of Object.entries(complementaryColours)) {
         document.documentElement.style.setProperty(key, value);
     }
 
-    // Save the selected color theme and complementary color to the database
+    // Save the selected colour theme and complementary colour to the database
     try {
         const { error } = await supabase
             .from('user_settings')
             .upsert({ 
                 user_id: currentUserId, 
-                colour_theme: userColor, 
-                colour_inv: complementaryColors['--background-inv'] // Save one complementary color as example
+                colour_theme: userColour, 
+                colour_inv: complementaryColours['--background-inv'] // Save one complementary colour as example
             }, { onConflict: ['user_id'] });
 
         if (error) {
-            console.error('Failed to save theme colors:', error);
-            alert('Failed to save theme colors. Please try again.');
+            console.error('Failed to save theme colours:', error);
+            alert('Failed to save theme colours. Please try again.');
         }
     } catch (err) {
-        console.error('Error saving theme colors:', err);
-        alert('An error occurred while saving the theme colors. Please try again.');
+        console.error('Error saving theme colours:', err);
+        alert('An error occurred while saving the theme colours. Please try again.');
     }
 });
 
 
 async function applySavedTheme() {
-    // Fetch the user's saved theme color from the database
+    // Fetch the user's saved theme colour from the database
     try {
         const { data, error } = await supabase
             .from('user_settings')
@@ -950,33 +950,33 @@ async function applySavedTheme() {
             .single();
 
         if (error) {
-            console.error('Failed to fetch theme color:', error);
+            console.error('Failed to fetch theme colour:', error);
         } else if (data && data.colour_theme) {
-            const userColor = data.colour_theme;
+            const userColour = data.colour_theme;
 
-            // Define base gray colors
+            // Define base gray colours
             const baseGray = {
                 '--background-gray': '#868686',
                 '--container-gray': '#d8d8d8',
                 '--item-gray': '#efeded'
             };
 
-            // Generate distinct blended colors based on the user's saved color
-            const blendedColors = generateBlendedColors(baseGray, userColor);
+            // Generate distinct blended colours based on the user's saved colour
+            const blendedColours = generateBlendedColours(baseGray, userColour);
 
-            // Apply the saved blended colors to the CSS variables
-            for (const [key, value] of Object.entries(blendedColors)) {
+            // Apply the saved blended colours to the CSS variables
+            for (const [key, value] of Object.entries(blendedColours)) {
                 document.documentElement.style.setProperty(key, value);
             }
 
-            // Update the color picker value to reflect the saved color
-            const themeColorPicker = document.getElementById('themeColorPicker');
-            if (themeColorPicker) {
-                themeColorPicker.value = userColor;
+            // Update the colour picker value to reflect the saved colour
+            const themeColourPicker = document.getElementById('themeColourPicker');
+            if (themeColourPicker) {
+                themeColourPicker.value = userColour;
             }
         }
     } catch (err) {
-        console.error('Error fetching theme color:', err);
+        console.error('Error fetching theme colour:', err);
     }
 }
 
@@ -995,7 +995,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const settingsContainer = document.getElementById('settings-container');
     const projectsContainer = document.getElementById('projects-container');
     const backToProjectsButton = document.getElementById('backToProjectsButton');
-    const themeColorPicker = document.getElementById('themeColorPicker');
 
     // Show the settings view
     settingsButton.addEventListener('click', () => {
@@ -1008,48 +1007,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         settingsContainer.style.display = 'none';
         projectsContainer.style.display = 'block';
     });
-
-    // Handle theme color change
-    themeColorPicker.addEventListener('input', async (event) => {
-        const userColor = event.target.value;
-
-        // Define base gray colors including the new text-input-gray
-        const baseGray = {
-            '--background-gray': '#868686',
-            '--container-gray': '#b7b7b7',
-            '--item-gray': '#ffffff',
-            '--text-input-gray': '#ececec'
-        };
-
-        // Generate distinct blended colors based on the user's selected color
-        const blendedColors = generateBlendedColors(baseGray, userColor);
-
-        // Apply the new blended colors to the CSS variables
-        for (const [key, value] of Object.entries(blendedColors)) {
-            document.documentElement.style.setProperty(key, value);
-        }
-
-        // Save the selected color theme to the database
-        try {
-            const { error } = await supabase
-                .from('user_settings')
-                .upsert({ 
-                    user_id: currentUserId, 
-                    colour_theme: userColor 
-                }, { onConflict: ['user_id'] });
-
-            if (error) {
-                console.error('Failed to save theme color:', error);
-                alert('Failed to save theme color. Please try again.');
-            }s
-        } catch (err) {
-            console.error('Error saving theme color:', err);
-            alert('An error occurred while saving the theme color. Please try again.');
-        }
-    });
+   
 });
 
-// Function to convert a hex color to HSL
+// Function to convert a hex colour to HSL
 function hexToHsl(hex) {
     hex = hex.replace(/^#/, '');
     let r = parseInt(hex.substring(0, 2), 16) / 255;
@@ -1099,9 +1060,9 @@ function hslToHex(h, s, l) {
     return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1).toUpperCase()}`;
 }
 
-// Function to generate a complementary color
-function generateComplementaryColor(hexColor) {
-    const hsl = hexToHsl(hexColor);
+// Function to generate a complementary colour
+function generateComplementaryColour(hexColour) {
+    const hsl = hexToHsl(hexColour);
     let complementaryHue = (hsl.h + 180) % 360;
     return hslToHex(complementaryHue, hsl.s, hsl.l);
 }
