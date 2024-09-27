@@ -392,11 +392,6 @@ button:hover {
 
 }
 
-
-#projectsList, #sessionsList {
-    padding-left: 10px; /* Additional padding for overall alignment */
-}
-
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
