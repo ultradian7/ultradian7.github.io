@@ -32,12 +32,8 @@
                         display: flex;
                         flex-direction: column;
                         color: var(--my-yellow);
-                        padding: 10px;
                         background-color: rgb(17, 17, 17);
                         gap: 10px;
-                        position: relative;
-                        z-index: 1;
-                        margin: 0;
                     }
 
                     .title {
@@ -56,29 +52,9 @@
                         font-style: normal; 
                         font-size: 55px;
                         margin-bottom: 20px;
-                        text-align: left;
+                        text-align: center;
                         max-width: 100%;
                         padding: 0 15px;
-                    }
-
-                    .column {
-                        gap: 20px;
-                        flex-direction: column;
-                    }
-
-                    .entries-row {
-                        font-family: "Ubuntu Mono", monospace;
-                        font-weight: 400;
-                        font-style: normal;
-                        display: flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        gap: 20px;
-                        justify-content: center;
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        box-sizing: border-box;
                     }
 
                     .c3 {
@@ -97,9 +73,15 @@
                         color: var(--my-pink);
                     }
 
+                    .entries-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(35ch, 1fr));
+                        gap: 2rem;
+                        max-width: calc(100% - 60px);
+                    }
+
                     .entry {
                         background-color:  rgb(17, 17, 17)  ;
-                        flex: 1 1 calc(30% - 20px);
                         padding: 15px;
                         border: 2px solid var(--my-yellow);
                         border-radius: 10px;
@@ -108,28 +90,8 @@
                         line-height: 1.6;
                         font-size: 18px;
                         overflow: hidden;
-                        display: flex;
-                        flex-direction: column;
-                        box-sizing: border-box;
                     }
 
-                    @media (max-width: 1080px) {
-                        .entry {
-                            flex: 1 1 calc(45% - 20px);
-                        }
-                    }
-
-                    @media (max-width: 768px) {
-                        .entry {
-                            flex: 1 1 calc(90% - 20px);
-                        }
-                    }
-
-                    @media (max-width: 480px) {
-                        .entry {
-                            flex: 1 1 calc(100% - 20px);
-                        }
-                    }
 
                     .embed-container {
                         max-width: auto;
@@ -317,7 +279,7 @@
                         scroll-snap-type: block;
                         display: none;
                         &:target {
-                            display: flex;
+                            display: grid;
                         }
                     }
 
@@ -328,7 +290,7 @@
                 <svg-table></svg-table>
             </div>-->
 
-            <body class="column">
+            <body>
 
                 <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
 
@@ -338,7 +300,7 @@
                     <span class="nav-link"> <a href="mailto:ultradian7@gmail.com">Contact</a></span>
                 </div>
 
-                <section class="entries-row" id="projects">
+                <section class="entries-grid" id="projects">
 
                     <!--<div class="entry">     
                         <a class="title" href="budleigh/index.html">Budleigh</a>
@@ -535,20 +497,21 @@
                         </div>
                     </div>
                     
-                    <div id="imageModal" class="modal" onclick="closeModal(event)">
-                        <span class="close" onclick="closeModal()">&times;</span>
-                        <img class="modal-content" id="modalImage">
-                        <video class="modal-content" id="modalVideo" controls style="display:none;"></video>
-                    </div>
                 </section>
 
-                <section class="entries-row" id="about">
+                <section class="entries-grid" id="about">
                     <div class="entry">
                         <a class="title">About Ultradian7</a>
                         <p>Ultradian7 is an independent creator with roots in music. The name <a href="https://en.wikipedia.org/wiki/Ultradian_rhythm">Ultradian</a> refers to an ultradian rhythm which "is a recurrent period or cycle repeated throughout a 24-hour day." Besides holding personal significance, the number 7 is the number of days in a week or cycles of a "circadian" rhythm within which ultradian cycles recur, is often associated with luck, completeness and creativity, connected to <a href="https://en.wikipedia.org/wiki/Seven_Wonders_of_the_Ancient_World">the seven wonders</a> of the ancient world, the 7 colours of the <a href="https://en.wikipedia.org/wiki/Rainbow">rainbow</a> as divided by Isaac Newton. The <a href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">magic number 7</a> holds reference to the human brain tending to remember about 7 items in short-term memory.</div>
                         </p>
                     </div>
                 </section>
+
+                <div id="imageModal" class="modal" onclick="closeModal(event)">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <img class="modal-content" id="modalImage">
+                    <video class="modal-content" id="modalVideo" controls style="display:none;"></video>
+                </div>
 
                 <footer>
                     <p>Contact: <a href="mailto:ultradian7@gmail.com">ultradian7@gmail.com</a></p>
