@@ -75,11 +75,9 @@
                     }
 
                     .entries-grid {
+                        display: none;
                         margin-top: 1rem;
                         margin-bottom: 1rem;
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
-                        gap: 1rem;
                         max-width: 100%;
                         padding: 0;
                     }
@@ -286,12 +284,15 @@
  
                     
                     #projects {
+                        gap: 1rem;
+                        grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
                         &:target {
                             display: grid;
                         }
                     }
 
                     #about {
+                        gap: 0;
                         &:target {
                             display: flex;
                         }
