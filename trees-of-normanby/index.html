@@ -9,24 +9,16 @@
             <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/pica/dist/pica.min.js"></script>
 
-            <title>Trees Of Normanby Database Manager</title>
+            <title>Trees of Normanby Database Manager</title>
 
         </head>
 
         <body>
-            <div class="logo-container">
-                <img src="web/assets/assets/images/ton-logo-1024x1024.png" alt="TON Logo">
-            </div>
-
-            <div class="center-container">
-                <div class="header">Trees Of Normanby<br>Database Manager</div>
-            </div>
-            
-
+          
             <div class="view-selector">
                 <div class="view-selector-container">
                     <span>View:</span>
-                    <select id="viewSelector" class="input-field font-arial">
+                    <select id="viewSelector" class="input-field work-sans">
                         <option value="specimen">Botanical Specimen</option>
                         <option value="variety">Taxon Variety</option>
                         <option value="species">Taxon Species</option>
@@ -42,7 +34,7 @@
 
             <div class="center-container">
                 <input type="text" id="search" class="search-bar" placeholder="Search..." />
-                <select id="kingdom-filter" class="filter-bar font-arial">
+                <select id="kingdom-filter" class="filter-bar work-sans">
                     <option value="">All Kingdoms</option>
                 </select>
             </div>
@@ -835,8 +827,8 @@
                         card.innerHTML = `
                             <p><strong>Species #</strong></p> <div>${species.id}</div>
                             <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(species.genus_id, genusMap)}<button class="add-button"><span class="material-symbols-outlined" id="add-genus-button">add</span></button></div>
-                            <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${species.name}" /></div>
-                            <p><strong>Common Name:</strong></p> <div><textarea class="input-field font-arial"  ">${species.common_name}</textarea></div>
+                            <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${species.name}" /></div>
+                            <p><strong>Common Name:</strong></p> <div><textarea class="input-field work-sans"  ">${species.common_name}</textarea></div>
                             <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${species.native_range}</textarea></div>
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${species.info}</textarea></div>
                             
@@ -881,17 +873,17 @@
                         }
 
                         card.innerHTML = `
-                            <p><strong class="font-arial">Location #</strong></p> <div id="locationIdField">${location.id}</div>
-                            <p><strong class="font-arial">Name:</strong></p> <div><input type="text" id="locationName" class="input-field max-width font-arial" value="${location.name}" /></div>
-                            <p><strong class="font-arial">Category:</strong></p> <div class="menu-button-container">${createDropdown(location.category_id, locationCategoriesMap)}</div>
-                            <p><strong class="font-arial">Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width font-arial" value="${location.latitude}, ${location.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
-                            <p><strong class="font-arial">Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${location.info}</textarea></div>
-                            <p><strong class="font-arial">Tags:</strong></p><div><textarea id="tagsField" class="input-field" style="height: 60px;">${location.tags}</textarea></div> 
-                            <p><strong class="font-arial">Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width font-arial" multiple /></div>
-                            <div><strong class="font-arial">Current Images:</strong></div>
+                            <p><strong class="work-sans">Location #</strong></p> <div id="locationIdField">${location.id}</div>
+                            <p><strong class="work-sans">Name:</strong></p> <div><input type="text" id="locationName" class="input-field max-width work-sans" value="${location.name}" /></div>
+                            <p><strong class="work-sans">Category:</strong></p> <div class="menu-button-container">${createDropdown(location.category_id, locationCategoriesMap)}</div>
+                            <p><strong class="work-sans">Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${location.latitude}, ${location.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
+                            <p><strong class="work-sans">Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${location.info}</textarea></div>
+                            <p><strong class="work-sans">Tags:</strong></p><div><textarea id="tagsField" class="input-field" style="height: 60px;">${location.tags}</textarea></div> 
+                            <p><strong class="work-sans">Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>
+                            <div><strong class="work-sans">Current Images:</strong></div>
                             <div id="sortable-images-${location.id}" class="image-thumbnails">${imageThumbnails}</div>
                             <div class="switch-row">
-                                <div><strong class="font-arial">Access:</strong> ${createToggleSwitch(location.is_accessible)}</div>
+                                <div><strong class="work-sans">Access:</strong> ${createToggleSwitch(location.is_accessible)}</div>
                             </div>
                             <div class="action-buttons">
                                 <button class="update-button" data-id="${location.id}" data-type="park_locations">Update</button>
@@ -950,12 +942,12 @@
                         }
 
                         card.innerHTML = `
-                            <p><strong class="font-arial">Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
+                            <p><strong class="work-sans">Specimen #</strong></p> <div id="specimenIdField">${specimen.id}</div>
                             <p><strong>Species:</strong></p> <div class="menu-button-container" id="speciesIdMenu">${createDropdown(specimen.species_id, speciesMap, "italic", `id="#speciesIdMenu"`)}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
                             <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(specimen.variety_id, varietyMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>
-                            <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width font-arial" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
+                            <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${specimen.latitude}, ${specimen.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" id="specimenInfoField" style="height: 120px;">${specimen.info}</textarea></div> 
-                            <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width font-arial" multiple /></div>
+                            <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>
                             <div><strong>Current Images:</strong></div>
                             <div id="sortable-images-${specimen.id}" class="image-thumbnails">${imageThumbnails}</div>
                             <div class="switch-row">
@@ -999,7 +991,7 @@
                         card.innerHTML = `
                             <p><strong>Variety #</strong></p> <div>${variety.id}</div>
                             <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(variety.species_id, speciesMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
-                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${variety.name, "italic"}" /></div>
+                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${variety.name, "italic"}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${variety.info}</textarea></div>
                             
@@ -1018,7 +1010,7 @@
                         card.innerHTML = `
                             <p><strong>Genus #</strong></p> <div>${genus.id}</div>
                             <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(genus.family_id, familyMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-family-button">add</span></button></div>
-                            <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${genus.name}" /></div>
+                            <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${genus.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${genus.info}</textarea></div>
                             
@@ -1037,7 +1029,7 @@
                         card.innerHTML = `
                             <p><strong>Family #</strong></p> <div>${family.id}</div>
                             <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(family.order_id, orderMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-order-button">add</span></button></div>
-                            <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${family.name}" /></div>
+                            <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${family.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${family.info}</textarea></div>
                             
@@ -1056,7 +1048,7 @@
                         card.innerHTML = `
                             <p><strong>Order #</strong></p> <div>${order.id}</div>
                             <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(order.class_id, classMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-class-button">add</span></button></div>
-                            <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${order.name}" /></div>
+                            <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${order.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${order.info}</textarea></div>
                             
@@ -1075,7 +1067,7 @@
                         card.innerHTML = `
                             <p><strong>Class #</strong></p> <div>${classItem.id}</div>
                             <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(classItem.phylum_id, phylumMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-phylum-button">add</span></button></div>
-                            <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${classItem.name}" /></div>
+                            <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${classItem.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${classItem.info}</textarea></div>
                             
@@ -1094,7 +1086,7 @@
                         card.innerHTML = `
                             <p><strong>Phylum #</strong></p> <div>${phylum.id}</div>
                             <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(phylum.kingdom_id, createMap(kingdoms), "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-kingdom-button">add</span></button></div>
-                            <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width font-arial italic" value="${phylum.name}" /></div>
+                            <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${phylum.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${phylum.info}</textarea></div>
                             <div class="feedback-message">Update successful!</div>
@@ -1116,11 +1108,11 @@
                         let itemsArray = Object.entries(itemsMap);
                         itemsArray.sort((a, b) => a[1].localeCompare(b[1]));
 
-                        let dropdown = `<select class="max-width font-arial ${italic}">`;
+                        let dropdown = `<select class="max-width work-sans ${italic}">`;
                         dropdown += `<option value=""></option>`;
                         for (const [id, name] of itemsArray) {
                             const selected = id === (selectedId || "").toString() ? "selected" : "";
-                            dropdown += `<option value="${id}" ${selected} class="font-arial ${italic}" ${dropdownId}>${name}</option>`;
+                            dropdown += `<option value="${id}" ${selected} class="work-sans ${italic}" ${dropdownId}>${name}</option>`;
                         }
                         dropdown += `</select>`;
                         return dropdown;
@@ -1335,7 +1327,7 @@
                             const genusDropdown = card.querySelector(".menu-button-container select");
                             genusDropdown.value = updatedData.genus_id;
                             card.querySelector(".input-field.italic").value = updatedData.name;
-                            card.querySelector("textarea.font-arial").value = updatedData.common_name;
+                            card.querySelector("textarea.work-sans").value = updatedData.common_name;
                             card.querySelectorAll("textarea")[1].value = updatedData.native_range;
                             card.querySelectorAll("textarea")[2].value = updatedData.info;
 
@@ -1351,7 +1343,7 @@
                             card.querySelector("#specimenIdField").textContent = updatedData.id;
                             card.querySelectorAll(".menu-button-container select")[0].value = updatedData.species_id;
                             card.querySelectorAll(".menu-button-container select")[1].value = updatedData.variety_id;
-                            card.querySelector(".input-field.max-width.font-arial").value = `${updatedData.latitude}, ${updatedData.longitude}`;
+                            card.querySelector(".input-field.max-width.work-sans").value = `${updatedData.latitude}, ${updatedData.longitude}`;
                             card.querySelectorAll("textarea")[0].value = updatedData.info;
                             card.querySelectorAll(".toggle-switch input")[0].checked = updatedData.is_accessible;
                             card.querySelectorAll(".toggle-switch input")[1].checked = updatedData.is_tree;
@@ -1550,7 +1542,7 @@
                                 if (type === "species") {
                                     const genusId = card.querySelector(".menu-button-container select").value;
                                     const speciesName = card.querySelector(".input-field.italic").value;
-                                    const commonName = card.querySelector("textarea.font-arial").value;
+                                    const commonName = card.querySelector("textarea.work-sans").value;
                                     const nativeRange = card.querySelectorAll("textarea")[1].value;
                                     const info = card.querySelectorAll("textarea")[2].value;
 
