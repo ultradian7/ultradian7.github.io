@@ -36,7 +36,7 @@
         color: var(--my-yellow);
         background-color: rgb(17, 17, 17);
         gap: 0;
-        padding: 0;
+        padding: 0 0.3142rem 0 0.3142rem;
         margin: 0;
         
       }
@@ -66,12 +66,12 @@
 
       .title {
         font-size: 25px;
+        font-weight: 600;
       }
 
       h1 {
         font-family: "Ubuntu Mono", monospace;
         font-weight: 700;
-        font-style: normal;
         font-size: 32px;
         text-align: left;
         margin: 0;
@@ -81,7 +81,6 @@
       }
 
       nav {
-        float: right;
         margin-left: auto;
         margin-right: 4rem;
       }
@@ -105,7 +104,7 @@
 
       nav a {
         text-decoration: none;
-        color: var(--my-pink); /* Default color */
+        color: var(--my-pink);
         transition: color 0.3s;
       }
 
@@ -131,7 +130,7 @@
         display: none;
         margin: 0.862rem;
         max-width: 100%;
-        padding: 0;
+        padding: 0 0 0 0;
         margin-top: 5rem;
       }
 
@@ -155,8 +154,7 @@
       }
 
       footer {
-        margin-top: 10px;
-        border-top: 2px solid var(--my-yellow);
+        margin-top: 3rem;
         text-align: center;
         color: var(--my-yellow);
         font-size: 18px;
@@ -321,7 +319,7 @@
 
       #projects,
       #about {
-        scroll-margin-top: 15px;
+        scroll-margin-top: 5rem;
         scroll-snap-type: block;
         display: none;
       }
@@ -336,7 +334,6 @@
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
         &:target {
           display: grid;
-
         }
       }
 
@@ -346,6 +343,32 @@
           display: flex;
         }
       }
+
+      .nav-icon {
+        display: none;
+      }
+
+      @media (max-width: 750px) {
+        nav {
+          display: none;
+        }
+
+        .nav-icon {
+          display: inline-block;
+          font-size: 3rem;
+          line-height: 0.5;
+          margin-top: 0.3rem;
+          margin-left: auto;
+          color: var(--my-pink);
+          margin-right: 1.5rem;
+        }
+        .nav-icon:hover {
+          cursor: pointer;
+        }
+
+      }
+
+      
 
 
     </style>
@@ -373,8 +396,7 @@
           Android, iOS and Web. Using your devices GPS, the app displays your current location on the map so you can use
           it while walking around the park. Knowledgeable arboriculturist and horticulturist
           <a href="https://www.inaturalist.org/observations?place_id=any&subview=map&user_id=bradcanfield&verifiable=any">
-            Brad Canfield
-          </a>, Normanby Park staff member, has produced informative content regards a selection of notable tree's.
+            Brad Canfield</a> has produced informative content regards a selection of notable tree's.
           <br />
           <!--<br>I built a webpage interface for staff to manage the apps content without requiring any coding knowledge, so they can easily add new species information, specimen locations, images etc.
                         <br>-->
@@ -958,7 +980,7 @@
             <li> <a href="mailto:ultradian7@gmail.com">Contact</a></li>
           </ul>
         </nav>
-      </div>
+        <div class="nav-icon">≡</div>
     </header>
 
     <div id="imageModal" class="modal" onclick="closeModal(event)">
