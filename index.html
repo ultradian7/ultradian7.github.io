@@ -38,12 +38,12 @@
       }
 
       header {
-        background-color: var(--my-blue);
+        background-color: rgb(17, 17, 17);
         width: 100%;
-        margin-bottom: 1rem;
         position: fixed;
         top: 0;
         z-index: 100; /* Ensure it stays on top */
+        border-bottom: var(--my-blue);
       }
 
 
@@ -345,32 +345,7 @@
           display: flex;
         }
       }
-
-      .nav-icon {
-        display: none;
-      }
-
-      @media (max-width: 750px) {
-        nav {
-          display: none;
-        }
-
-        .nav-icon {
-          display: inline-block;
-          font-size: 3rem;
-          line-height: 0.5;
-          margin-top: 0.3rem;
-          margin-left: auto;
-          color: var(--my-pink);
-          margin-right: 1.5rem;
-        }
-        .nav-icon:hover {
-          cursor: pointer;
-        }
-
-      }
-
-      
+ 
 
 
     </style>
@@ -979,10 +954,8 @@
           <ul>
             <li> <a href="#projects">Projects</a></li>
             <li> <a href="#about">About</a></li>
-            <li> <a href="mailto:ultradian7@gmail.com">Contact</a></li>
           </ul>
         </nav>
-        <div class="nav-icon">≡</div>
     </header>
 
     <div id="imageModal" class="modal" onclick="closeModal(event)">
