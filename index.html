@@ -1,575 +1,1012 @@
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-                <title>Ultradian7 Projects</title>
-                <style>
-                    :root {
-                        --my-yellow: rgb(206, 186, 132);
-                        --my-dark-gray: rgb(31, 31, 31);
-                        --my-gray: rgb(70, 70, 70);
-                        --my-light-gray: rgb(100, 100, 100);
-                        --my-blue: rgb(143, 219, 251);
-                        --my-pink: rgb(196, 121, 209);
-                        --my-orange: rgb(255, 178, 102);
-                        --my-aqua: rgb(156, 236, 211);
-                        --my-green: rgb(95, 151, 92);
-                        color-scheme: only light;
-                    }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultradian7 Projects</title>
+    <style>
+      
+      @import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+      @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+      
+      :root {
+        --my-yellow: rgb(206, 186, 132);
+        --my-dark-gray: rgb(31, 31, 31);
+        --my-gray: rgb(70, 70, 70);
+        --my-light-gray: rgb(100, 100, 100);
+        --my-blue: rgb(143, 219, 251);
+        --my-pink: rgb(196, 121, 209);
+        --my-orange: rgb(255, 178, 102);
+        --my-aqua: rgb(156, 236, 211);
+        --my-green: rgb(95, 151, 92);
+        color-scheme: only light;
+      }
 
-                    html {
-                        scroll-behavior: smooth;
-                    }
+      html {
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
 
-                    body {
-                        font-family: "Ubuntu Mono", monospace;
-                        justify-content: center;
-                        align-items: center;
-                        display: flex;
-                        flex-direction: column;
-                        color: var(--my-yellow);
-                        background-color: rgb(17, 17, 17);
-                        gap: 0;
-                        padding: 0;
-                    }
+      body {
+        font-family: "Ubuntu Mono", monospace;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        color: var(--my-yellow);
+        background-color: rgb(17, 17, 17);
+        gap: 0;
+        padding: 0;
+        margin: 0;
+        
+      }
 
-                    .title {
-                        font-size: 25px;
-                    }
-
-                    .header-wrapper {
-                        display: flex;
-                        justify-content: center;
-                        width: 100%;
-                    }
-
-                    .header {
-                        font-family: "Ubuntu Mono", monospace;
-                        font-weight: 700;
-                        font-style: normal; 
-                        font-size: 55px;
-                        text-align: center;
-                        margin: 2rem;
-                        max-width: 100%;
-                        padding: 0 15px;
-                    }
-
-                    .c3 {
-                        color: var(--my-blue);
-                    }
-
-                    .c2 {
-                        color: var(--my-orange);
-                    }
-
-                    .c1 {
-                        color: var(--my-pink);
-                    }
-
-                    a {
-                        color: var(--my-pink);
-                    }
-
-                    .entries-grid {
-                        display: none;
-                        margin-top: 1rem;
-                        margin-bottom: 1rem;
-                        max-width: 100%;
-                        padding: 0;
-                    }
-
-                    .entry {
-                        background-color: rgb(17, 17, 17);
-                        padding: 15px;
-                        border: 2px solid var(--my-yellow);
-                        border-radius: 10px;
-                        margin-bottom: 10px;
-                        color: var(--my-blue);
-                        line-height: 1.6;
-                        font-size: 18px;
-                        overflow: hidden;
-                    }
+      header {
+        background-color: var(--my-blue);
+        width: 100%;
+        margin-bottom: 1rem;
+        position: fixed;
+        top: 0;
+        z-index: 100; /* Ensure it stays on top */
+      }
 
 
-                    .embed-container {
-                        max-width: auto;
-                        text-align: center;
-                        margin-top: 10px;
-                        border: 0;
-                    }
-
-                    footer {
-                        margin-top: 10px;
-                        border-top: 2px solid var(--my-yellow);
-                        text-align: center;
-                        color: var(--my-yellow);
-                        font-size: 18px;
-                        font-family: "Ubuntu Mono", monospace;
-                        font-weight: 400;
-                        font-style: normal;
-                    }
-
-                    footer a {
-                        color: var(--my-pink);
-                        text-decoration: none;
-                    }
-
-                    footer a:hover {
-                        text-decoration: underline;
-                    }
-
-                    .thumbnail-container {
-                        max-width: 100%;
-                        display: flex;
-                        overflow-x: scroll;
-                        gap: 20px;
-                        margin-top: 10px;
-                        margin-bottom: 10px;
-                        padding: 15px;
-                        scrollbar-width: thin;
-                        scrollbar-color: var(--my-yellow) transparent;
-                        /*border: 2px solid rgb(124, 77, 133);*/
-                        border-radius: 10px;
-                        background-color: rgba(185, 147, 71, 0.164);
-                        overflow-x: scroll;
-                        scroll-snap-type: x mandatory;                        
-                    }
-
-                    .thumbnail {
-                        height: 300px;
-                        width: 300px;
-                        flex: 0 0 300px;
-                        border-radius: 6px;
-                        object-fit: cover;
-                        object-position: top;
-                        cursor: pointer;
-                        transition: transform 0.3s;
-                        display: block;
-                        margin: 0 auto;
-                        scroll-snap-align: center;
-                    }
-
-                    /*.thumbnail:hover {
-                        transform: scale(1.1);
-                    }*/
-
-                    .thumbnail-container img {
-                        max-width: 300px;
-                        max-height: 300px;
-                    }
-
-                    .thumbnail-container video {
-                        max-width: 300px;
-                        max-height: 300px;
-                        cursor: pointer;
-                    }
-
-                    .thumbnail-container::-webkit-scrollbar {
-                        height: 8px
-                    }
-
-                    .thumbnail-container::-webkit-scrollbar-thumb {
-                        background-color: var(--my-yellow);
-                        border-radius: 10px;
-                    }
-
-                    .thumbnail-container::-webkit-scrollbar-track {
-                        background: transparent;
-                    }
-
-                    .video-thumbnail-wrapper {
-                        position: relative;
-                        display: inline-block;
-                    }
-
-                    .play-button {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        width: 70px;
-                        height: 70px;
-                        background: rgba(255, 255, 255, 0.6);
-                        border-radius: 50%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        cursor: pointer;
-                    }
-
-                    .play-button::before {
-                        content: '';
-                        display: block;
-                        width: 0;
-                        height: 0;
-                        border-left: 15px solid rgba(0, 0, 0, 0.7);
-                        border-top: 10px solid transparent;
-                        border-bottom: 10px solid transparent;
-                    }
+      header::after {
+        content: '';
+        display: table;
+        clear: both;
+      }
 
 
-                    .modal {
-                        display: none; 
-                        position: fixed; 
-                        z-index: 1000; 
-                        padding-top: 100px; 
-                        left: 0;
-                        top: 0;
-                        width: 100%; 
-                        height: 100%; 
-                        background-color: rgba(0,0,0,0.9);
-                        justify-content: center;
-                        align-items: center;
-                        padding: 0;
-                    }
-                    
+      .header-container {
+        display: flex;
+        width: 100%;
+        padding: 0 1rem 0 1rem;
+      }
 
-                    .modal-content {
-                        display: block;
-                        margin: auto;
-                        margin-top: 30px;
-                        max-width: 90%;
-                        max-height: 90%;  
-                    }
+      .title {
+        font-size: 25px;
+      }
 
-                    .close {
-                        position: absolute;
-                        top: 15px;
-                        right: 35px;
-                        color: #f1f1f1;
-                        font-size: 40px;
-                        font-weight: bold;
-                        cursor: pointer;
-                    }
+      h1 {
+        font-family: "Ubuntu Mono", monospace;
+        font-weight: 700;
+        font-style: normal;
+        font-size: 32px;
+        text-align: left;
+        margin: 0;
+        margin-top: 0.3142rem;
+        margin-bottom: 0.3142rem;
 
-                    .video-wrapper {
-                        position: relative;
-                        padding-bottom: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
-                        overflow: hidden; 
-                        margin-top: 10px;
-                        border: 2px solid var(--my-yellow);
-                        border-radius: 10px;
-                    }
+      }
 
-                    .video-wrapper iframe {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                    }
+      nav {
+        float: right;
+        margin-left: auto;
+        margin-right: 4rem;
+      }
 
-                    .nav-links {
-                        margin-bottom: 20px;
-                        display: flex;
-                        gap: 20px; 
-                    }
+      nav ul {
+        margin: 0;
+        margin-top: 0.75rem;
+        padding: 0;
+        list-style: none;
+      }
 
-                    .nav-link { 
-                        cursor: pointer;
-                        color: var(--my-pink);
-                        text-decoration: underline;
-                        font-size: 25px;
-                    }
+      nav li {
+        display: inline-block;
+        margin-left: 1rem;
+        position: relative;
+        cursor: pointer;
+        color: var(--my-pink);
+        font-size: 1.111rem;
+        font-weight: 600  ;
+      }
 
-                    #projects, #about {
-                        scroll-margin-top: 15px;
-                        scroll-snap-type: block;
-                        display: none;
-                    }
- 
-                    
-                    #projects {
-                        gap: 1rem;
-                        grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
-                        &:target {
-                            display: grid;
-                        }
-                    }
+      nav a {
+        text-decoration: none;
+        color: var(--my-pink); /* Default color */
+        transition: color 0.3s;
+      }
 
-                    #about {
-                        gap: 0;
-                        &:target {
-                            display: flex;
-                        }
-                    }
+      
 
-                </style>
-            </head>
+      .c3 {
+        color: var(--my-blue);
+      }
 
-            <!--<div class="background">
-                <svg-table></svg-table>
-            </div.>-->
+      .c2 {
+        color: var(--my-orange);
+      }
 
-            <body>
+      .c1 {
+        color: var(--my-pink);
+      }
 
-                <div class="header">Ultradian<span class="c1">7</span><span class="c2"> Projects</span></div>
+      a {
+        color: var(--my-pink);
+      }
 
-                <div class="nav-links">
-                    <span class="nav-link"> <a href="#projects">Projects</a></span>
-                    <span class="nav-link"> <a href="#about">About</a></span>
-                    <span class="nav-link"> <a href="mailto:ultradian7@gmail.com">Contact</a></span>
-                </div>
+      .entries-grid {
+        display: none;
+        margin: 0.862rem;
+        max-width: 100%;
+        padding: 0;
+        margin-top: 5rem;
+      }
 
-                <section class="entries-grid" id="projects">
+      .entry {
+        background-color: rgb(17, 17, 17);
+        padding: 15px;
+        border: 2px solid var(--my-yellow);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        color: var(--my-blue);
+        line-height: 1.6;
+        font-size: 18px;
+        overflow: hidden;
+      }
 
-                    <!--<div class="entry">     
-                        <a class="title" href="budleigh/index.html">Budleigh</a>
-                        <p>An app for practicing artists to log and track their development by setting goals and sharing progress on their work. Under development, please contact about becoming an early tester.
-                        </p>
-                        
-                    </div>-->
+      .embed-container {
+        max-width: auto;
+        text-align: center;
+        margin-top: 10px;
+        border: 0;
+      }
 
-                    <div class="entry">     
-                        <a class="title" href="trees-of-normanby/web/index.html">Trees of Normanby</a>
-                        <p>An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a> that details notable trees,  for Android, iOS and Web. Using your devices GPS, the app displays your current location on the map so you can use it while walking around the park. Knowledgeable arboriculturist and horticulturist <a href="https://www.inaturalist.org/observations?place_id=any&subview=map&user_id=bradcanfield&verifiable=any">Brad Canfield</a>, Normanby Park staff member, has produced informative content regards a selection of notable tree's.
-                        <br>
-                        <!--<br>I built a webpage interface for staff to manage the apps content without requiring any coding knowledge, so they can easily add new species information, specimen locations, images etc.
+      footer {
+        margin-top: 10px;
+        border-top: 2px solid var(--my-yellow);
+        text-align: center;
+        color: var(--my-yellow);
+        font-size: 18px;
+        font-family: "Ubuntu Mono", monospace;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      footer a {
+        color: var(--my-pink);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      .thumbnail-container {
+        max-width: 100%;
+        display: flex;
+        overflow-x: scroll;
+        gap: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 15px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--my-yellow) transparent;
+        /*border: 2px solid rgb(124, 77, 133);*/
+        border-radius: 10px;
+        background-color: rgba(185, 147, 71, 0.164);
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+      }
+
+
+
+      .thumbnail {
+        height: 300px;
+        width: 300px;
+        flex: 0 0 300px;
+        border-radius: 6px;
+        object-fit: cover;
+        object-position: top;
+        cursor: pointer;
+        transition: transform 0.3s;
+        display: block;
+        margin: 0 auto;
+        scroll-snap-align: center;
+      }
+
+      /*.thumbnail:hover {
+        transform: scale(1.1);
+      }*/
+
+      .thumbnail-container img {
+        max-width: 300px;
+        max-height: 300px;
+      }
+
+      .thumbnail-container video {
+        max-width: 300px;
+        max-height: 300px;
+        cursor: pointer;
+      }
+
+      .thumbnail-container::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .thumbnail-container::-webkit-scrollbar-thumb {
+        background-color: var(--my-yellow);
+        border-radius: 10px;
+      }
+
+      .thumbnail-container::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .video-thumbnail-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .play-button::before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 15px solid rgba(0, 0, 0, 0.7);
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+      }
+
+      .modal-content {
+        display: block;
+        margin: auto;
+        margin-top: 30px;
+        max-width: 90%;
+        max-height: 90%;
+      }
+
+      .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+        overflow: hidden;
+        margin-top: 15px;
+
+        margin-bottom: 15px;
+        border: 2px solid var(--my-yellow);
+        border-radius: 10px;
+      }
+
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      
+
+      #projects,
+      #about {
+        scroll-margin-top: 15px;
+        scroll-snap-type: block;
+        display: none;
+      }
+
+      #projects:target ~ header nav a[href="#projects"],
+        #about:target ~ header nav a[href="#about"] {
+          color: var(--my-orange);
+        }
+
+      #projects {
+        gap: 0.862rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
+        &:target {
+          display: grid;
+
+        }
+      }
+
+      #about {
+        gap: 0;
+        &:target {
+          display: flex;
+        }
+      }
+
+
+    </style>
+  </head>
+
+  <!--<div class="background">
+      <svg-table></svg-table>
+  </div.>-->
+
+  <body>
+    
+
+    <section class="entries-grid" id="projects">
+      <!--<div class="entry">     
+          <a class="title" href="budleigh/index.html">Budleigh</a>
+          <p>An app for practicing artists to log and track their development by setting goals and sharing progress on their work. Under development, please contact about becoming an early tester.
+          </p>
+          
+      </div>-->
+
+      <div class="entry">
+        <a class="title" href="trees-of-normanby/web/index.html">Trees of Normanby</a>
+        <p>
+          An interactive map of <a href="https://normanbyhall.co.uk">Normanby Park</a> that details notable trees, for
+          Android, iOS and Web. Using your devices GPS, the app displays your current location on the map so you can use
+          it while walking around the park. Knowledgeable arboriculturist and horticulturist
+          <a href="https://www.inaturalist.org/observations?place_id=any&subview=map&user_id=bradcanfield&verifiable=any">
+            Brad Canfield
+          </a>, Normanby Park staff member, has produced informative content regards a selection of notable tree's.
+          <br />
+          <!--<br>I built a webpage interface for staff to manage the apps content without requiring any coding knowledge, so they can easily add new species information, specimen locations, images etc.
                         <br>-->
-                        <br>Still in development, the link directs to an in browser version for authorized users. This is a third party app created in collaboration with park staff and is not currently supported by, or represent Normanby Hall Country Park or North Lincolnshire Council.
-                        <br>
-                        <br>Acknowledgement and thanks to Ben Buckley for his support and contribution to the apps content.</p>
-                        <div class="thumbnail-container">
-                            <div class="video-thumbnail-wrapper">
-                                <video class="thumbnail" onclick="openModal('video/ton-demo-1.mp4', 'video')" muted>
-                                    <source src="video/ton-demo-1.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                                <div class="play-button" onclick="openModal('video/ton-demo-1.mp4', 'video')"></div>
-                            </div>
-                            <img src="images/ton-screenshot-1.jpg" alt="Trees Of Normanby Screenshot 1" class="thumbnail" onclick="openModal('images/ton-screenshot-1.jpg')">
-                            <img src="images/ton-screenshot-2.jpg" alt="Trees Of Normanby Screenshot 2" class="thumbnail" onclick="openModal('images/ton-screenshot-2.jpg')">
-                            <img src="images/ton-screenshot-3.jpg" alt="Trees Of Normanby Screenshot 3" class="thumbnail" onclick="openModal('images/ton-screenshot-3.jpg')">
-                            <img src="images/ton-screenshot-4.jpg" alt="Trees Of Normanby Screenshot 4" class="thumbnail" onclick="openModal('images/ton-screenshot-4.jpg')">
-                            <img src="images/ton-screenshot-5.jpg" alt="Trees Of Normanby Screenshot 5" class="thumbnail" onclick="openModal('images/ton-screenshot-5.jpg')">
-                            <img src="images/ton-screenshot-6.jpg" alt="Trees Of Normanby Screenshot 6" class="thumbnail" onclick="openModal('images/ton-screenshot-6.jpg')">
-                            <img src="images/ton-screenshot-7.jpg" alt="Trees Of Normanby Screenshot 7" class="thumbnail" onclick="openModal('images/ton-screenshot-7.jpg')">
-                        </div>
-                    </div>
+          <br />Still in development, the link directs to an in browser version for authorized users. This is a third
+          party app created in collaboration with park staff and is not currently supported by, or represent Normanby
+          Hall Country Park or North Lincolnshire Council.
+          <br />
+          <br />Acknowledgement and thanks to Ben Buckley for his support and contribution to the apps content.
+        </p>
+        <div class="thumbnail-container">
+          <div class="video-thumbnail-wrapper">
+            <video class="thumbnail" onclick="openModal('video/ton-demo-1.mp4', 'video')" muted>
+              <source src="video/ton-demo-1.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div class="play-button" onclick="openModal('video/ton-demo-1.mp4', 'video')"></div>
+          </div>
+          <img
+            src="images/ton-screenshot-1.jpg"
+            alt="Trees Of Normanby Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-1.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-2.jpg"
+            alt="Trees Of Normanby Screenshot 2"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-2.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-3.jpg"
+            alt="Trees Of Normanby Screenshot 3"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-3.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-4.jpg"
+            alt="Trees Of Normanby Screenshot 4"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-4.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-5.jpg"
+            alt="Trees Of Normanby Screenshot 5"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-5.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-6.jpg"
+            alt="Trees Of Normanby Screenshot 6"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-6.jpg')"
+          />
+          <img
+            src="images/ton-screenshot-7.jpg"
+            alt="Trees Of Normanby Screenshot 7"
+            class="thumbnail"
+            onclick="openModal('images/ton-screenshot-7.jpg')"
+          />
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title">freqMajor</a>
-                        <p>A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define harmonic ratios with precision as decimals or fractions. A work in progress, written with <a href="https://cmajor.dev/">Cmajor</a>.
-                            <br>
-                            <br>Features per harmonic amplitude modulation, playable tables to visualize note mappings, customizable value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics table shows frequency of each harmonic in every note. On screen grid note controller, optional commands to program sounds.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/valuesynth-1.png" alt="ValueSynth Screenshot 1" class="thumbnail" onclick="openModal('images/valuesynth-1.png')">
-                            <img src="images/valuesynth-2.png" alt="ValueSynth Screenshot 2" class="thumbnail" onclick="openModal('images/valuesynth-2.png')">
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title">freqMajor</a>
+        <p>
+          A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define
+          harmonic ratios with precision as decimals or fractions. A work in progress, written with
+          <a href="https://cmajor.dev/">Cmajor</a>.
+          <br />
+          <br />Features per harmonic amplitude modulation, playable tables to visualize note mappings, customizable
+          value bank and explorer inspired by the Colundi value hunter allows you to build custom tunings, harmonics
+          table shows frequency of each harmonic in every note. On screen grid note controller, optional commands to
+          program sounds.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/valuesynth-1.png"
+            alt="ValueSynth Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/valuesynth-1.png')"
+          />
+          <img
+            src="images/valuesynth-2.png"
+            alt="ValueSynth Screenshot 2"
+            class="thumbnail"
+            onclick="openModal('images/valuesynth-2.png')"
+          />
+        </div>
+      </div>
 
-                    <!--<div class="entry">
-                        <a class="title">freqToASCL</a>
-                        <p>Create Ableton .ascl scale files from a list of frequencies, assigns frequency hz values to note names that will appear in Abletons piano roll editor.</p>
-                    </div>-->
+      <!--<div class="entry">
+        <a class="title">freqToASCL</a>
+        <p>Create Ableton .ascl scale files from a list of frequencies, assigns frequency hz values to note names that will appear in Abletons piano roll editor.</p>
+      </div>-->
 
-                    <div class="entry">
-                        <a class="title">Gallery Video Player</a>
-                        <p>Gallery video player is an Android app designed to be used in public spaces, it restricts access to the device so the audience are able to play and pause the video only and not navigate away. An optional title screen image can be set, features an auto reset option that rests to the title screen or first frame of the video if paused for a specified amount of time.
-                            <br>
-                            <br> The app was made for the North Lincolnshire Council Museum team and used in the "Stubbs In The Stables" display at <a href="https://normanbyhall.co.uk">Normanby Hall Country Park</a>, part of "George Stubbs and the Anatomy of the Horse, celebrating the 300th birthday of anatomist and painter <a href="https://en.wikipedia.org/wiki/George_Stubbs">George Stubbs</a>. The app was used to host video for <a href="https://uk.linkedin.com/in/gillianhiggins">Gillian Higgins</a> from <a href="https://www.horsesinsideout.com/">Horses Inside Out</a> and her making of the life size model on display.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/gvp-1.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-1.jpg')">
-                            <img src="images/gvp-stables.jpg" alt="GVP Screenshot 1" class="thumbnail" onclick="openModal('images/gvp-stables.jpg')">
-                            <div class="video-thumbnail-wrapper">
-                                <video class="thumbnail" onclick="openModal('video/gvp-stables.mp4', 'video')" muted>
-                                    <source src="video/gvp-stables.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                                <div class="play-button" onclick="openModal('video/gvp-stables.mp4', 'video')"></div>
-                            </div>
-                            
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title">Gallery Video Player</a>
+        <p>
+          Gallery video player is an Android app designed to be used in public spaces, it restricts access to the device
+          so the audience are able to play and pause the video only and not navigate away. An optional title screen
+          image can be set, features an auto reset option that rests to the title screen or first frame of the video if
+          paused for a specified amount of time.
+          <br />
+          <br />
+          The app was made for the North Lincolnshire Council Museum team and used in the "Stubbs In The Stables"
+          display at <a href="https://normanbyhall.co.uk">Normanby Hall Country Park</a>, part of "George Stubbs and the
+          Anatomy of the Horse, celebrating the 300th birthday of anatomist and painter
+          <a href="https://en.wikipedia.org/wiki/George_Stubbs">George Stubbs</a>. The app was used to host video for
+          <a href="https://uk.linkedin.com/in/gillianhiggins">Gillian Higgins</a> from
+          <a href="https://www.horsesinsideout.com/">Horses Inside Out</a> and her making of the life size model on
+          display.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/gvp-1.jpg"
+            alt="GVP Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/gvp-1.jpg')"
+          />
+          <img
+            src="images/gvp-stables.jpg"
+            alt="GVP Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/gvp-stables.jpg')"
+          />
+          <div class="video-thumbnail-wrapper">
+            <video class="thumbnail" onclick="openModal('video/gvp-stables.mp4', 'video')" muted>
+              <source src="video/gvp-stables.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div class="play-button" onclick="openModal('video/gvp-stables.mp4', 'video')"></div>
+          </div>
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="https://www.renoise.com/tools/modulation-device-presets">Renoise Tool:<br>Modulation Device Presets</a>
-                        <p>Adds support in <a href="https://www.renoise.com">Renoise</a> for Sample Modulation Device presets. As Renoise only supports saving modulation devices in entire Modulation Sets .xrmo files, this tool extends functionality for users to save and load presets for individual devices, device chains or complete filter sections in new file types .xrmd, .xrmc or .xrmf, integrated to work consistently with native Renoise presets.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/mdp-menu.png" alt="MDP Menu Screenshot" class="thumbnail" onclick="openModal('images/mdp-menu.png')">
-                            <img src="images/mdp-ex1.png" alt="MDP Example File 1" class="thumbnail" onclick="openModal('images/mdp-ex1.png')">
-                            <img src="images/mdp-ex2.png" alt="MDP Example File 2" class="thumbnail" onclick="openModal('images/mdp-ex2.png')">
-                            <img src="images/mdp-ex3.png" alt="MDP Example File 3" class="thumbnail" onclick="openModal('images/mdp-ex3.png')">
-                        </div>   
-                    </div>
+      <div class="entry">
+        <a class="title" href="https://www.renoise.com/tools/modulation-device-presets"
+          >Renoise Tool:<br />Modulation Device Presets</a
+        >
+        <p>
+          Adds support in <a href="https://www.renoise.com">Renoise</a> for Sample Modulation Device presets. As Renoise
+          only supports saving modulation devices in entire Modulation Sets .xrmo files, this tool extends functionality
+          for users to save and load presets for individual devices, device chains or complete filter sections in new
+          file types .xrmd, .xrmc or .xrmf, integrated to work consistently with native Renoise presets.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/mdp-menu.png"
+            alt="MDP Menu Screenshot"
+            class="thumbnail"
+            onclick="openModal('images/mdp-menu.png')"
+          />
+          <img
+            src="images/mdp-ex1.png"
+            alt="MDP Example File 1"
+            class="thumbnail"
+            onclick="openModal('images/mdp-ex1.png')"
+          />
+          <img
+            src="images/mdp-ex2.png"
+            alt="MDP Example File 2"
+            class="thumbnail"
+            onclick="openModal('images/mdp-ex2.png')"
+          />
+          <img
+            src="images/mdp-ex3.png"
+            alt="MDP Example File 3"
+            class="thumbnail"
+            onclick="openModal('images/mdp-ex3.png')"
+          />
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title">Renoise Tool:<br>FreqCtrl Magic Squares</a>
-                        <p>An on screen button controller for Renoise, ideally used with a touchscreen but can be used universally. Optional note layouts inspired by ancient mathematical <a href="https://en.wikipedia.org/wiki/Magic_square">magic squares</a>, including more recent discoveries by the brilliant <a href="https://jain108academy.com/magic-square-discoveries/">Jain108</a>.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/freqctrl-1.png " alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqctrl-1.png')">
-                            <img src="images/freqctrl-3.png" alt="FreqCtrl Screenshot 3" class="thumbnail" onclick="openModal('images/freqctrl-3.png')">
-                            <img src="images/freqctrl-4.png" alt="FreqCtrl Screenshot 4"class="thumbnail" onclick="openModal('images/freqctrl-4.png')">
-                            <img src="images/freqctrl-2.png" alt="FreqCtrl Screenshot 2" class="thumbnail" onclick="openModal('images/freqctrl-2.png')">
-                            <img src="images/freqctrl-5.png" alt="FreqCtrl Screenshot 5"class="thumbnail" onclick="openModal('images/freqctrl-5.png')">
-                            <img src="images/freqctrl-6.png" alt="FreqCtrl Screenshot 6"class="thumbnail" onclick="openModal('images/freqctrl-6.png')">
-                            <img src="images/freqctrl-7.png" alt="FreqCtrl Screenshot 7"class="thumbnail" onclick="openModal('images/freqctrl-7.png')">
-                        </div>   
-                    </div>
+      <div class="entry">
+        <a class="title">Renoise Tool:<br />FreqCtrl Magic Squares</a>
+        <p>
+          An on screen button controller for Renoise, ideally used with a touchscreen but can be used universally.
+          Optional note layouts inspired by ancient mathematical
+          <a href="https://en.wikipedia.org/wiki/Magic_square">magic squares</a>, including more recent discoveries by
+          the brilliant <a href="https://jain108academy.com/magic-square-discoveries/">Jain108</a>.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/freqctrl-1.png "
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-1.png')"
+          />
+          <img
+            src="images/freqctrl-3.png"
+            alt="FreqCtrl Screenshot 3"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-3.png')"
+          />
+          <img
+            src="images/freqctrl-4.png"
+            alt="FreqCtrl Screenshot 4"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-4.png')"
+          />
+          <img
+            src="images/freqctrl-2.png"
+            alt="FreqCtrl Screenshot 2"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-2.png')"
+          />
+          <img
+            src="images/freqctrl-5.png"
+            alt="FreqCtrl Screenshot 5"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-5.png')"
+          />
+          <img
+            src="images/freqctrl-6.png"
+            alt="FreqCtrl Screenshot 6"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-6.png')"
+          />
+          <img
+            src="images/freqctrl-7.png"
+            alt="FreqCtrl Screenshot 7"
+            class="thumbnail"
+            onclick="openModal('images/freqctrl-7.png')"
+          />
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" >Renoise Tool:<br>FreqScale</a>
-                        <p>A Renoise tool that allows you to create or modify scales and tunings, supports import and export for Scala .scl files. Resulting scale is given as interval (decimal), ratio (fraction), cents, distance and frequency. You can view a full MIDI note frequency dump for a scale and given base frequency. Development stopped when I discovered <a href="https://sevish.com/">Sevish</a>'s <a href="https://sevish.com/scaleworkshop/?version=2.5.7">Scale Workshop</a>, far superior software for producing scales!</p>
-                        <div class="thumbnail-container">
-                            <img src="images/freqscale-cents.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqscale-cents.png')">
-                            <img src="images/freqscale-1.png" alt="FreqCtrl Screenshot 4"class="thumbnail" onclick="openModal('images/freqscale-1.png')">
-                            <img src="images/freqscale-2.png" alt="FreqCtrl Screenshot 2" class="thumbnail" onclick="openModal('images/freqscale-2.png')">
-                            <img src="images/freqscale-fract.png" alt="FreqCtrl Screenshot 3" class="thumbnail" onclick="openModal('images/freqscale-fract.png')">
-                        </div>   
-                    </div>
+      <div class="entry">
+        <a class="title">Renoise Tool:<br />FreqScale</a>
+        <p>
+          A Renoise tool that allows you to create or modify scales and tunings, supports import and export for Scala
+          .scl files. Resulting scale is given as interval (decimal), ratio (fraction), cents, distance and frequency.
+          You can view a full MIDI note frequency dump for a scale and given base frequency. Development stopped when I
+          discovered <a href="https://sevish.com/">Sevish</a>'s
+          <a href="https://sevish.com/scaleworkshop/?version=2.5.7">Scale Workshop</a>, far superior software for
+          producing scales!
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/freqscale-cents.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqscale-cents.png')"
+          />
+          <img
+            src="images/freqscale-1.png"
+            alt="FreqCtrl Screenshot 4"
+            class="thumbnail"
+            onclick="openModal('images/freqscale-1.png')"
+          />
+          <img
+            src="images/freqscale-2.png"
+            alt="FreqCtrl Screenshot 2"
+            class="thumbnail"
+            onclick="openModal('images/freqscale-2.png')"
+          />
+          <img
+            src="images/freqscale-fract.png"
+            alt="FreqCtrl Screenshot 3"
+            class="thumbnail"
+            onclick="openModal('images/freqscale-fract.png')"
+          />
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" >Renoise Tool:<br>FreqLab Instrument Creator</a>
-                        <p>Builds instruments by generating single cycle waveforms, user defines custom note frequencies for each sample and can generate and layer harmonics defined as decimal or fraction ratio. Supports importing Scala .scl files to insert octaves of frequencies with base note settings. It can auto generate phrases with pattern options, generate random set of frequencies from your pre set value bank. Settings for default sample options, automatically insert modulation devices.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/freqlab-1.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqlab-1.png')">
-                        </div>  
-                    </div>
-                    
-                    <div class="entry">
-                        <a class="title" >Renoise Tool:<br>FreqMath</a>
-                        <p>A calculator for nine types of frequency related calculations. Results can be used can be used to automatically set Renoise sample options and device parameters.</p>
-                        <div class="thumbnail-container">
-                            <img src="images/freqmath-welcome.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-welcome.png')">
-                            <img src="images/freqmath-calculations.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-calculations.png')">
-                            <img src="images/freqmath-sample-tuning.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-sample-tuning.png')">
-                            <img src="images/freqmath-modulation.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-modulation.png')">
-                            <img src="images/freqmath-calc-log.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-calc-log.png')">
-                            <img src="images/freqmath-notepad.png" alt="FreqCtrl Screenshot 1" class="thumbnail" onclick="openModal('images/freqmath-notepad.png')">
-                        </div>  
-                    </div>
+      <div class="entry">
+        <a class="title">Renoise Tool:<br />FreqLab Instrument Creator</a>
+        <p>
+          Builds instruments by generating single cycle waveforms, user defines custom note frequencies for each sample
+          and can generate and layer harmonics defined as decimal or fraction ratio. Supports importing Scala .scl files
+          to insert octaves of frequencies with base note settings. It can auto generate phrases with pattern options,
+          generate random set of frequencies from your pre set value bank. Settings for default sample options,
+          automatically insert modulation devices.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/freqlab-1.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqlab-1.png')"
+          />
+        </div>
+      </div>
 
-                    <!--<div class="entry">
+      <div class="entry">
+        <a class="title">Renoise Tool:<br />FreqMath</a>
+        <p>
+          A calculator for nine types of frequency related calculations. Results can be used can be used to
+          automatically set Renoise sample options and device parameters.
+        </p>
+        <div class="thumbnail-container">
+          <img
+            src="images/freqmath-welcome.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-welcome.png')"
+          />
+          <img
+            src="images/freqmath-calculations.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-calculations.png')"
+          />
+          <img
+            src="images/freqmath-sample-tuning.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-sample-tuning.png')"
+          />
+          <img
+            src="images/freqmath-modulation.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-modulation.png')"
+          />
+          <img
+            src="images/freqmath-calc-log.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-calc-log.png')"
+          />
+          <img
+            src="images/freqmath-notepad.png"
+            alt="FreqCtrl Screenshot 1"
+            class="thumbnail"
+            onclick="openModal('images/freqmath-notepad.png')"
+          />
+        </div>
+      </div>
+
+      <!--<div class="entry">
                         <a class="title">Wave Generator</a>
                         <p>A waveform generator built in Max/MSP, allows you to create custom waveforms in a vector style for precision. Generate and save a batch of waveforms from a list of frequencies.</p>
                     </div>-->
 
-                    <div class="entry">
-                        <a class="title">Soundcloud</a>
-                        <p>Some music I've made has been shared <a href="https://soundcloud.com/hexadecagon/tracks">here</a>, many tracks have been made private or removed, if you're looking for a track that was previously available you can <a href="mailto:contact@ultradian7.com">contact</a> me. <a href="https://soundcloud.com/hexadecagon88/tracks">Here</a>'s another page I created to upload old music from when I first started doing electronic music.</p>
-                        <div class="embed-container">
-                            <iframe class="audio-embed" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1274945167&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/hexadecagon" title="DW" target="_blank" style="color: #cccccc; text-decoration: none;">DW</a> · <a href="https://soundcloud.com/hexadecagon/sets/tracks" title="tracks" target="_blank" style="color: #cccccc; text-decoration: none;">tracks</a></div>
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title">Soundcloud</a>
+        <p>
+          Some music I've made has been shared <a href="https://soundcloud.com/hexadecagon/tracks">here</a>, many tracks
+          have been made private or removed, if you're looking for a track that was previously available you can
+          <a href="mailto:contact@ultradian7.com">contact</a> me.
+          <a href="https://soundcloud.com/hexadecagon88/tracks">Here</a>'s another page I created to upload old music
+          from when I first started doing electronic music.
+        </p>
+        <div class="embed-container">
+          <iframe
+            class="audio-embed"
+            height="300"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1274945167&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"
+          ></iframe>
+          <div
+            style="
+              font-size: 10px;
+              color: #cccccc;
+              line-break: anywhere;
+              word-break: normal;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda, Verdana, Tahoma,
+                sans-serif;
+              font-weight: 100;
+            "
+          >
+            <a
+              href="https://soundcloud.com/hexadecagon"
+              title="DW"
+              target="_blank"
+              style="color: #cccccc; text-decoration: none"
+              >DW</a
+            >
+            ·
+            <a
+              href="https://soundcloud.com/hexadecagon/sets/tracks"
+              title="tracks"
+              target="_blank"
+              style="color: #cccccc; text-decoration: none"
+              >tracks</a
+            >
+          </div>
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani</a>
-                        <p>My track appears on <a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani</a>, a compilation of electronic music curated by David Galea (<a href="https://umbromaniii.bandcamp.com/">umbromaniii</a>). Released by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) and the <a href="https://elmc.bandcamp.com">E.L.M. Collective</a>. 
-                        <br>
-                        <br>"Dopodomani is released in the spirit of friendship, generosity, and charity. The charity that we selected was Hunger Relief International, because feeding the poor around the world is so important. www.hungerreliefinternational.org"</p>
+      <div class="entry">
+        <a class="title" href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani</a>
+        <p>
+          My track appears on <a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani</a>, a compilation of
+          electronic music curated by David Galea (<a href="https://umbromaniii.bandcamp.com/">umbromaniii</a>).
+          Released by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) and the
+          <a href="https://elmc.bandcamp.com">E.L.M. Collective</a>.
+          <br />
+          <br />"Dopodomani is released in the spirit of friendship, generosity, and charity. The charity that we
+          selected was Hunger Relief International, because feeding the poor around the world is so important.
+          www.hungerreliefinternational.org"
+        </p>
 
-                        <div class="embed-container">
-                            <iframe class="audio-embed" style="border: 0; width: 350px; height: 522px;" src="https://bandcamp.com/EmbeddedPlayer/album=3945448493/size=large/bgcol=ffffff/linkcol=0687f5/track=1044002998/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani by dzc</a></iframe>
-                        </div>
-                    </div>
+        <div class="embed-container">
+          <iframe
+            class="audio-embed"
+            style="border: 0; width: 350px; height: 522px"
+            src="https://bandcamp.com/EmbeddedPlayer/album=3945448493/size=large/bgcol=ffffff/linkcol=0687f5/track=1044002998/transparent=true/"
+            seamless
+            ><a href="https://elmc.bandcamp.com/album/dopodomani">Dopodomani by dzc</a></iframe
+          >
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="https://www.youtube.com/watch?v=hllbOOG6_Eo">Krys Kona - Novality</a>
-                        <p>Novality from <a href="https://www.youtube.com/@kryskonaimage">Krys Kona</a>'s Fashion / No Fashion series. "Solitude, melancholy, and the sense of time and space". They used some of my music for the audio.</p>
-                        <div class="video-wrapper">
-                            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/hllbOOG6_Eo?si=Xy0xG3GAhsIyhDEd" title="Novality" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title" href="https://www.youtube.com/@kryskonaimage">Krys Kona</a>
+        <p>Krys has used my audio in some of his movies.</p>
 
-                    <div class="entry">
-                        <a class="title" href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II</a>
-                        <p>My track appears on <a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II</a>, an <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation mastered by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) featuring artwork by <a href="https://www.thedesignersrepublic.com/ian-anderson">Ian Anderson</a> (<a href="https://www.thedesignersrepublic.com">Designers Republic</a>).
-                        <br>
-                        <br>"We present to you 31 tracks from 31 different artists all over the world. All proceeds from this album will be donated to the WHO COVID-19 Response fund."</p>
-                        <div class="embed-container">
-                            <iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=3908410935/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=902166844/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II by Dec</a></iframe>
-                        </div>
-                    </div>
+        <div class="video-wrapper">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube-nocookie.com/embed/6hzN3jyiyQs?si=ph3OuUEQzDZzQOq_"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="video-wrapper">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube-nocookie.com/embed/hllbOOG6_Eo?si=Xy0xG3GAhsIyhDEd"
+            title="Novality"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="">Conduct</a>
-                        <p>"The <a href="https://www.youtube.com/watch?v=2tY34oXOoJ4">steelworks</a> you are about to see takes from the earth five million tons of stone a year, and makes from it one million four hundred thousand tons of steel"</p>
-                        <div class="video-wrapper">
-                            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/2tY34oXOoJ4?si=IJD-LA8cZntjrnOW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title" href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II</a>
+        <p>
+          My track appears on
+          <a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II</a>, an
+          <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation mastered by Jake Fields (<a
+            href="https://0drdoctor0.bandcamp.com"
+            >Dr. Doctor</a
+          >) featuring artwork by <a href="https://www.thedesignersrepublic.com/ian-anderson">Ian Anderson</a> (<a
+            href="https://www.thedesignersrepublic.com"
+            >Designers Republic</a
+          >).
+          <br />
+          <br />"We present to you 31 tracks from 31 different artists all over the world. All proceeds from this album
+          will be donated to the WHO COVID-19 Response fund."
+        </p>
+        <div class="embed-container">
+          <iframe
+            style="border: 0; width: 350px; height: 470px"
+            src="https://bandcamp.com/EmbeddedPlayer/album=3908410935/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/track=902166844/transparent=true/"
+            seamless
+            ><a href="https://elmc.bandcamp.com/album/nature-of-chaos-vol-ii">Nature of Chaos Vol. II by Dec</a></iframe
+          >
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>
-                        <p>An ambient track I produced appears on <a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>, an <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation, mastered by Jake Fields (<a href="https://0drdoctor0.bandcamp.com">Dr. Doctor</a>) artwork produced by Nicolas Silesi.</p>
-                        <div class="embed-container">
-                            <iframe style="border: 0; width: 350px; height: 522px;" src="https://bandcamp.com/EmbeddedPlayer/album=3177415462/size=large/bgcol=ffffff/linkcol=0687f5/track=580789529/transparent=true/" seamless><a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before the Moon by Dec</a></iframe>
-                        </div>
-                    </div>
+      <div class="entry">
+        <a class="title" href="">Conduct</a>
+        <p>
+          "The <a href="https://www.youtube.com/watch?v=2tY34oXOoJ4">steelworks</a> you are about to see takes from the
+          earth five million tons of stone a year, and makes from it one million four hundred thousand tons of steel"
+        </p>
+        <div class="video-wrapper">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube-nocookie.com/embed/2tY34oXOoJ4?si=IJD-LA8cZntjrnOW"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
 
-                    <div class="entry">
-                        <a class="title" href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>
-                        <p>I contributed music to <a href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3">Colundi Every0ne (An Enchantment Of Sonic Spells)</a>, compiled by Grant Wilson-Claridge. Made up of tracks based on Colundi values, "128 resonant frequencies chosen via experimentation and philosophy, each relating to a specific human bio-resonance, or psychology, traditional mysticism or belief, physics, astronomy, maths, chemistry”.</p>
-                        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6dzJ4AeDirY6syN7mMoDrD?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                        <div class="thumbnail-container">
-                            <img src="https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg')">
-                            <img src="https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg')">
-                            <img src="https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg" alt="" class="thumbnail" onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg')">
-                        </div>
-                    </div>
-                    
-                </section>
+      <div class="entry">
+        <a class="title" href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>
+        <p>
+          An ambient track I produced appears on
+          <a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before The Moon</a>, an
+          <a href="https://elmc.bandcamp.com">E.L.M.C.</a> compilation, mastered by Jake Fields (<a
+            href="https://0drdoctor0.bandcamp.com"
+            >Dr. Doctor</a
+          >) artwork produced by Nicolas Silesi.
+        </p>
+        <div class="embed-container">
+          <iframe
+            style="border: 0; width: 350px; height: 522px"
+            src="https://bandcamp.com/EmbeddedPlayer/album=3177415462/size=large/bgcol=ffffff/linkcol=0687f5/track=580789529/transparent=true/"
+            seamless
+            ><a href="https://elmc.bandcamp.com/album/time-before-the-moon">Time Before the Moon by Dec</a></iframe
+          >
+        </div>
+      </div>
 
-                <section class="entries-grid" id="about">
-                    <div class="entry">
-                        <a class="title">About Ultradian7</a>
-                        <p>Ultradian7 is an independent creator with roots in music. The name <a href="https://en.wikipedia.org/wiki/Ultradian_rhythm">Ultradian</a> refers to an ultradian rhythm which "is a recurrent period or cycle repeated throughout a 24-hour day." Besides holding personal significance, the number 7 is the number of days in a week or cycles of a "circadian" rhythm within which ultradian cycles recur, is often associated with luck, completeness and creativity, connected to <a href="https://en.wikipedia.org/wiki/Seven_Wonders_of_the_Ancient_World">the seven wonders</a> of the ancient world, the 7 colours of the <a href="https://en.wikipedia.org/wiki/Rainbow">rainbow</a> as divided by Isaac Newton. The <a href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">magic number 7</a> holds reference to the human brain tending to remember about 7 items in short-term memory.</div>
-                        </p>
-                    </div>
-                </section>
+      <div class="entry">
+        <a
+          class="title"
+          href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3"
+          >Colundi Every0ne (An Enchantment Of Sonic Spells)</a
+        >
+        <p>
+          I contributed music to
+          <a
+            href="https://www.discogs.com/release/16330329-Various-Colundi-Every0ne-An-Enchantment-Of-Sonic-Spells-Part-2-Of-3"
+            >Colundi Every0ne (An Enchantment Of Sonic Spells)</a
+          >, compiled by Grant Wilson-Claridge. Made up of tracks based on Colundi values, "128 resonant frequencies
+          chosen via experimentation and philosophy, each relating to a specific human bio-resonance, or psychology,
+          traditional mysticism or belief, physics, astronomy, maths, chemistry”.
+        </p>
+        <iframe
+          style="border-radius: 12px"
+          src="https://open.spotify.com/embed/track/6dzJ4AeDirY6syN7mMoDrD?utm_source=generator&theme=0"
+          width="100%"
+          height="152"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe>
+        <div class="thumbnail-container">
+          <img
+            src="https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg"
+            alt=""
+            class="thumbnail"
+            onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg')"
+          />
+          <img
+            src="https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg"
+            alt=""
+            class="thumbnail"
+            onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/1f4189b0-429f-460a-a686-102847be9059.jpg')"
+          />
+          <img
+            src="https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg"
+            alt=""
+            class="thumbnail"
+            onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/15c8b9eb-9792-4af5-b34b-bb57b809e876.jpg')"
+          />
+        </div>
+      </div>
+    </section>
 
-                <div id="imageModal" class="modal" onclick="closeModal(event)">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <img class="modal-content" id="modalImage">
-                    <video class="modal-content" id="modalVideo" controls style="display:none;"></video>
-                </div>
+    <section class="entries-grid" id="about">
+      <div class="entry">
+        <a class="title">About Ultradian7</a>
+        <p>
+          Ultradian7 is an independent creator with roots in music. The name
+          <a href="https://en.wikipedia.org/wiki/Ultradian_rhythm">Ultradian</a> refers to an ultradian rhythm which "is
+          a recurrent period or cycle repeated throughout a 24-hour day." Besides holding personal significance, the
+          number 7 is the number of days in a week or cycles of a "circadian" rhythm within which ultradian cycles
+          recur, is often associated with luck, completeness and creativity, connected to
+          <a href="https://en.wikipedia.org/wiki/Seven_Wonders_of_the_Ancient_World">the seven wonders</a> of the
+          ancient world, the 7 colours of the <a href="https://en.wikipedia.org/wiki/Rainbow">rainbow</a> as divided by
+          Isaac Newton. The
+          <a href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">magic number 7</a> holds
+          reference to the human brain tending to remember about 7 items in short-term memory.
+        </p>
+      </div>
+    </section>
 
-                <footer>
-                    <p>Contact: <a href="mailto:ultradian7@gmail.com">ultradian7@gmail.com</a></p>
-                </footer>
-                <script>
-                    
-                    function openModal(source, type = 'image') {
-                        const modal = document.getElementById("imageModal");
-                        const modalImage = document.getElementById("modalImage");
-                        const modalVideo = document.getElementById("modalVideo");
+    <header>
+      <div class="header-container">
+        <h1 class="c2">Ultradian<span class="c1">7</span></h1>
 
-                        // Reset modal content
-                        modalImage.style.display = "none";
-                        modalVideo.style.display = "none";
-                        modalImage.src = "";
-                        modalVideo.src = "";
+        <nav>
+          <ul>
+            <li> <a href="#projects">Projects</a></li>
+            <li> <a href="#about">About</a></li>
+            <li> <a href="mailto:ultradian7@gmail.com">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
-                        // Show the modal
-                        modal.style.display = "flex";
+    <div id="imageModal" class="modal" onclick="closeModal(event)">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img class="modal-content" id="modalImage" />
+      <video class="modal-content" id="modalVideo" controls style="display: none"></video>
+    </div>
 
-                        if (type === "image") {
-                            modalImage.src = source;
-                            modalImage.style.display = "block";
-                        } else if (type === "video") {
-                            modalVideo.src = source;
-                            modalVideo.style.display = "block";
-                        }
-                    }
+    <footer>
+      <p>Contact: <a href="mailto:ultradian7@gmail.com">ultradian7@gmail.com</a></p>
+    </footer>
+    <script>
+      function openModal(source, type = "image") {
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        const modalVideo = document.getElementById("modalVideo");
 
-                    function closeModal(event) {
-                        const modal = document.getElementById("imageModal");
-                        const modalImage = document.getElementById("modalImage");
-                        const modalVideo = document.getElementById("modalVideo");
+        // Reset modal content
+        modalImage.style.display = "none";
+        modalVideo.style.display = "none";
+        modalImage.src = "";
+        modalVideo.src = "";
 
-                        // Check if the clicked element is the modal or the close button
-                        if (event.target === modal || event.target.classList.contains('close')) {
-                            // Close the modal and reset sources
-                            modal.style.display = "none";
-                            modalImage.src = "";
-                            modalVideo.src = "";
-                        }
-                    }
+        // Show the modal
+        modal.style.display = "flex";
 
-                </script>
-            </body>
-        </html>
+        if (type === "image") {
+          modalImage.src = source;
+          modalImage.style.display = "block";
+        } else if (type === "video") {
+          modalVideo.src = source;
+          modalVideo.style.display = "block";
+        }
+      }
+
+      function closeModal(event) {
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        const modalVideo = document.getElementById("modalVideo");
+
+        // Check if the clicked element is the modal or the close button
+        if (event.target === modal || event.target.classList.contains("close")) {
+          // Close the modal and reset sources
+          modal.style.display = "none";
+          modalImage.src = "";
+          modalVideo.src = "";
+        }
+      }
+    </script>
+  </body>
+</html>
