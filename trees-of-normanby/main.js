@@ -1021,9 +1021,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     card.innerHTML = `
-                            <p><strong class="work-sans">Specimen #</strong></p> <div id="specimenIdField">${
+                            <p><strong class="work-sans">Specimen #</p> <div id="specimenIdField">${
                               specimen.id
-                            }</div>
+                            }</div></strong>
                             <p><strong>Species:</strong></p> <div class="menu-button-container" id="speciesIdMenu">${createDropdown(
                               specimen.species_id,
                               speciesMap,
@@ -1087,7 +1087,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Variety #</strong></p> <div>${variety.id}</div>
+                            <p><strong>Variety #</p> <div>${variety.id}</div></strong>
                             <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(
                               variety.species_id,
                               speciesMap,
@@ -1116,7 +1116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Genus #</strong></p> <div>${genus.id}</div>
+                            <p><strong>Genus #</p> <div>${genus.id}</div></strong>
                             <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(
                               genus.family_id,
                               familyMap,
@@ -1143,7 +1143,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Family #</strong></p> <div>${family.id}</div>
+                            <p><strong>Family #</p> <div>${family.id}</div></strong>
                             <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(
                               family.order_id,
                               orderMap,
@@ -1170,7 +1170,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Order #</strong></p> <div>${order.id}</div>
+                            <p><strong>Order #</p> <div>${order.id}</div></strong>
                             <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(
                               order.class_id,
                               classMap,
@@ -1197,7 +1197,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Class #</strong></p> <div>${classItem.id}</div>
+                            <p><strong>Class #</p> <div>${classItem.id}</div></strong>
                             <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(
                               classItem.phylum_id,
                               phylumMap,
@@ -1226,7 +1226,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-                            <p><strong>Phylum #</strong></p> <div>${phylum.id}</div>
+                            <p><strong>Phylum #</p> <div>${phylum.id}</div></strong>
                             <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(
                               phylum.kingdom_id,
                               createMap(kingdoms),
