@@ -98,7 +98,7 @@ header img {
     background-color: rgba(11, 11, 11, 1);
     color: rgba(220, 207, 194, 1);
     border: 1px solid rgba(220, 207, 194, 1);
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-family: "Work Sans", sans-serif;
   }
@@ -159,7 +159,7 @@ h1 {
   border-radius: 8px;
   background-color: rgba(11, 11, 11, 1);
   color: rgba(255, 255, 255, 1);
- 
+  font-family: "Work Sans", sans-serif;
   font-size: 1rem;
 }
 
