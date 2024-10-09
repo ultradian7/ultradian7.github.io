@@ -1010,7 +1010,7 @@
                         card.innerHTML = `
                             <p><strong>Variety #</strong></p> <div>${variety.id}</div>
                             <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(variety.species_id, speciesMap, "italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
-                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${variety.name, "italic"}" /></div>
+                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${variety.name}" /></div>
                             
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${variety.info}</textarea></div>
                             
