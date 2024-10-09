@@ -78,6 +78,7 @@ header img {
     padding: 5px;
     min-width: 200px;
     z-index: 1;
+    color: rgb(255, 255, 255);
   }
   
   nav ul li.dropdown:hover .dropdown-content {
@@ -90,6 +91,7 @@ header img {
     align-items: center;
     gap: 10px;
     padding: 0;
+    color: white;
   }
   
   .dropdown-selector {
@@ -153,13 +155,14 @@ h1 {
   padding-left: 7px;
   height: 1.25rem;
   width: 200px;
-  border: 1px solid rgba(220, 207, 194, 1);
+  border: 2px solid rgba(220, 207, 194, 1);
+  border-radius: 8px;
   background-color: rgba(11, 11, 11, 1);
   color: rgba(255, 255, 255, 1);
-  border-radius: 5px;
-  
+ 
   font-size: 1rem;
 }
+
 
 .filter-bar {
   padding: 5px;
@@ -204,7 +207,6 @@ textarea {
   border-radius: 3px;
   box-sizing: border-box;
   resize: vertical;
-  font-family: "Courier New", Courier, monospace;
   font-size: 16px;
 }
 .work-sans {
@@ -280,14 +282,14 @@ input:checked + .slider:before {
   padding: 5px 5px;
   border: 2px solid rgba(220, 207, 194, 1);
   background-color: rgba(11, 11, 11, 1);
-  color: rgba(220, 207, 194, 1);
+  color: rgb(255, 255, 255);
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
 }
 .action-buttons button:hover {
   background-color: rgba(220, 207, 194, 0.8);
-  color: rgba(255, 255, 255, 1);
+  color: rgb(255, 255, 255);
 }
 .menu-button-container {
   display: flex;
@@ -313,6 +315,8 @@ input:checked + .slider:before {
 
 #viewSelector {
   width: 194px;
+  color: white;
+
 }
 .switch-row {
   display: flex;
@@ -413,48 +417,20 @@ input:checked + .slider:before {
   animation: spin 1s linear infinite;
   margin-right: 10px;
 }
-.user-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: rgba(220, 207, 194, 1);
-}
 
-.user-name-container {
-  margin-right: 15px;
-}
-
-.login-page .card {
-    display: block;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.login-page .action-buttons {
-    text-align: center;
-    display: block;
-    margin-top: 10px;
-}
-.margin-bottom {
-    margin-bottom: 15px;
-}
-form label {
-    display: block;
-    margin-bottom: 10px;
-}
 
 
 #logout-button {
-    margin-left: 1rem;
-  margin-right: 7rem;
+    padding: 0 0.5rem 0 0.5rem;
+margin-left: 1rem;
+  margin-right: 3rem;
   border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(31, 31, 31, 1);
-  color: rgba(220, 207, 194, 1);
+  color: rgb(255, 255, 255);
   border-radius: 5px;
   cursor: pointer;
+  font-family: "Work Sans", sans-serif;
+  font-size: 1rem;
 }
 
 #logout-button:hover {
@@ -483,6 +459,12 @@ form label {
 @media (max-width: 750px) {
     .nav-search {
         display: none;
+
     } 
+    nav {
+        margin-left: 1rem;
+    }
+
+    
 
 }

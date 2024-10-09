@@ -13,15 +13,20 @@
             width: 100%;
             max-width: 400px;
             margin: 0 auto;
+            font-family: "Work Sans", sans-serif;
         }
 
         .login-page .action-buttons {
             text-align: center;
             display: block;
             margin-top: 10px;
+            
         }
         .margin-bottom {
             margin-bottom: 15px;
+        }
+        button{
+            font-family: "Work Sans", sans-serif;
         }
         form label {
             display: block;
@@ -45,8 +50,8 @@
             <label for="password">Password:</label>
             <input type="password" id="password" class="input-field margin-bottom" placeholder="Enter your password" required>
             
-            <label for="display_name" id="display-name-label" style="display: none;">Display Name:</label>
-            <input type="text" id="display_name" class="input-field" placeholder="Enter your display name" style="display: none;">
+            <label for="display_name" id="display-name-label">Display Name:</label>
+            <input type="text" id="display_name" class="input-field" placeholder="Enter your display name">
             
             <div class="action-buttons margin-bottom">
                 <button type="button" id="submit-button">Login</button>
