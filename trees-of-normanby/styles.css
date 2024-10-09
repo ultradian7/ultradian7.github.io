@@ -17,9 +17,13 @@ header {
   top: 0;
   z-index: 100;
   border-bottom: 1px solid white;
-  overflow: hidden;
 }
 
+header::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 header img {
     padding-top: 0.16182rem;
@@ -38,6 +42,7 @@ header img {
   nav {
     margin-left: 2rem;
     margin-right: auto;
+    transition: margin-left 925.92592592593ms; 
   }
 
   nav ul {
@@ -63,7 +68,7 @@ header img {
     padding: 0;
     text-decoration: none;
     color: var(--my-pink);
-    transition: color 0.3s;
+    transition: color 925.92592592593ms;
   }
 
   nav ul li.dropdown {
@@ -162,6 +167,7 @@ h1 {
   color: rgba(255, 255, 255, 1);
   font-family: "Work Sans", sans-serif;
   font-size: 1rem;
+  transition: display 925.92592592593ms;
 }
 
 
