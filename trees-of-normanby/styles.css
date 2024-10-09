@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Work+Sans:400,600");
+
 html {
   font-family: "Work Sans", sans-serif;
 }
@@ -118,7 +119,7 @@ header img {
   }
 
   
-.user-name-container, #logout-button {
+.user-name-container {
     display: none;
 }
 
@@ -425,8 +426,30 @@ input:checked + .slider:before {
   margin-right: 15px;
 }
 
+.login-page .card {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-page .action-buttons {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+}
+.margin-bottom {
+    margin-bottom: 15px;
+}
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+
 #logout-button {
-  padding: 5px 10px;
+    margin-left: 1rem;
+  margin-right: 7rem;
   border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(31, 31, 31, 1);
   color: rgba(220, 207, 194, 1);
@@ -438,6 +461,15 @@ input:checked + .slider:before {
   background-color: rgba(220, 207, 194, 0.8);
   color: rgba(255, 255, 255, 1);
 }
+
+#login-section {
+    display: none;
+}
+
+#main-content {
+    display: none;
+}
+
 
 @keyframes spin {
   0% {
