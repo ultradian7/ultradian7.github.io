@@ -20,11 +20,6 @@ header {
   overflow: hidden;
 }
 
-header::after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
 header img {
     padding-top: 0.16182rem;
