@@ -123,6 +123,7 @@ header img {
 }
 
 .material-symbols-outlined {
+    padding-top: 0.25em;
   font-variation-settings: "FILL" 0, "wght" 200, "GRAD" 0, "opsz" 20;
 }
 
@@ -437,6 +438,7 @@ input:checked + .slider:before {
   background-color: rgba(220, 207, 194, 0.8);
   color: rgba(255, 255, 255, 1);
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -444,4 +446,11 @@ input:checked + .slider:before {
   100% {
     transform: rotate(360deg);
   }
+}
+
+@media (max-width: 750px) {
+    .nav-search {
+        display: none;
+    } 
+
 }
