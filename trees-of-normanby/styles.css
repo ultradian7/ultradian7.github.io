@@ -21,7 +21,7 @@ header {
   position: fixed;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(220, 207, 194, 1);
 }
 
 header img {
@@ -37,6 +37,13 @@ header img {
     width: 100%;
     padding: 0.5rem 0 0.5rem 0;
   }
+.username-container {
+  padding: 0;
+  margin-top: 0.5rem;
+  color: white;
+  text-wrap: nowrap;
+  margin-left: 0.5rem;
+}
 
   nav {
     margin-left: 2rem;
@@ -78,7 +85,7 @@ header img {
     display: none;
     position: absolute;
     background-color: rgba(31, 31, 31, 1);
-    border-radius: 5px;
+    border-radius: 8px;
     padding: 5px;
     min-width: 200px;
     z-index: 1;
@@ -160,7 +167,7 @@ h1 {
   padding-left: 7px;
   height: 1.25rem;
   width: 200px;
-  border: 2px solid rgba(220, 207, 194, 1);
+  border: 1px solid rgba(220, 207, 194, 1);
   border-radius: 8px;
   background-color: rgba(11, 11, 11, 1);
   color: rgba(255, 255, 255, 1);
@@ -177,7 +184,7 @@ h1 {
   border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(11, 11, 11, 1);
   color: rgba(255, 255, 255, 1);
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .card-container {
@@ -208,10 +215,10 @@ select,
 textarea {
   width: 100%;
   padding: 5px;
-  border: 2px solid rgba(256, 256, 256, 1);
+  border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(11, 11, 11, 1);
   color: rgba(255, 255, 255, 1);
-  border-radius: 3px;
+  border-radius: 8px;
   box-sizing: border-box;
   resize: vertical;
   font-size: 16px;
@@ -290,7 +297,7 @@ input:checked + .slider:before {
   border: 2px solid rgba(220, 207, 194, 1);
   background-color: rgba(11, 11, 11, 1);
   color: rgb(255, 255, 255);
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
 }
@@ -306,10 +313,11 @@ input:checked + .slider:before {
 .add-button {
   background-color: rgba(31, 31, 31, 1);
   color: rgba(220, 207, 194, 1);
-  border: 1px solid rgba(220, 207, 194, 1);
-  border-radius: 3px;
+  border: 2px solid rgba(220, 207, 194, 1);
+  border-radius: 8px;
   cursor: pointer;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-left: 10px;
 }
 .add-button:hover {
@@ -323,6 +331,7 @@ input:checked + .slider:before {
 #viewSelector {
   width: 194px;
   color: white;
+  background-color: black;
 
 }
 .switch-row {
@@ -337,7 +346,7 @@ input:checked + .slider:before {
   border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(31, 31, 31, 1);
   color: rgba(220, 207, 194, 1);
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   display: block;
@@ -434,7 +443,7 @@ margin-left: 1rem;
   border: 1px solid rgba(220, 207, 194, 1);
   background-color: rgba(31, 31, 31, 1);
   color: rgb(255, 255, 255);
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Work Sans", sans-serif;
   font-size: 1rem;
@@ -472,6 +481,8 @@ margin-left: 1rem;
         margin-left: 0rem;
     }
 
-    
+    .username-container{
+      display: none;
+    }
 
 }

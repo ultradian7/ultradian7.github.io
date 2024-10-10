@@ -19,15 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const userId = session.user.id;
   const displayName = (await fetchUserDisplayName(userId)) || session.user.email;
-
-  // Create a container for the user info and logout button
-  const userContainer = document.createElement("div");
-  userContainer.className = "user-container";
-
-  // Create the display name element
-  const userNameContainer = document.createElement("div");
-  userNameContainer.className = "user-name-container";
-  userNameContainer.textContent = `Logged in as: ${displayName}`;
+  document.getElementById("usernameContainer").textContent = displayName;
 
 
   document.getElementById("logout-button").addEventListener("click", async () => {
