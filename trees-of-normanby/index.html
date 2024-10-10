@@ -5,6 +5,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="icon" type="image/png" href="web/favicon.png"/>
             <link rel="stylesheet" href="styles.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -23,9 +24,9 @@
                     <ul>
 
                         <li class="view-menu">
-                            <a href="#"><span class="material-symbols-outlined">
+                            <span class="material-symbols-outlined">
                                 visibility
-                                </span></a>
+                            </span>
                             <select id="viewSelector" class="dropdown-selector">
                               <option value="specimen">Botanical Specimen</option>
                               <option value="variety">Taxon Variety</option>
@@ -40,16 +41,27 @@
                         </li>
 
                         <li class="nav-search">
-                            <a href="#"><span class="material-symbols-outlined">
+                            <span class="material-symbols-outlined">
                                 search
-                            </span></a>
+                            </span>
                             <input type="text" id="search" class="search-bar" placeholder="Search..." />
                         </li>
                       
                     </ul>
                   </nav>
-                  <div class="username-container" id="usernameContainer">Username</div>
-                  <button id="logout-button" class="logout-button">Logout</button>
+
+                <div class="username-container" id="usernameContainer">
+                  <span class="material-symbols-outlined">
+                    person
+                    </span>
+                  <div id="usernameText"></div>
+                  
+                </div>
+       
+                  
+                </div>
+                <div id="userDropdown" class="dropdown-content">
+                    <button id="logout-menu-item">Logout</button>
                 </div>
               </header>
               

@@ -19,17 +19,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const userId = session.user.id;
   const displayName = (await fetchUserDisplayName(userId)) || session.user.email;
-  document.getElementById("usernameContainer").textContent = displayName;
+  document.getElementById("usernameText").textContent = displayName;
 
+  document.getElementById("usernameContainer").addEventListener("click", () => {
+    const dropdown = document.getElementById("userDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+});
 
-  document.getElementById("logout-button").addEventListener("click", async () => {
+document.addEventListener("click", (event) => {
+  const dropdown = document.getElementById("userDropdown");
+  if (dropdown.style.display === "block" && !event.target.closest(".username-container")) {
+      dropdown.style.display = "none";
+  }
+});
+
+document.getElementById("logout-menu-item").addEventListener("click", async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error("Error logging out:", error);
+        console.error("Error logging out:", error);
     } else {
-      window.location.href = "login.html"; // Redirect to login page
+        window.location.href = "login.html";
     }
-  });
+});
 
   const cardContainer = document.getElementById("card-container");
   const addNewButton = document.getElementById("add-new-button");
@@ -877,7 +888,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
                               species.info
                             }</textarea></div>
-                            
+
                             <div class="action-buttons">
                                 <button class="update-button" data-id="${
                                   species.id
