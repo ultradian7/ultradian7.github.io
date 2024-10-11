@@ -874,7 +874,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                             <p><strong>Species #</strong></p> <div>${species.id}</div>
                             <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(
                               species.genus_id,
-                              genusMap
+                              genusMap,
+                              "italic"
                             )}<button class="add-button"><span class="material-symbols-outlined" id="add-genus-button">add</span></button></div>
                             <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
                               species.name
