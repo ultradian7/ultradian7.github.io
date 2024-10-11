@@ -24,23 +24,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("usernameContainer").addEventListener("click", () => {
     const dropdown = document.getElementById("userDropdown");
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-});
+  });
 
-document.addEventListener("click", (event) => {
-  const dropdown = document.getElementById("userDropdown");
-  if (dropdown.style.display === "block" && !event.target.closest(".username-container")) {
+  document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("userDropdown");
+    if (dropdown.style.display === "block" && !event.target.closest(".username-container")) {
       dropdown.style.display = "none";
-  }
-});
+    }
+  });
 
-document.getElementById("logout-menu-item").addEventListener("click", async () => {
+  document.getElementById("logout-menu-item").addEventListener("click", async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-        console.error("Error logging out:", error);
+      console.error("Error logging out:", error);
     } else {
-        window.location.href = "login.html";
+      window.location.href = "login.html";
     }
-});
+  });
 
   const cardContainer = document.getElementById("card-container");
   const addNewButton = document.getElementById("add-new-button");

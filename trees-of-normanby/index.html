@@ -1,81 +1,81 @@
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="icon" type="image/png" href="web/favicon.png"/>
-            <link rel="stylesheet" href="styles.css">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility" />
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-            <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/pica/dist/pica.min.js"></script>
-            <title>Trees of Normanby Database Manager</title>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="web/favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=visibility"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pica/dist/pica.min.js"></script>
+    <title>Trees of Normanby Database Manager</title>
+  </head>
 
-        </head>
-
-        <body>
-            
-            <header>
-                <div class="header-container">
-                  <img src="assets/nhcp-tree.svg" alt="logo" class="nhcp-tree">
-                  <nav>
-                    <ul>
-
-                        <li class="view-menu">
-                            <span class="material-symbols-outlined">
-                                visibility
-                            </span>
-                            <select id="viewSelector" class="dropdown-selector">
-                              <option value="specimen">Botanical Specimen</option>
-                              <option value="variety">Taxon Variety</option>
-                              <option value="species">Taxon Species</option>
-                              <option value="genus">Taxon Genus</option>
-                              <option value="family">Taxon Family</option>
-                              <option value="order">Taxon Order</option>
-                              <option value="class">Taxon Class</option>
-                              <option value="phylum">Taxon Phylum</option>
-                              <option value="park_locations">Park Locations</option>
-                            </select>
-                        </li>
-
-                        <li class="nav-search">
-                            <span class="material-symbols-outlined">
-                                search
-                            </span>
-                            <input type="text" id="search" class="search-bar" placeholder="Search..." />
-                        </li>
-                      
-                    </ul>
-                  </nav>
-
-                <div class="username-container" id="usernameContainer">
-                  <span class="material-symbols-outlined">
-                    person
-                    </span>
-                  <div id="usernameText"></div>
-                  
-                </div>
-       
-                  
-                </div>
-                <div id="userDropdown" class="dropdown-content">
-                    <button id="logout-menu-item">Logout</button>
-                </div>
-              </header>
-              
+  <body>
+    <header>
+      <div class="header-container">
+        <img src="assets/nhcp-tree.svg" alt="logo" class="nhcp-tree" />
+        <nav>
+          <ul>
+            <li class="view-menu">
+              <span class="material-symbols-outlined"> visibility </span>
+              <select id="viewSelector" class="dropdown-selector">
+                <option value="specimen">Botanical Specimen</option>
+                <option value="variety">Taxon Variety</option>
+                <option value="species">Taxon Species</option>
+                <option value="genus">Taxon Genus</option>
+                <option value="family">Taxon Family</option>
+                <option value="order">Taxon Order</option>
+                <option value="class">Taxon Class</option>
+                <option value="phylum">Taxon Phylum</option>
+                <option value="park_locations">Park Locations</option>
+              </select>
+            </li>
           
-            <div class="filter-container">
-                <select id="kingdom-filter" class="filter-bar work-sans">
-                    <option value="">All Kingdoms</option>
-                </select>
-            </div>
 
-            <div id="card-container" class="card-container"></div>
-            <button id="add-new-button" class="add-new-button"><span class="material-symbols-outlined">add</span></button>
-            <script type="module" src="main.js"></script>
+          <li class="nav-search">
+            <span class="material-symbols-outlined search-icon"> search </span>
+            <input type="text" id="search" class="search-bar" placeholder="Search..." />
+          </li>
+        </ul>
+        </nav>
 
 
-        </body>
-        </html>
+        
+
+        <div class="username-container" id="usernameContainer">
+          <span class="material-symbols-outlined user-icon"> person </span>
+          <div id="usernameText"></div>
+        </div>
+      </div>
+      <div id="userDropdown" class="dropdown-content">
+        <button id="logout-menu-item">Logout</button>
+      </div>
+    </header>
+
+    <div class="filter-container">
+      <select id="kingdom-filter" class="filter-bar work-sans">
+        <option value="">All Kingdoms</option>
+      </select>
+    </div>
+
+    <div id="card-container" class="card-container"></div>
+    <button id="add-new-button" class="add-new-button"><span class="material-symbols-outlined">add</span></button>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
