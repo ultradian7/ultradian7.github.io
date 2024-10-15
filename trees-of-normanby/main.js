@@ -1,1 +1,1983 @@
-import{createClient as e}from"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";const n="https://cnibjqyawzddpcpdrzrz.supabase.co";document.addEventListener("DOMContentLoaded",(async function(){const t=e(n,"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWJqcXlhd3pkZHBjcGRyenJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk3NjY1MDMsImV4cCI6MjAzNTM0MjUwM30.p3HiV0fezopi5YUFmyCFYMNKcb4TplKodJBt121oCiA"),{data:{session:a}}=await t.auth.getSession();if(!a)return void(window.location.href="login.html");const i=a.user.id,o=await async function(e){try{const{data:n,error:a}=await t.rpc("get_user_display_name",{user_id:e});if(a)throw a;return n}catch(e){return console.error("Error fetching user display name:",e),null}}(i)||a.user.email;document.getElementById("usernameText").textContent=o,document.getElementById("usernameContainer").addEventListener("click",(()=>{const e=document.getElementById("userDropdown");e.style.display="block"===e.style.display?"none":"block"})),document.addEventListener("click",(e=>{const n=document.getElementById("userDropdown");"block"!==n.style.display||e.target.closest(".username-container")||(n.style.display="none")})),document.getElementById("logout-menu-item").addEventListener("click",(async()=>{const{error:e}=await t.auth.signOut();e?console.error("Error logging out:",e):window.location.href="login.html"}));const r=document.getElementById("card-container"),s=document.getElementById("add-new-button"),d=document.getElementById("kingdom-filter"),l=document.getElementById("viewSelector");let c="specimen",u=[],m={},p={},g={},f={},y={},v={},h={},b={};const _=q,x=S;l.addEventListener("change",(()=>E(l.value))),s.addEventListener("click",_),d.addEventListener("change",x);const w=new MutationObserver((e=>{for(const n of e)n.addedNodes.length>0&&window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})}));function $(e){e.querySelector("#show-location-button").addEventListener("click",(()=>{const n=parseInt(e.querySelectorAll(".menu-button-container select")[0].value),t=parseInt(e.querySelector("#specimenIdField").textContent),a=e.querySelector("#locationField").value,[i,o]=a.split(", ").map((e=>e.trim())),r=function(e,n,t){function a(e){return btoa(unescape(encodeURIComponent(e)))}return function(e,n,t){const i=a(JSON.stringify(e)),o=a(JSON.stringify(n));return`${i}.${o}.${a(i+"."+o+"."+t)}`}(e,n,t)}({alg:"HS256",typ:"JWT"},{lat:i,lng:o,speciesId:n,specimenId:t,specimenInfo:e.querySelector("#specimenInfoField").value,isAccessible:e.querySelectorAll(".toggle-switch input")[0].checked,images:e.querySelector(".image-data").dataset.imageFilenames,imageInfo:e.querySelector(".image-data").dataset.imageDescriptions,markerType:"Tree",showMarker:!0,exp:Math.floor(Date.now()/1e3)+3600},"key"),s=`https://ultradian7.github.io/trees-of-normanby/web/index.html?token=${encodeURIComponent(r)}`;window.open(s,"_blank")}))}function k(e){const n=e.querySelectorAll('[id*="add-"]');for(const e of n)e.addEventListener("click",(e=>{E(e.target.id.replace(/add-/,"").replace(/-button$/,"")),setTimeout((()=>{q()}),300)}))}function E(e){c=e,S(),l.value=e}async function S(){w.disconnect(),r.innerHTML="",await async function(){const[e,n,a,i,o,r,s,d]=await Promise.all([t.from("taxon_genus").select("id, name"),t.from("taxon_species").select("id, name, genus_id"),t.from("taxon_variety").select("id, name"),t.from("taxon_family").select("id, name"),t.from("taxon_order").select("id, name"),t.from("taxon_class").select("id, name"),t.from("taxon_phylum").select("id, name"),t.from("location_categories").select("id, name")]);if(e.error||n.error||a.error||i.error||o.error||r.error||s.error)return void console.error("Error fetching dropdown data:",e.error||n.error||a.error||i.error||o.error||r.error||s.error);m=j(e.data),p=function(e,n){const t={};return e.forEach((e=>{const a=n[e.genus_id];t[e.id]=`${a} ${e.name}`})),t}(n.data,m),g=j(a.data),f=j(i.data),y=j(o.data),v=j(r.data),h=j(s.data),b=j(d.data)}(),"species"===c?await async function(){const e=d.value;let n=t.from("taxon_species").select("\n                            id,\n                            name,\n                            common_name,\n                            native_range,\n                            info,\n                            genus_id,\n                            taxon_genus!inner (\n                                id,\n                                name,\n                                taxon_family!inner (\n                                    id,\n                                    name,\n                                    taxon_order!inner (\n                                        id,\n                                        name,\n                                        taxon_class!inner (\n                                            id,\n                                            name,\n                                            taxon_phylum!inner (\n                                                id,\n                                                name,\n                                                kingdom_id\n                                            )\n                                        )\n                                    )\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching species data:",i);a.forEach((e=>N(e))),B(),z()}():"specimen"===c?await async function(){const e=d.value;let n=t.from("botanical_specimen").select("\n                            id,\n                            species_id,\n                            variety_id,\n                            location::geometry,\n                            info,\n                            is_accessible,\n                            is_tree,\n                            is_notable,\n                            images,\n                            image_info,\n                            taxon_species!inner (\n                                id,\n                                name,\n                                genus_id,\n                                taxon_genus!inner (\n                                    id,\n                                    name,\n                                    taxon_family!inner (\n                                        id,\n                                        name,\n                                        taxon_order!inner (\n                                            id,\n                                            name,\n                                            taxon_class!inner (\n                                                id,\n                                                name,\n                                                taxon_phylum!inner (\n                                                    id,\n                                                    name,\n                                                    kingdom_id\n                                                )\n                                            )\n                                        )\n                                    )\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching specimen data:",i);a.map((e=>{const n=e.location?parseFloat(e.location.coordinates[1]):0,t=e.location?parseFloat(e.location.coordinates[0]):0;return{...e,latitude:n,longitude:t}})).forEach((e=>{A(e)})),B(),z()}():"genus"===c?await async function(){const e=d.value;let n=t.from("taxon_genus").select("\n                            id,\n                            name,\n                            info,\n                            family_id,\n                            taxon_family!inner (\n                                id,\n                                name,\n                                taxon_order!inner (\n                                    id,\n                                    name,\n                                    taxon_class!inner (\n                                        id,\n                                        name,\n                                        taxon_phylum!inner (\n                                            id,\n                                            name,\n                                            kingdom_id\n                                        )\n                                    )\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching genus data:",i);a.forEach((e=>C(e))),B(),z()}():"family"===c?await async function(){const e=d.value;let n=t.from("taxon_family").select("\n                            id,\n                            name,\n                            info,\n                            order_id,\n                            taxon_order!inner (\n                                id,\n                                name,\n                                taxon_class!inner (\n                                    id,\n                                    name,\n                                    taxon_phylum!inner (\n                                        id,\n                                        name,\n                                        kingdom_id\n                                    )\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_order.taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching family data:",i);a.forEach((e=>O(e))),B(),z()}():"order"===c?await async function(){const e=d.value;let n=t.from("taxon_order").select("\n                            id,\n                            name,\n                            info,\n                            class_id,\n                            taxon_class!inner (\n                                id,\n                                name,\n                                taxon_phylum!inner (\n                                    id,\n                                    name,\n                                    kingdom_id\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching order data:",i);a.forEach((e=>L(e))),B(),z()}():"class"===c?await async function(){const e=d.value;let n=t.from("taxon_class").select("\n                            id,\n                            name,\n                            info,\n                            phylum_id,\n                            taxon_phylum!inner (\n                                id,\n                                name,\n                                kingdom_id\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching class data:",i);a.forEach((e=>J(e))),B(),z()}():"phylum"===c?await async function(){const e=d.value;let n=t.from("taxon_phylum").select("\n                            id,\n                            name,\n                            info,\n                            kingdom_id,\n                            taxon_kingdom!inner (\n                                id,\n                                name\n                            )\n                        ").order("id");e&&(n=n.eq("kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching phylum data:",i);a.forEach((e=>T(e))),B(),z()}():"variety"===c?await async function(){const e=d.value;let n=t.from("taxon_variety").select("\n                            id,\n                            name,\n                            species_id,\n                            info,\n                            taxon_species!inner (\n                                id,\n                                name,\n                                genus_id,\n                                taxon_genus!inner (\n                                    id,\n                                    name,\n                                    taxon_family!inner (\n                                        id,\n                                        name,\n                                        taxon_order!inner (\n                                            id,\n                                            name,\n                                            taxon_class!inner (\n                                                id,\n                                                name,\n                                                taxon_phylum!inner (\n                                                    id,\n                                                    name,\n                                                    kingdom_id\n                                                )\n                                            )\n                                        )\n                                    )\n                                )\n                            )\n                        ").order("id");e&&(n=n.eq("taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",e));const{data:a,error:i}=await n;if(i)return void console.error("Error fetching variety data:",i);a.forEach((e=>U(e))),B(),z()}():"park_locations"===c&&await async function(){const{data:e,error:a}=await t.from("park_locations").select("\n                                id,\n                                name,\n                                info,\n                                tags,\n                                location::geometry,\n                                images,\n                                image_info,\n                                is_accessible,\n                                category_id,\n                                location_categories!inner (\n                                    id,\n                                    name,\n                                    info,\n                                    colour\n                                )\n                            ").order("id");if(a)return void console.error("Error fetching park locations data:",a);console.log("Fetched location data:",e);e.map((e=>{const n=e.location?parseFloat(e.location.coordinates[1]):0,t=e.location?parseFloat(e.location.coordinates[0]):0;return{...e,latitude:n,longitude:t,tags:e.tags?e.tags.join(", "):""}})).forEach((e=>function(e){const t=document.createElement("div");t.className="card";const a="/storage/v1/object/public/images/";let i="";if(e.images){const t=JSON.parse(e.images),o=JSON.parse(e.image_info||"[]");for(;o.length<t.length;)o.push("");i=t.map(((t,i)=>`\n                                    <div class="thumbnail-container" data-url="${t}">\n                                        <img src="${`${n}${a}park_locations/${e.id}/thumb_${t}`}" class="thumbnail" alt="location image">\n                                        <textarea class="input-field image-description" placeholder="Enter description">${o[i]||""}</textarea>\n                                        <button class="remove-button" data-url="${t}">X</button>\n                                    </div>\n                                `)).join("")}t.innerHTML=`\n                            <p><strong class="work-sans">Location #</strong></p> <div id="locationIdField">${e.id}</div>\n                            <p><strong class="work-sans">Name:</strong></p> <div><input type="text" id="locationName" class="input-field max-width work-sans" value="${e.name}" /></div>\n                            <p><strong class="work-sans">Category:</strong></p> <div class="menu-button-container">${M(e.category_id,b)}</div>\n                            <p><strong class="work-sans">Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${e.latitude}, ${e.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>\n                            <p><strong class="work-sans">Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            <p><strong class="work-sans">Tags:</strong></p><div><textarea id="tagsField" class="input-field" style="height: 60px;">${e.tags}</textarea></div> \n                            <p><strong class="work-sans">Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>\n                            <div><strong class="work-sans">Current Images:</strong></div>\n                            <div id="sortable-images-${e.id}" class="image-thumbnails">${i}</div>\n                            <div class="switch-row">\n                                <div><strong class="work-sans">Access:</strong> ${F(e.is_accessible)}</div>\n                            </div>\n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="park_locations">Update</button>\n                            </div>\n                            <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(t),new Sortable(document.getElementById(`sortable-images-${e.id}`),{animation:150,onEnd:async function(n){const t=Array.from(n.to.children).map((e=>e.getAttribute("data-url"))),a=Array.from(n.to.children).map((e=>e.querySelector(".image-description").value));await I("park_locations",e.id,t,a)}}),$(t),k(t),D(t,"park_locations",e.id)}(e))),B(),z()}(),w.observe(r,{childList:!0})}async function q(){if("species"===c){const{data:e,error:n}=await t.from("taxon_species").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_species").insert([{id:a}]);if(i)return void console.error("Error inserting new species row:",i);N({id:a,genus_id:0,name:"",common_name:"",native_range:"",info:""})}else if("specimen"===c){const{data:e,error:n}=await t.from("botanical_specimen").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("botanical_specimen").insert([{id:a}]);if(i)return void console.error("Error inserting new specimen row:",i);A({id:a,latitude:0,longitude:0,info:"",species_id:0})}else if("park_locations"===c){const{data:e,error:n}=await t.from("park_locations").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("park_locations").insert([{id:a}]);if(i)return void console.error("Error inserting new location row:",i);A({id:a,latitude:0,longitude:0,info:"",species_id:0})}else if("variety"===c){const{data:e,error:n}=await t.from("taxon_variety").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_variety").insert([{id:a}]);if(i)return void console.error("Error inserting new variety row:",i);U({id:a,name:"",info:"",species_id:0})}else if("genus"===c){const{data:e,error:n}=await t.from("taxon_genus").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_genus").insert([{id:a}]);if(i)return void console.error("Error inserting new genus row:",i);C({id:a,name:"",info:"",family_id:0})}else if("family"===c){const{data:e,error:n}=await t.from("taxon_family").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_family").insert([{id:a}]);if(i)return void console.error("Error inserting new family row:",i);O({id:a,name:"",info:"",order_id:0})}else if("order"===c){const{data:e,error:n}=await t.from("taxon_order").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_order").insert([{id:a}]);if(i)return void console.error("Error inserting new order row:",i);L({id:a,name:"",info:"",class_id:0})}else if("class"===c){const{data:e,error:n}=await t.from("taxon_class").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_class").insert([{id:a}]);if(i)return void console.error("Error inserting new class row:",i);J({id:a,name:"",info:"",phylum_id:0})}else if("phylum"===c){const{data:e,error:n}=await t.from("taxon_phylum").select("id").order("id",{ascending:!1}).limit(1),a=e&&e.length>0?e[0].id+1:1,{error:i}=await t.from("taxon_phylum").insert([{id:a}]);if(i)return void console.error("Error inserting new phylum row:",i);T({id:a,name:"",info:"",kingdom_id:0})}z()}async function I(e,n,a,i){const{data:o,error:r}=await t.from(e).update({images:JSON.stringify(a),image_info:JSON.stringify(i)}).eq("id",n);r?console.error("Error updating image order:",r):console.log("Image order updated successfully:",o)}function N(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Species #</strong></p> <div>${e.id}</div>\n                            <p><strong>Genus:</strong></p> <div class="menu-button-container">${M(e.genus_id,m,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-genus-button">add</span></button></div>\n                            <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            <p><strong>Common Name:</strong></p> <div><textarea class="input-field work-sans"  ">${e.common_name}</textarea></div>\n                            <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${e.native_range}</textarea></div>\n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n\n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="species">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function A(e){const t=document.createElement("div");t.className="card";let a="",i=[],o=[];if(e.images){for(i=JSON.parse(e.images),o=JSON.parse(e.image_info||"[]");o.length<i.length;)o.push("");a=i.map(((t,a)=>`\n                                    <div class="thumbnail-container" data-url="${t}">\n                                        <img src="${`${n}/storage/v1/object/public/images/botanical_specimen/${e.id}/thumb_${t}`}" class="thumbnail" alt="specimen image">\n                                        <textarea class="input-field image-description" placeholder="Enter description">${o[a]||""}</textarea>\n                                        <button class="remove-button" data-url="${t}">X</button>\n                                    </div>\n                                `)).join("")}t.innerHTML=`\n                            <p><strong class="work-sans">Specimen #</p> <div id="specimenIdField">${e.id}</div></strong>\n                            <p><strong>Species:</strong></p> <div class="menu-button-container" id="speciesIdMenu">${M(e.species_id,p,"italic",'id="#speciesIdMenu"')}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>\n                            <p><strong>Variety:</strong></p> <div class="menu-button-container">${M(e.variety_id,g,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>\n                            <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${e.latitude}, ${e.longitude}"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>\n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" id="specimenInfoField" style="height: 120px;">${e.info}</textarea></div> \n                            <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>\n                            <div><strong>Current Images:</strong></div>\n                            <div id="sortable-images-${e.id}" class="image-thumbnails">${a}</div>\n                            <div class="switch-row">\n                                <div><strong>Access:</strong> ${F(e.is_accessible)}</div>\n                                <div><strong>Tree:</strong> ${F(e.is_tree)}</div>\n                                <div><strong>Notable:</strong> ${F(e.is_notable)}</div>\n                            </div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="specimen">Update</button>\n                            </div>\n                            <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>\n                            <div class="feedback-message">Update successful!</div>\n                            \n                            \x3c!-- Hidden element to store image data --\x3e\n                            <input type="hidden" class="image-data" \n                                data-image-filenames='${JSON.stringify(i)}' \n                                data-image-descriptions='${JSON.stringify(o)}' />\n                                                    `,r.appendChild(t),new Sortable(document.getElementById(`sortable-images-${e.id}`),{animation:150,onEnd:async function(n){const t=Array.from(n.to.children).map((e=>e.getAttribute("data-url"))),a=Array.from(n.to.children).map((e=>e.querySelector(".image-description").value));await I("botanical_specimen",e.id,t,a)}}),$(t),k(t),D(t,"botanical_specimen",e.id)}function U(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Variety #</p> <div>${e.id}</div></strong>\n                            <p><strong>Species:</strong></p> <div class="menu-button-container">${M(e.species_id,p,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>\n                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="variety">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function C(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Genus #</p> <div>${e.id}</div></strong>\n                            <p><strong>Family:</strong></p> <div class="menu-button-container">${M(e.family_id,f,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-family-button">add</span></button></div>\n                            <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="genus">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function O(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Family #</p> <div>${e.id}</div></strong>\n                            <p><strong>Order:</strong></p> <div class="menu-button-container">${M(e.order_id,y,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-order-button">add</span></button></div>\n                            <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="family">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function L(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Order #</p> <div>${e.id}</div></strong>\n                            <p><strong>Class:</strong></p> <div class="menu-button-container">${M(e.class_id,v,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-class-button">add</span></button></div>\n                            <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="order">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function J(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Class #</p> <div>${e.id}</div></strong>\n                            <p><strong>Phylum:</strong></p> <div class="menu-button-container">${M(e.phylum_id,h,"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-phylum-button">add</span></button></div>\n                            <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            \n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="class">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function T(e){const n=document.createElement("div");n.className="card",n.innerHTML=`\n                            <p><strong>Phylum #</p> <div>${e.id}</div></strong>\n                            <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${M(e.kingdom_id,j(u),"italic")}<button class="add-button"><span class="material-symbols-outlined" id="add-kingdom-button">add</span></button></div>\n                            <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${e.name}" /></div>\n                            \n                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${e.info}</textarea></div>\n                            <div class="feedback-message">Update successful!</div>\n                            <div class="action-buttons">\n                                <button class="update-button" data-id="${e.id}" data-type="phylum">Update</button>\n                            </div>\n                            <div class="feedback-message">Update successful!</div>\n                        `,r.appendChild(n),k(n)}function M(e,n,t,a){t||(t="");let i=Object.entries(n);i.sort(((e,n)=>e[1].localeCompare(n[1])));let o=`<select class="max-width work-sans ${t}">`;o+='<option value=""></option>';for(const[n,r]of i){o+=`<option value="${n}" ${n===(e||"").toString()?"selected":""} class="work-sans ${t}" ${a}>${r}</option>`}return o+="</select>",o}function F(e){return`\n                            <label class="toggle-switch">\n                                <input type="checkbox" ${e?"checked":""}>\n                                <span class="slider"></span>\n                            </label>\n                        `}function j(e){const n={};return e.forEach((e=>{e&&e.id&&e.name&&(n[e.id]=e.name||"")})),n}function B(){const e=document.getElementById("search");e.addEventListener("input",(function(){const n=e.value.toLowerCase();document.querySelectorAll("#card-container .card").forEach((e=>{const t=function(e){let n="";const t=e.querySelectorAll("p, input, textarea, select");return t.forEach((e=>{"SELECT"===e.tagName?n+=e.options[e.selectedIndex].text+" ":"INPUT"===e.tagName||"TEXTAREA"===e.tagName?n+=e.value+" ":n+=e.textContent+" "})),n.trim()}(e).toLowerCase();t.includes(n)?e.style.display="grid":e.style.display="none"}))}))}async function H(e,a,i){const o=pica(),r=`${e.name.split(".")[0]}.${e.name.split(".").pop()}`,s=`${i}/${a}/${r}`;return new Promise(((d,l)=>{const c=new Image;c.onload=async()=>{const u=document.createElement("canvas");u.width=c.width,u.height=c.height;u.getContext("2d").drawImage(c,0,0,c.width,c.height);const m=document.createElement("canvas"),p=1200,g=1200;let f=c.width,y=c.height;f>y?f>p&&(y=Math.round(p/f*y),f=p):y>g&&(f=Math.round(g/y*f),y=g),m.width=f,m.height=y;try{await o.resize(u,m);const p=await o.toBlob(m,"image/jpeg",.9),g=new File([p],r,{type:e.type}),{data:v,error:h}=await t.storage.from("images").upload(s,g);if(h)return console.error("Error uploading original image:",h.message),void l(h.message);const b=document.createElement("canvas"),_=300,x=300;f=c.width,y=c.height,f>y?f>_&&(y=Math.round(_/f*y),f=_):y>x&&(f=Math.round(x/y*f),y=x),b.width=f,b.height=y,await o.resize(u,b);const w=await o.toBlob(b,"image/jpeg",.9),$=`thumb_${r}`,k=new File([w],$,{type:e.type}),E=`${i}/${a}/${k.name}`,{data:S,error:q}=await t.storage.from("images").upload(E,k);if(q)return console.error("Error uploading thumbnail:",q.message),void l(q.message);const I=`\n                                        <div class="thumbnail-container" data-url="${r}">\n                                            <img src="${`${n}/storage/v1/object/public/images/${E}`}" class="thumbnail" alt="location image">\n                                            <button class="remove-button" data-url="${r}">X</button>\n                                        </div>\n                                    `,N=document.getElementById(`sortable-images-${a}`);N.insertAdjacentHTML("beforeend",I),D(N.closest(".card"),i,a),d({imageUrl:r,thumbnailUrl:k.name})}catch(e){l(`Error processing image: ${e.message}`)}},c.onerror=e=>l(`Error loading image: ${e.message}`),c.src=URL.createObjectURL(e)}))}function D(e,n,a){e.querySelectorAll(".remove-button").forEach((e=>{e.addEventListener("click",(async()=>{const i=e.getAttribute("data-url"),o=`${n}/${a}/${i}`,r=`${n}/${a}/${`thumb_${i}`}`;try{const{data:s,error:d}=await t.storage.from("images").remove([o,r]);if(d)return void console.error("Error deleting images from storage:",d);const{data:l,error:c}=await t.from(n).select("images, image_info").eq("id",a).single();if(c||!l.images)return void console.error("Error fetching images or image_info:",c);let u=JSON.parse(l.images),m=JSON.parse(l.image_info||"[]");const p=u.indexOf(i);-1!==p&&(u.splice(p,1),m.splice(p,1));const{data:g,error:f}=await t.from(n).update({images:u.length?JSON.stringify(u):null,image_info:m.length?JSON.stringify(m):null}).eq("id",a);if(f)return void console.error("Error updating images and image_info:",f);e.closest(".thumbnail-container").remove(),console.log("Image and image_info removed successfully:",g)}catch(e){console.error("Unexpected error during image removal:",e)}}))}))}function z(){document.querySelectorAll(".update-button").forEach((e=>{e.addEventListener("click",(async()=>{const n=e.closest(".card"),a=e.getAttribute("data-id"),i=e.getAttribute("data-type");let o=!1;if("species"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea.work-sans").value,s=n.querySelectorAll("textarea")[1].value,d=n.querySelectorAll("textarea")[2].value,{data:l,error:c}=await t.from("taxon_species").update({genus_id:e,name:i,common_name:r,native_range:s,info:d}).eq("id",a);c?console.error("Error updating species data:",c):(console.log("Species data updated successfully:",l),o=!0)}else if("specimen"===i){const e=n.querySelector("#specimenIdField").textContent,a=parseInt(n.querySelectorAll(".menu-button-container select")[0].value),i=parseInt(n.querySelectorAll(".menu-button-container select")[1].value),r=n.querySelectorAll(".input-field")[0].value.split(", "),s=n.querySelectorAll("textarea")[0].value,d=n.querySelectorAll(".toggle-switch input")[0].checked,l=n.querySelectorAll(".toggle-switch input")[1].checked,c=n.querySelectorAll(".toggle-switch input")[2].checked,u=n.querySelector("#imageUpload"),m=n.querySelector(".uploading-message");m.style.display="flex";const{data:p,error:g}=await t.from("botanical_specimen").select("images, image_info").eq("id",e).single();if(g)return void console.error("Error fetching specimen images:",g);let f=p.images?JSON.parse(p.images):[],y=p.image_info?JSON.parse(p.image_info):[];if(u.files.length>0){for(const n of u.files)try{const{imageUrl:t}=await H(n,e,"botanical_specimen");f.push(t),y.push("")}catch(e){console.error("Error uploading image:",e)}u.value=""}const v=Array.from(n.querySelectorAll(".image-description")).map((e=>e.value||""));if(v.length<f.length)for(let e=v.length;e<f.length;e++)v.push("");m.style.display="none";const{data:h,error:b}=await t.from("botanical_specimen").update({species_id:a,variety_id:i,location:`POINT(${r[1]} ${r[0]})`,info:s,is_accessible:d,is_notable:c,is_tree:l,images:f.length?JSON.stringify(f):null,image_info:JSON.stringify(v)}).eq("id",e);b?console.error("Error updating specimen data:",b):(console.log("Specimen data updated successfully:",h),o=!0)}if(o){const e=n.querySelector(".feedback-message");e.style.display="block",setTimeout((()=>{e.style.display="none"}),6e3)}else if("park_locations"===i){const e=n.querySelector("#locationIdField").textContent,a=n.querySelector("#locationName").value,i=n.querySelector("#locationField").value.split(", "),r=parseInt(n.querySelectorAll(".menu-button-container select")[0].value),s=n.querySelectorAll("textarea")[0].value,d=n.querySelector("#tagsField").value.split(",").map((e=>e.trim())),l=n.querySelectorAll(".toggle-switch input")[0].checked,c=n.querySelector("#imageUpload"),u=n.querySelector(".uploading-message");u.style.display="flex";const{data:m,error:p}=await t.from("park_locations").select("images, image_info").eq("id",e).single();if(p)return void console.error("Error fetching location images:",p);let g=m.images?JSON.parse(m.images):[],f=m.image_info?JSON.parse(m.image_info):[];if(c.files.length>0){for(const n of c.files)try{const{imageUrl:t}=await H(n,e,"park_locations");g.push(t),f.push("")}catch(e){console.error("Error uploading image:",e)}c.value=""}const y=Array.from(n.querySelectorAll(".image-description")).map((e=>e.value||""));if(y.length<g.length)for(let e=y.length;e<g.length;e++)y.push("");u.style.display="none";const{data:v,error:h}=await t.from("park_locations").update({name:a,location:`POINT(${i[1]} ${i[0]})`,info:s,tags:d,is_accessible:l,category_id:r,images:g.length?JSON.stringify(g):null,image_info:JSON.stringify(y)}).eq("id",e);h?console.error("Error updating location data:",h):(console.log("Location data updated successfully:",v),o=!0)}if(o){const e=n.querySelector(".feedback-message");e.style.display="block",setTimeout((()=>{e.style.display="none"}),6e3)}else if("genus"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_genus").update({family_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating genus data:",d):(console.log("Genus data updated successfully:",s),o=!0)}else if("variety"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_variety").update({species_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating variety data:",d):(console.log("Variety data updated successfully:",s),o=!0)}else if("family"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_family").update({order_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating family data:",d):(console.log("Family data updated successfully:",s),o=!0)}else if("order"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_order").update({class_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating order data:",d):(console.log("Order data updated successfully:",s),o=!0)}else if("class"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_class").update({phylum_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating class data:",d):(console.log("Class data updated successfully:",s),o=!0)}else if("phylum"===i){const e=n.querySelector(".menu-button-container select").value,i=n.querySelector(".input-field.italic").value,r=n.querySelector("textarea").value,{data:s,error:d}=await t.from("taxon_phylum").update({kingdom_id:e,name:i,info:r}).eq("id",a);d?console.error("Error updating phylum data:",d):(console.log("Phylum data updated successfully:",s),o=!0)}if(o){const e=n.querySelector(".feedback-message");e.style.display="block",setTimeout((()=>{e.style.display="none"}),6e3)}}))}))}w.observe(r,{childList:!0,subtree:!0}),async function(){const{data:e,error:n}=await t.from("taxon_kingdom").select("id, name, common_name");n?console.error("Error fetching kingdom data:",n):(u=e,u.forEach((e=>{const n=document.createElement("option");n.value=e.id,n.textContent=e.common_name,d.appendChild(n)})))}(),S()}));
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const supabaseUrlPrefix = "https://cnibjqyawzddpcpdrzrz.supabase.co";
+
+document.addEventListener("DOMContentLoaded", async function () {
+  const SUPABASE_URL = supabaseUrlPrefix;
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuaWJqcXlhd3pkZHBjcGRyenJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk3NjY1MDMsImV4cCI6MjAzNTM0MjUwM30.p3HiV0fezopi5YUFmyCFYMNKcb4TplKodJBt121oCiA";
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const userId = session.user.id;
+  const displayName = (await fetchUserDisplayName(userId)) || session.user.email;
+  document.getElementById("usernameText").textContent = displayName;
+
+  document.getElementById("usernameContainer").addEventListener("click", () => {
+    const dropdown = document.getElementById("userDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  });
+
+  document.addEventListener("click", (event) => {
+    const dropdown = document.getElementById("userDropdown");
+    if (dropdown.style.display === "block" && !event.target.closest(".username-container")) {
+      dropdown.style.display = "none";
+    }
+  });
+
+  document.getElementById("logout-menu-item").addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error logging out:", error);
+    } else {
+      window.location.href = "login.html";
+    }
+  });
+
+  const cardContainer = document.getElementById("card-container");
+  const addNewButton = document.getElementById("add-new-button");
+  const kingdomFilter = document.getElementById("kingdom-filter");
+  const viewSelector = document.getElementById("viewSelector");
+
+  let currentView = "specimen";
+  let kingdoms = [];
+  let genusMap = {};
+  let speciesMap = {};
+  let varietyMap = {};
+  let familyMap = {};
+  let orderMap = {};
+  let classMap = {};
+  let phylumMap = {};
+  let locationCategoriesMap = {};
+
+  const viewChangeListener = () => switchView(viewSelector.value);
+  const addNewCardListener = addNewCard;
+  const kingdomFilterListener = fetchData;
+
+  viewSelector.addEventListener("change", viewChangeListener);
+  addNewButton.addEventListener("click", addNewCardListener);
+  kingdomFilter.addEventListener("change", kingdomFilterListener);
+
+  async function fetchUserDisplayName(userId) {
+    try {
+      const { data, error } = await supabase.rpc("get_user_display_name", { user_id: userId });
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error fetching user display name:", error);
+      return null;
+    }
+  }
+
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.addedNodes.length > 0) {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    }
+  });
+
+  observer.observe(cardContainer, { childList: true, subtree: true });
+
+  function generateJWT(header, payload, secret) {
+    function base64Encode(str) {
+      return btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function signToken(header, payload, secret) {
+      const headerBase64 = base64Encode(JSON.stringify(header));
+      const payloadBase64 = base64Encode(JSON.stringify(payload));
+      const signatureBase64 = base64Encode(headerBase64 + "." + payloadBase64 + "." + secret);
+      return `${headerBase64}.${payloadBase64}.${signatureBase64}`;
+    }
+
+    return signToken(header, payload, secret);
+  }
+
+  function addShowLocationButtonListener(card) {
+    const showLocationButton = card.querySelector("#show-location-button");
+    showLocationButton.addEventListener("click", () => {
+      let markerName = "";
+      let altName = "";
+
+      const header = {
+        alg: "HS256",
+        typ: "JWT",
+      };
+
+      //if (currentView === "park_locations") {
+      //    markerName = card.querySelector("#locationName").value;
+      //} else if (currentView === "specimen") {
+      //    speciesId = card.querySelector("#speciesIdMenu").value;
+      //}
+
+      const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+      const specimenId = parseInt(card.querySelector("#specimenIdField").textContent);
+      const locationInput = card.querySelector("#locationField").value;
+      const [latitude, longitude] = locationInput.split(", ").map((coord) => coord.trim());
+      const specimenInfo = card.querySelector("#specimenInfoField").value;
+      const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+      const imageFilenames = card.querySelector(".image-data").dataset.imageFilenames;
+      const imageDescriptions = card.querySelector(".image-data").dataset.imageDescriptions;
+
+      const payload = {
+        lat: latitude,
+        lng: longitude,
+        speciesId: speciesId,
+        specimenId: specimenId,
+        specimenInfo: specimenInfo,
+        isAccessible: isAccessible,
+        images: imageFilenames,
+        imageInfo: imageDescriptions,
+        markerType: "Tree",
+        showMarker: true,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
+      };
+
+      const key = "key";
+      const token = generateJWT(header, payload, key);
+      const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?token=${encodeURIComponent(token)}`;
+      window.open(url, "_blank");
+    });
+  }
+
+  function addTaxonButtonListener(card) {
+    const addButtons = card.querySelectorAll('[id*="add-"]');
+    for (const button of addButtons) {
+      button.addEventListener("click", (event) => {
+        const id = event.target.id.replace(/add-/, "");
+        const view = id.replace(/-button$/, "");
+        switchView(view);
+        setTimeout(() => {
+          addNewCard();
+        }, 300);
+      });
+    }
+  }
+
+  async function fetchKingdoms() {
+    const { data: kingdomData, error } = await supabase.from("taxon_kingdom").select("id, name, common_name");
+    if (error) {
+      console.error("Error fetching kingdom data:", error);
+      return;
+    }
+    kingdoms = kingdomData;
+    kingdoms.forEach((kingdom) => {
+      const option = document.createElement("option");
+      option.value = kingdom.id;
+      option.textContent = kingdom.common_name;
+      kingdomFilter.appendChild(option);
+    });
+  }
+
+  function switchView(view) {
+    currentView = view;
+    fetchData();
+    viewSelector.value = view;
+  }
+
+  async function fetchData() {
+    observer.disconnect();
+    cardContainer.innerHTML = "";
+    await fetchDropdownData();
+    if (currentView === "species") {
+      await fetchSpeciesData();
+    } else if (currentView === "specimen") {
+      await fetchSpecimenData();
+    } else if (currentView === "genus") {
+      await fetchGenusData();
+    } else if (currentView === "family") {
+      await fetchFamilyData();
+    } else if (currentView === "order") {
+      await fetchOrderData();
+    } else if (currentView === "class") {
+      await fetchClassData();
+    } else if (currentView === "phylum") {
+      await fetchPhylumData();
+    } else if (currentView === "variety") {
+      await fetchVarietyData();
+    } else if (currentView === "park_locations") {
+      await fetchParkLocationData();
+    }
+    observer.observe(cardContainer, { childList: true });
+  }
+
+  async function fetchDropdownData() {
+    const [
+      genusResponse,
+      speciesResponse,
+      varietyResponse,
+      familyResponse,
+      orderResponse,
+      classResponse,
+      phylumResponse,
+      locationCategoriesResponse,
+    ] = await Promise.all([
+      supabase.from("taxon_genus").select("id, name"),
+      supabase.from("taxon_species").select("id, name, genus_id"),
+      supabase.from("taxon_variety").select("id, name"),
+      supabase.from("taxon_family").select("id, name"),
+      supabase.from("taxon_order").select("id, name"),
+      supabase.from("taxon_class").select("id, name"),
+      supabase.from("taxon_phylum").select("id, name"),
+      supabase.from("location_categories").select("id, name"),
+    ]);
+
+    if (
+      genusResponse.error ||
+      speciesResponse.error ||
+      varietyResponse.error ||
+      familyResponse.error ||
+      orderResponse.error ||
+      classResponse.error ||
+      phylumResponse.error
+    ) {
+      console.error(
+        "Error fetching dropdown data:",
+        genusResponse.error ||
+          speciesResponse.error ||
+          varietyResponse.error ||
+          familyResponse.error ||
+          orderResponse.error ||
+          classResponse.error ||
+          phylumResponse.error
+      );
+      return;
+    }
+
+    genusMap = createMap(genusResponse.data);
+    speciesMap = createSpeciesMap(speciesResponse.data, genusMap);
+    varietyMap = createMap(varietyResponse.data);
+    familyMap = createMap(familyResponse.data);
+    orderMap = createMap(orderResponse.data);
+    classMap = createMap(classResponse.data);
+    phylumMap = createMap(phylumResponse.data);
+    locationCategoriesMap = createMap(locationCategoriesResponse.data);
+  }
+
+  async function fetchParkLocationData() {
+    const { data: locationData, error } = await supabase
+      .from("park_locations")
+      .select(
+        `
+                                id,
+                                name,
+                                info,
+                                tags,
+                                location::geometry,
+                                images,
+                                image_info,
+                                is_accessible,
+                                category_id,
+                                location_categories!inner (
+                                    id,
+                                    name,
+                                    info,
+                                    colour
+                                )
+                            `
+      )
+      .order("id");
+
+    if (error) {
+      console.error("Error fetching park locations data:", error);
+      return;
+    }
+
+    console.log("Fetched location data:", locationData);
+
+    const processedLocationData = locationData.map((location) => {
+      const latitude = location.location ? parseFloat(location.location.coordinates[1]) : 0;
+      const longitude = location.location ? parseFloat(location.location.coordinates[0]) : 0;
+
+      return {
+        ...location,
+        latitude,
+        longitude,
+        tags: location.tags ? location.tags.join(", ") : "", // Convert JSONB array to comma-separated string
+      };
+    });
+
+    processedLocationData.forEach((location) => createParkLocationCard(location));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchSpeciesData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_species")
+      .select(
+        `
+                            id,
+                            name,
+                            common_name,
+                            native_range,
+                            info,
+                            genus_id,
+                            taxon_genus!inner (
+                                id,
+                                name,
+                                taxon_family!inner (
+                                    id,
+                                    name,
+                                    taxon_order!inner (
+                                        id,
+                                        name,
+                                        taxon_class!inner (
+                                            id,
+                                            name,
+                                            taxon_phylum!inner (
+                                                id,
+                                                name,
+                                                kingdom_id
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+    }
+
+    const { data: speciesData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching species data:", error);
+      return;
+    }
+    speciesData.forEach((species) => createSpeciesCard(species));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchVarietyData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_variety")
+      .select(
+        `
+                            id,
+                            name,
+                            species_id,
+                            info,
+                            taxon_species!inner (
+                                id,
+                                name,
+                                genus_id,
+                                taxon_genus!inner (
+                                    id,
+                                    name,
+                                    taxon_family!inner (
+                                        id,
+                                        name,
+                                        taxon_order!inner (
+                                            id,
+                                            name,
+                                            taxon_class!inner (
+                                                id,
+                                                name,
+                                                taxon_phylum!inner (
+                                                    id,
+                                                    name,
+                                                    kingdom_id
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq(
+        "taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",
+        selectedKingdomId
+      );
+    }
+
+    const { data: varietyData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching variety data:", error);
+      return;
+    }
+    varietyData.forEach((variety) => createVarietyCard(variety));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchSpecimenData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("botanical_specimen")
+      .select(
+        `
+                            id,
+                            species_id,
+                            variety_id,
+                            location::geometry,
+                            info,
+                            is_accessible,
+                            is_tree,
+                            is_notable,
+                            images,
+                            image_info,
+                            taxon_species!inner (
+                                id,
+                                name,
+                                genus_id,
+                                taxon_genus!inner (
+                                    id,
+                                    name,
+                                    taxon_family!inner (
+                                        id,
+                                        name,
+                                        taxon_order!inner (
+                                            id,
+                                            name,
+                                            taxon_class!inner (
+                                                id,
+                                                name,
+                                                taxon_phylum!inner (
+                                                    id,
+                                                    name,
+                                                    kingdom_id
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq(
+        "taxon_species.taxon_genus.taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id",
+        selectedKingdomId
+      );
+    }
+
+    const { data: specimenData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching specimen data:", error);
+      return;
+    }
+
+    const processedSpecimenData = specimenData.map((specimen) => {
+      const latitude = specimen.location ? parseFloat(specimen.location.coordinates[1]) : 0;
+      const longitude = specimen.location ? parseFloat(specimen.location.coordinates[0]) : 0;
+
+      return {
+        ...specimen,
+        latitude,
+        longitude,
+      };
+    });
+
+    processedSpecimenData.forEach((specimen) => {
+      createSpecimenCard(specimen);
+    });
+
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchGenusData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_genus")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            family_id,
+                            taxon_family!inner (
+                                id,
+                                name,
+                                taxon_order!inner (
+                                    id,
+                                    name,
+                                    taxon_class!inner (
+                                        id,
+                                        name,
+                                        taxon_phylum!inner (
+                                            id,
+                                            name,
+                                            kingdom_id
+                                        )
+                                    )
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("taxon_family.taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+    }
+
+    const { data: genusData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching genus data:", error);
+      return;
+    }
+
+    genusData.forEach((genus) => createGenusCard(genus));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchFamilyData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_family")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            order_id,
+                            taxon_order!inner (
+                                id,
+                                name,
+                                taxon_class!inner (
+                                    id,
+                                    name,
+                                    taxon_phylum!inner (
+                                        id,
+                                        name,
+                                        kingdom_id
+                                    )
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("taxon_order.taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+    }
+
+    const { data: familyData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching family data:", error);
+      return;
+    }
+
+    familyData.forEach((family) => createFamilyCard(family));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchOrderData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_order")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            class_id,
+                            taxon_class!inner (
+                                id,
+                                name,
+                                taxon_phylum!inner (
+                                    id,
+                                    name,
+                                    kingdom_id
+                                )
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("taxon_class.taxon_phylum.kingdom_id", selectedKingdomId);
+    }
+
+    const { data: orderData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching order data:", error);
+      return;
+    }
+
+    orderData.forEach((order) => createOrderCard(order));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchClassData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_class")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            phylum_id,
+                            taxon_phylum!inner (
+                                id,
+                                name,
+                                kingdom_id
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("taxon_phylum.kingdom_id", selectedKingdomId);
+    }
+
+    const { data: classData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching class data:", error);
+      return;
+    }
+
+    classData.forEach((classItem) => createClassCard(classItem));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function fetchLocationCaetgoriesData() {
+    let query = supabase
+      .from("location_categories")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            colour,
+                        `
+      )
+      .order("id");
+  }
+
+  async function fetchPhylumData() {
+    const selectedKingdomId = kingdomFilter.value;
+
+    let query = supabase
+      .from("taxon_phylum")
+      .select(
+        `
+                            id,
+                            name,
+                            info,
+                            kingdom_id,
+                            taxon_kingdom!inner (
+                                id,
+                                name
+                            )
+                        `
+      )
+      .order("id");
+
+    if (selectedKingdomId) {
+      query = query.eq("kingdom_id", selectedKingdomId);
+    }
+
+    const { data: phylumData, error } = await query;
+
+    if (error) {
+      console.error("Error fetching phylum data:", error);
+      return;
+    }
+
+    phylumData.forEach((phylum) => createPhylumCard(phylum));
+    addSearchFunctionality();
+    addUpdateFunctionality();
+  }
+
+  async function addNewCard() {
+    let nextId;
+    let newCard;
+    if (currentView === "species") {
+      const { data: speciesData, error } = await supabase
+        .from("taxon_species")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = speciesData && speciesData.length > 0 ? speciesData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_species").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new species row:", insertError);
+        return;
+      }
+      createSpeciesCard({ id: nextId, genus_id: 0, name: "", common_name: "", native_range: "", info: "" });
+    } else if (currentView === "specimen") {
+      const { data: specimenData, error } = await supabase
+        .from("botanical_specimen")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = specimenData && specimenData.length > 0 ? specimenData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("botanical_specimen").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new specimen row:", insertError);
+        return;
+      }
+      createSpecimenCard({ id: nextId, latitude: 0, longitude: 0, info: "", species_id: 0 });
+    } else if (currentView === "park_locations") {
+      const { data: locationData, error } = await supabase
+        .from("park_locations")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = locationData && locationData.length > 0 ? locationData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("park_locations").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new location row:", insertError);
+        return;
+      }
+      createSpecimenCard({ id: nextId, latitude: 0, longitude: 0, info: "", species_id: 0 });
+    } else if (currentView === "variety") {
+      const { data: varietyData, error } = await supabase
+        .from("taxon_variety")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = varietyData && varietyData.length > 0 ? varietyData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_variety").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new variety row:", insertError);
+        return;
+      }
+      createVarietyCard({ id: nextId, name: "", info: "", species_id: 0 });
+    } else if (currentView === "genus") {
+      const { data: genusData, error } = await supabase
+        .from("taxon_genus")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = genusData && genusData.length > 0 ? genusData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_genus").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new genus row:", insertError);
+        return;
+      }
+      createGenusCard({ id: nextId, name: "", info: "", family_id: 0 });
+    } else if (currentView === "family") {
+      const { data: familyData, error } = await supabase
+        .from("taxon_family")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = familyData && familyData.length > 0 ? familyData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_family").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new family row:", insertError);
+        return;
+      }
+      createFamilyCard({ id: nextId, name: "", info: "", order_id: 0 });
+    } else if (currentView === "order") {
+      const { data: orderData, error } = await supabase
+        .from("taxon_order")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = orderData && orderData.length > 0 ? orderData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_order").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new order row:", insertError);
+        return;
+      }
+      createOrderCard({ id: nextId, name: "", info: "", class_id: 0 });
+    } else if (currentView === "class") {
+      const { data: classData, error } = await supabase
+        .from("taxon_class")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = classData && classData.length > 0 ? classData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_class").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new class row:", insertError);
+        return;
+      }
+      createClassCard({ id: nextId, name: "", info: "", phylum_id: 0 });
+    } else if (currentView === "phylum") {
+      const { data: phylumData, error } = await supabase
+        .from("taxon_phylum")
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+      const nextId = phylumData && phylumData.length > 0 ? phylumData[0].id + 1 : 1;
+      const { error: insertError } = await supabase.from("taxon_phylum").insert([{ id: nextId }]);
+      if (insertError) {
+        console.error("Error inserting new phylum row:", insertError);
+        return;
+      }
+      createPhylumCard({ id: nextId, name: "", info: "", kingdom_id: 0 });
+    }
+    addUpdateFunctionality();
+  }
+
+  async function updateImageOrder(target, id, newOrder, newDescriptionsOrder) {
+    const { data, error } = await supabase
+      .from(target)
+      .update({
+        images: JSON.stringify(newOrder),
+        image_info: JSON.stringify(newDescriptionsOrder),
+      })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error updating image order:", error);
+    } else {
+      console.log("Image order updated successfully:", data);
+    }
+  }
+
+  function createSpeciesCard(species) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Species #</strong></p> <div>${species.id}</div>
+                            <p><strong>Genus:</strong></p> <div class="menu-button-container">${createDropdown(
+                              species.genus_id,
+                              genusMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-genus-button">add</span></button></div>
+                            <p><strong>Species:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              species.name
+                            }" /></div>
+                            <p><strong>Common Name:</strong></p> <div><textarea class="input-field work-sans"  ">${
+                              species.common_name
+                            }</textarea></div>
+                            <p><strong>Native Range:</strong></p> <div><textarea class="input-field" style="height: 60px;">${
+                              species.native_range
+                            }</textarea></div>
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              species.info
+                            }</textarea></div>
+
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${
+                                  species.id
+                                }" data-type="species">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createParkLocationCard(location) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const supabaseStoragePrefix = "/storage/v1/object/public/images/";
+
+    let imageThumbnails = "";
+    if (location.images) {
+      const imageFilenames = JSON.parse(location.images);
+      const imageDescriptions = JSON.parse(location.image_info || "[]");
+
+      // Ensure descriptions array matches images array length
+      while (imageDescriptions.length < imageFilenames.length) {
+        imageDescriptions.push(""); // Fill missing descriptions with empty strings
+      }
+
+      imageThumbnails = imageFilenames
+        .map((filename, index) => {
+          const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}park_locations/${location.id}/thumb_${filename}`;
+          const imageDescription = imageDescriptions[index] || "";
+
+          return `
+                                    <div class="thumbnail-container" data-url="${filename}">
+                                        <img src="${thumbnailUrl}" class="thumbnail" alt="location image">
+                                        <textarea class="input-field image-description" placeholder="Enter description">${imageDescription}</textarea>
+                                        <button class="remove-button" data-url="${filename}">X</button>
+                                    </div>
+                                `;
+        })
+        .join("");
+    }
+
+    card.innerHTML = `
+                            <p><strong class="work-sans">Location #</strong></p> <div id="locationIdField">${
+                              location.id
+                            }</div>
+                            <p><strong class="work-sans">Name:</strong></p> <div><input type="text" id="locationName" class="input-field max-width work-sans" value="${
+                              location.name
+                            }" /></div>
+                            <p><strong class="work-sans">Category:</strong></p> <div class="menu-button-container">${createDropdown(
+                              location.category_id,
+                              locationCategoriesMap
+                            )}</div>
+                            <p><strong class="work-sans">Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${
+                              location.latitude
+                            }, ${
+      location.longitude
+    }"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
+                            <p><strong class="work-sans">Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              location.info
+                            }</textarea></div>
+                            <p><strong class="work-sans">Tags:</strong></p><div><textarea id="tagsField" class="input-field" style="height: 60px;">${
+                              location.tags
+                            }</textarea></div> 
+                            <p><strong class="work-sans">Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>
+                            <div><strong class="work-sans">Current Images:</strong></div>
+                            <div id="sortable-images-${location.id}" class="image-thumbnails">${imageThumbnails}</div>
+                            <div class="switch-row">
+                                <div><strong class="work-sans">Access:</strong> ${createToggleSwitch(
+                                  location.is_accessible
+                                )}</div>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${
+                                  location.id
+                                }" data-type="park_locations">Update</button>
+                            </div>
+                            <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+
+    new Sortable(document.getElementById(`sortable-images-${location.id}`), {
+      animation: 150,
+      onEnd: async function (evt) {
+        const newOrder = Array.from(evt.to.children).map((child) => child.getAttribute("data-url"));
+        const newDescriptionsOrder = Array.from(evt.to.children).map(
+          (child) => child.querySelector(".image-description").value
+        );
+        await updateImageOrder("park_locations", location.id, newOrder, newDescriptionsOrder);
+      },
+    });
+
+    addShowLocationButtonListener(card);
+    addTaxonButtonListener(card);
+    addRemoveImageFunctionality(card, "park_locations", location.id);
+  }
+
+  function createSpecimenCard(specimen) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const supabaseStoragePrefix = "/storage/v1/object/public/images/";
+
+    let imageThumbnails = "";
+    let imageFilenames = [];
+    let imageDescriptions = [];
+
+    if (specimen.images) {
+      imageFilenames = JSON.parse(specimen.images);
+      imageDescriptions = JSON.parse(specimen.image_info || "[]");
+
+      // Ensure descriptions array matches images array length
+      while (imageDescriptions.length < imageFilenames.length) {
+        imageDescriptions.push(""); // Fill missing descriptions with empty strings
+      }
+
+      imageThumbnails = imageFilenames
+        .map((filename, index) => {
+          const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+          const imageDescription = imageDescriptions[index] || "";
+
+          return `
+                                    <div class="thumbnail-container" data-url="${filename}">
+                                        <img src="${thumbnailUrl}" class="thumbnail" alt="specimen image">
+                                        <textarea class="input-field image-description" placeholder="Enter description">${imageDescription}</textarea>
+                                        <button class="remove-button" data-url="${filename}">X</button>
+                                    </div>
+                                `;
+        })
+        .join("");
+    }
+
+    card.innerHTML = `
+                            <p><strong class="work-sans">Specimen #</p> <div id="specimenIdField">${
+                              specimen.id
+                            }</div></strong>
+                            <p><strong>Species:</strong></p> <div class="menu-button-container" id="speciesIdMenu">${createDropdown(
+                              specimen.species_id,
+                              speciesMap,
+                              "italic",
+                              `id="#speciesIdMenu"`
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
+                            <p><strong>Variety:</strong></p> <div class="menu-button-container">${createDropdown(
+                              specimen.variety_id,
+                              varietyMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-variety-button">add</span></button></div>
+                            <p><strong>Location:</strong></p> <div class="menu-button-container"><input type="text" id="locationField" class="input-field max-width work-sans" value="${
+                              specimen.latitude
+                            }, ${
+      specimen.longitude
+    }"/><button class="add-button" id="show-location-button"><span class="material-symbols-outlined">pin_drop</span></button></div>
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" id="specimenInfoField" style="height: 120px;">${
+                              specimen.info
+                            }</textarea></div> 
+                            <p><strong>Upload Images:</strong></p> <div><input type="file" id="imageUpload" class="input-field max-width work-sans" multiple /></div>
+                            <div><strong>Current Images:</strong></div>
+                            <div id="sortable-images-${specimen.id}" class="image-thumbnails">${imageThumbnails}</div>
+                            <div class="switch-row">
+                                <div><strong>Access:</strong> ${createToggleSwitch(specimen.is_accessible)}</div>
+                                <div><strong>Tree:</strong> ${createToggleSwitch(specimen.is_tree)}</div>
+                                <div><strong>Notable:</strong> ${createToggleSwitch(specimen.is_notable)}</div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${
+                                  specimen.id
+                                }" data-type="specimen">Update</button>
+                            </div>
+                            <div class="uploading-message" style="display:none;"><span class="uploading-indicator"></span> Uploading...</div>
+                            <div class="feedback-message">Update successful!</div>
+                            
+                            <!-- Hidden element to store image data -->
+                            <input type="hidden" class="image-data" 
+                                data-image-filenames='${JSON.stringify(imageFilenames)}' 
+                                data-image-descriptions='${JSON.stringify(imageDescriptions)}' />
+                                                    `;
+    cardContainer.appendChild(card);
+
+    new Sortable(document.getElementById(`sortable-images-${specimen.id}`), {
+      animation: 150,
+      onEnd: async function (evt) {
+        const newOrder = Array.from(evt.to.children).map((child) => child.getAttribute("data-url"));
+        const newDescriptionsOrder = Array.from(evt.to.children).map(
+          (child) => child.querySelector(".image-description").value
+        );
+        await updateImageOrder("botanical_specimen", specimen.id, newOrder, newDescriptionsOrder);
+      },
+    });
+
+    addShowLocationButtonListener(card);
+    addTaxonButtonListener(card);
+    addRemoveImageFunctionality(card, "botanical_specimen", specimen.id);
+  }
+
+  function createVarietyCard(variety) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Variety #</p> <div>${variety.id}</div></strong>
+                            <p><strong>Species:</strong></p> <div class="menu-button-container">${createDropdown(
+                              variety.species_id,
+                              speciesMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-species-button">add</span></button></div>
+                            <p><strong>Variety:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              variety.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              variety.info
+                            }</textarea></div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${
+                                  variety.id
+                                }" data-type="variety">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createGenusCard(genus) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Genus #</p> <div>${genus.id}</div></strong>
+                            <p><strong>Family:</strong></p> <div class="menu-button-container">${createDropdown(
+                              genus.family_id,
+                              familyMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-family-button">add</span></button></div>
+                            <p><strong>Genus:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              genus.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              genus.info
+                            }</textarea></div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${genus.id}" data-type="genus">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createFamilyCard(family) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Family #</p> <div>${family.id}</div></strong>
+                            <p><strong>Order:</strong></p> <div class="menu-button-container">${createDropdown(
+                              family.order_id,
+                              orderMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-order-button">add</span></button></div>
+                            <p><strong>Family:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              family.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              family.info
+                            }</textarea></div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${family.id}" data-type="family">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createOrderCard(order) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Order #</p> <div>${order.id}</div></strong>
+                            <p><strong>Class:</strong></p> <div class="menu-button-container">${createDropdown(
+                              order.class_id,
+                              classMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-class-button">add</span></button></div>
+                            <p><strong>Order:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              order.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              order.info
+                            }</textarea></div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${order.id}" data-type="order">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createClassCard(classItem) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Class #</p> <div>${classItem.id}</div></strong>
+                            <p><strong>Phylum:</strong></p> <div class="menu-button-container">${createDropdown(
+                              classItem.phylum_id,
+                              phylumMap,
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-phylum-button">add</span></button></div>
+                            <p><strong>Class:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              classItem.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              classItem.info
+                            }</textarea></div>
+                            
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${
+                                  classItem.id
+                                }" data-type="class">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createPhylumCard(phylum) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+                            <p><strong>Phylum #</p> <div>${phylum.id}</div></strong>
+                            <p><strong>Kingdom:</strong></p> <div class="menu-button-container">${createDropdown(
+                              phylum.kingdom_id,
+                              createMap(kingdoms),
+                              "italic"
+                            )}<button class="add-button"><span class="material-symbols-outlined" id="add-kingdom-button">add</span></button></div>
+                            <p><strong>Phylum:</strong></p> <div><input type="text" class="input-field max-width work-sans italic" value="${
+                              phylum.name
+                            }" /></div>
+                            
+                            <p><strong>Description:</strong></p> <div><textarea class="input-field" style="height: 120px;">${
+                              phylum.info
+                            }</textarea></div>
+                            <div class="feedback-message">Update successful!</div>
+                            <div class="action-buttons">
+                                <button class="update-button" data-id="${phylum.id}" data-type="phylum">Update</button>
+                            </div>
+                            <div class="feedback-message">Update successful!</div>
+                        `;
+    cardContainer.appendChild(card);
+    addTaxonButtonListener(card);
+  }
+
+  function createDropdown(selectedId, itemsMap, italic, dropdownId) {
+    if (!italic) {
+      italic = "";
+    }
+
+    let itemsArray = Object.entries(itemsMap);
+    itemsArray.sort((a, b) => a[1].localeCompare(b[1]));
+
+    let dropdown = `<select class="max-width work-sans ${italic}">`;
+    dropdown += `<option value=""></option>`;
+    for (const [id, name] of itemsArray) {
+      const selected = id === (selectedId || "").toString() ? "selected" : "";
+      dropdown += `<option value="${id}" ${selected} class="work-sans ${italic}" ${dropdownId}>${name}</option>`;
+    }
+    dropdown += `</select>`;
+    return dropdown;
+  }
+
+  function createToggleSwitch(isChecked) {
+    const checked = isChecked ? "checked" : "";
+    return `
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${checked}>
+                                <span class="slider"></span>
+                            </label>
+                        `;
+  }
+
+  function createMap(data) {
+    const map = {};
+    data.forEach((item) => {
+      if (item && item.id && item.name) {
+        map[item.id] = item.name || "";
+      }
+    });
+    return map;
+  }
+
+  function createSpeciesMap(speciesData, genusMap) {
+    const map = {};
+    speciesData.forEach((species) => {
+      const genusName = genusMap[species.genus_id];
+      map[species.id] = `${genusName} ${species.name}`;
+    });
+    return map;
+  }
+
+  function addSearchFunctionality() {
+    const searchInput = document.getElementById("search");
+
+    const searchListener = function () {
+      const searchTerm = searchInput.value.toLowerCase();
+      const cards = document.querySelectorAll("#card-container .card");
+
+      cards.forEach((card) => {
+        const cardTextContent = getCardTextContent(card).toLowerCase();
+        if (cardTextContent.includes(searchTerm)) {
+          card.style.display = "grid";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    };
+
+    searchInput.addEventListener("input", searchListener);
+
+    function getCardTextContent(card) {
+      let textContent = "";
+      const fields = card.querySelectorAll("p, input, textarea, select");
+
+      fields.forEach((field) => {
+        if (field.tagName === "SELECT") {
+          textContent += field.options[field.selectedIndex].text + " ";
+        } else if (field.tagName === "INPUT" || field.tagName === "TEXTAREA") {
+          textContent += field.value + " ";
+        } else {
+          textContent += field.textContent + " ";
+        }
+      });
+
+      return textContent.trim();
+    }
+  }
+
+  async function handleImageUpload(file, id, directory) {
+    const picaInstance = pica();
+    const originalFileName = `${file.name.split(".")[0]}.${file.name.split(".").pop()}`;
+    const originalFilePath = `${directory}/${id}/${originalFileName}`;
+
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = async () => {
+        const originalCanvas = document.createElement("canvas");
+        originalCanvas.width = img.width;
+        originalCanvas.height = img.height;
+
+        const originalCtx = originalCanvas.getContext("2d");
+        originalCtx.drawImage(img, 0, 0, img.width, img.height);
+
+        // Create a target canvas for resizing using Pica
+        const resizedCanvas = document.createElement("canvas");
+        const maxOriginalWidth = 1200;
+        const maxOriginalHeight = 1200;
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxOriginalWidth) {
+            height = Math.round((maxOriginalWidth / width) * height);
+            width = maxOriginalWidth;
+          }
+        } else {
+          if (height > maxOriginalHeight) {
+            width = Math.round((maxOriginalHeight / height) * width);
+            height = maxOriginalHeight;
+          }
+        }
+
+        resizedCanvas.width = width;
+        resizedCanvas.height = height;
+
+        try {
+          await picaInstance.resize(originalCanvas, resizedCanvas);
+          const blob = await picaInstance.toBlob(resizedCanvas, "image/jpeg", 0.9);
+
+          const compressedFile = new File([blob], originalFileName, {
+            type: file.type,
+          });
+
+          const { data: originalData, error: originalError } = await supabase.storage
+            .from("images")
+            .upload(originalFilePath, compressedFile);
+
+          if (originalError) {
+            console.error("Error uploading original image:", originalError.message);
+            reject(originalError.message);
+            return;
+          }
+
+          const thumbnailCanvas = document.createElement("canvas");
+          const maxWidth = 300;
+          const maxHeight = 300;
+
+          width = img.width;
+          height = img.height;
+
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round((maxWidth / width) * height);
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round((maxHeight / height) * width);
+              height = maxHeight;
+            }
+          }
+
+          thumbnailCanvas.width = width;
+          thumbnailCanvas.height = height;
+
+          await picaInstance.resize(originalCanvas, thumbnailCanvas);
+          const thumbnailBlob = await picaInstance.toBlob(thumbnailCanvas, "image/jpeg", 0.9);
+
+          const thumbnailFileName = `thumb_${originalFileName}`;
+          const thumbnailFile = new File([thumbnailBlob], thumbnailFileName, {
+            type: file.type,
+          });
+
+          const thumbnailPath = `${directory}/${id}/${thumbnailFile.name}`;
+
+          const { data: thumbnailData, error: thumbnailError } = await supabase.storage
+            .from("images")
+            .upload(thumbnailPath, thumbnailFile);
+
+          if (thumbnailError) {
+            console.error("Error uploading thumbnail:", thumbnailError.message);
+            reject(thumbnailError.message);
+            return;
+          }
+
+          const thumbnailUrl = `${supabaseUrlPrefix}/storage/v1/object/public/images/${thumbnailPath}`;
+
+          const newThumbnailElement = `
+                                        <div class="thumbnail-container" data-url="${originalFileName}">
+                                            <img src="${thumbnailUrl}" class="thumbnail" alt="location image">
+                                            <button class="remove-button" data-url="${originalFileName}">X</button>
+                                        </div>
+                                    `;
+          const imageContainer = document.getElementById(`sortable-images-${id}`);
+          imageContainer.insertAdjacentHTML("beforeend", newThumbnailElement);
+
+          addRemoveImageFunctionality(imageContainer.closest(".card"), directory, id);
+
+          resolve({
+            imageUrl: originalFileName,
+            thumbnailUrl: thumbnailFile.name,
+          });
+        } catch (error) {
+          reject(`Error processing image: ${error.message}`);
+        }
+      };
+
+      img.onerror = (error) => reject(`Error loading image: ${error.message}`);
+      img.src = URL.createObjectURL(file);
+    });
+  }
+
+  async function updateCard(card, id, type) {
+    let updatedData;
+
+    if (type === "species") {
+      const { data, error } = await supabase.from("taxon_species").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated species data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const genusDropdown = card.querySelector(".menu-button-container select");
+      genusDropdown.value = updatedData.genus_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea.work-sans").value = updatedData.common_name;
+      card.querySelectorAll("textarea")[1].value = updatedData.native_range;
+      card.querySelectorAll("textarea")[2].value = updatedData.info;
+    } else if (type === "specimen") {
+      const { data, error } = await supabase.from("botanical_specimen").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated specimen data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      card.querySelector("#specimenIdField").textContent = updatedData.id;
+      card.querySelectorAll(".menu-button-container select")[0].value = updatedData.species_id;
+      card.querySelectorAll(".menu-button-container select")[1].value = updatedData.variety_id;
+      card.querySelector(
+        ".input-field.max-width.work-sans"
+      ).value = `${updatedData.latitude}, ${updatedData.longitude}`;
+      card.querySelectorAll("textarea")[0].value = updatedData.info;
+      card.querySelectorAll(".toggle-switch input")[0].checked = updatedData.is_accessible;
+      card.querySelectorAll(".toggle-switch input")[1].checked = updatedData.is_tree;
+      card.querySelectorAll(".toggle-switch input")[2].checked = updatedData.is_notable;
+    } else if (type === "park_locations") {
+      const { data, error } = await supabase.from("park_locations").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated park location data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      card.querySelector("#locationIdField").textContent = updatedData.id;
+      card.querySelector("#locationName").value = updatedData.name;
+      card.querySelector("#locationField").value = `${updatedData.latitude}, ${updatedData.longitude}`;
+      card.querySelectorAll(".menu-button-container select")[0].value = updatedData.category_id;
+      card.querySelectorAll("textarea")[0].value = updatedData.info;
+      card.querySelectorAll(".toggle-switch input")[0].checked = updatedData.is_accessible;
+    } else if (type === "genus") {
+      const { data, error } = await supabase.from("taxon_genus").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated genus data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const familyDropdown = card.querySelector(".menu-button-container select");
+      familyDropdown.value = updatedData.family_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea").value = updatedData.info;
+    } else if (type === "variety") {
+      const { data, error } = await supabase.from("taxon_variety").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated variety data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const speciesDropdown = card.querySelector(".menu-button-container select");
+      speciesDropdown.value = updatedData.species_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea").value = updatedData.info;
+    } else if (type === "family") {
+      const { data, error } = await supabase.from("taxon_family").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated family data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const orderDropdown = card.querySelector(".menu-button-container select");
+      orderDropdown.value = updatedData.order_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea").value = updatedData.info;
+    } else if (type === "order") {
+      const { data, error } = await supabase.from("taxon_order").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated order data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const classDropdown = card.querySelector(".menu-button-container select");
+      classDropdown.value = updatedData.class_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea").value = updatedData.info;
+    } else if (type === "class") {
+      const { data, error } = await supabase.from("taxon_class").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated class data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const phylumDropdown = card.querySelector(".menu-button-container select");
+      phylumDropdown.value = updatedData.phylum_id;
+      card.querySelector(".input-field.italic").value = updatedData.name;
+      card.querySelector("textarea").value = updatedData.info;
+    } else if (type === "phylum") {
+      const { data, error } = await supabase.from("taxon_phylum").select("*").eq("id", id).single();
+      if (error) {
+        console.error("Error fetching updated phylum data:", error);
+        return;
+      }
+      updatedData = data;
+
+      // Update UI
+      const kingdomDropdown = card.querySelector(".menu-button-container select");
+      kingdomDropdown.value = updatedData.kingdom_id;
+      card.querySelector(".input-field.italic").value = updatedData.common_name;
+      card.querySelector("textarea").value = updatedData.info;
+    }
+
+    // Add success feedback
+    const feedbackMessage = card.querySelector(".feedback-message");
+    feedbackMessage.style.display = "block";
+    setTimeout(() => {
+      feedbackMessage.style.display = "none";
+    }, 6000);
+  }
+
+  function addRemoveImageFunctionality(card, directory, id) {
+    const removeButtons = card.querySelectorAll(".remove-button");
+
+    removeButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const imageUrl = button.getAttribute("data-url");
+        const thumbnailUrl = `thumb_${imageUrl}`;
+        const imageFilePath = `${directory}/${id}/${imageUrl}`;
+        const thumbnailFilePath = `${directory}/${id}/${thumbnailUrl}`;
+
+        try {
+          // Remove images from Supabase storage
+          const { data: deleteData, error: deleteError } = await supabase.storage
+            .from("images")
+            .remove([imageFilePath, thumbnailFilePath]);
+
+          if (deleteError) {
+            console.error("Error deleting images from storage:", deleteError);
+            return; // Stop further execution if image deletion fails
+          }
+
+          // Fetch the current images and image_info from the database
+          const { data: record, error: fetchError } = await supabase
+            .from(directory)
+            .select("images, image_info")
+            .eq("id", id)
+            .single();
+
+          if (fetchError || !record.images) {
+            console.error("Error fetching images or image_info:", fetchError);
+            return; // Stop further execution if fetching images or image_info fails
+          }
+
+          // Filter out the removed image and its corresponding info
+          let imageUrls = JSON.parse(record.images);
+          let imageInfo = JSON.parse(record.image_info || "[]");
+
+          const imageIndex = imageUrls.indexOf(imageUrl);
+          if (imageIndex !== -1) {
+            imageUrls.splice(imageIndex, 1);
+            imageInfo.splice(imageIndex, 1); // Remove the corresponding image_info entry
+          }
+
+          // Update the database record
+          const { data, error: updateError } = await supabase
+            .from(directory)
+            .update({
+              images: imageUrls.length ? JSON.stringify(imageUrls) : null,
+              image_info: imageInfo.length ? JSON.stringify(imageInfo) : null,
+            })
+            .eq("id", id);
+
+          if (updateError) {
+            console.error("Error updating images and image_info:", updateError);
+            return; // Stop further execution if updating the record fails
+          }
+
+          // Remove the image thumbnail from the DOM only if all operations were successful
+          button.closest(".thumbnail-container").remove();
+          console.log("Image and image_info removed successfully:", data);
+        } catch (error) {
+          console.error("Unexpected error during image removal:", error);
+        }
+      });
+    });
+  }
+
+  function addUpdateFunctionality() {
+    const updateButtons = document.querySelectorAll(".update-button");
+    updateButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const card = button.closest(".card");
+        const id = button.getAttribute("data-id");
+        const type = button.getAttribute("data-type");
+
+        let updateSuccessful = false;
+
+        if (type === "species") {
+          const genusId = card.querySelector(".menu-button-container select").value;
+          const speciesName = card.querySelector(".input-field.italic").value;
+          const commonName = card.querySelector("textarea.work-sans").value;
+          const nativeRange = card.querySelectorAll("textarea")[1].value;
+          const info = card.querySelectorAll("textarea")[2].value;
+
+          const { data, error } = await supabase
+            .from("taxon_species")
+            .update({
+              genus_id: genusId,
+              name: speciesName,
+              common_name: commonName,
+              native_range: nativeRange,
+              info: info,
+            })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating species data:", error);
+          } else {
+            console.log("Species data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "specimen") {
+          const specimenId = card.querySelector("#specimenIdField").textContent;
+          const speciesId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+          const varietyId = parseInt(card.querySelectorAll(".menu-button-container select")[1].value);
+          const location = card.querySelectorAll(".input-field")[0].value.split(", ");
+          const info = card.querySelectorAll("textarea")[0].value;
+          const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+          const isTree = card.querySelectorAll(".toggle-switch input")[1].checked;
+          const isNotable = card.querySelectorAll(".toggle-switch input")[2].checked;
+          const imageUpload = card.querySelector("#imageUpload");
+          const uploadingMessage = card.querySelector(".uploading-message");
+
+          uploadingMessage.style.display = "flex";
+
+          const { data: specimen, error: fetchError } = await supabase
+            .from("botanical_specimen")
+            .select("images, image_info")
+            .eq("id", specimenId)
+            .single();
+
+          if (fetchError) {
+            console.error("Error fetching specimen images:", fetchError);
+            return;
+          }
+
+          let currentImages = specimen.images ? JSON.parse(specimen.images) : [];
+          let currentDescriptions = specimen.image_info ? JSON.parse(specimen.image_info) : [];
+
+          if (imageUpload.files.length > 0) {
+            for (const file of imageUpload.files) {
+              try {
+                const { imageUrl } = await handleImageUpload(file, specimenId, "botanical_specimen");
+                currentImages.push(imageUrl);
+                currentDescriptions.push(""); // Add empty string for new images
+              } catch (error) {
+                console.error("Error uploading image:", error);
+              }
+            }
+            imageUpload.value = "";
+          }
+
+          const imageDescriptions = Array.from(card.querySelectorAll(".image-description")).map(
+            (input) => input.value || ""
+          );
+
+          if (imageDescriptions.length < currentImages.length) {
+            for (let i = imageDescriptions.length; i < currentImages.length; i++) {
+              imageDescriptions.push("");
+            }
+          }
+
+          uploadingMessage.style.display = "none";
+
+          const { data, error } = await supabase
+            .from("botanical_specimen")
+            .update({
+              species_id: speciesId,
+              variety_id: varietyId,
+              location: `POINT(${location[1]} ${location[0]})`,
+              info: info,
+              is_accessible: isAccessible,
+              is_notable: isNotable,
+              is_tree: isTree,
+              images: currentImages.length ? JSON.stringify(currentImages) : null,
+              image_info: JSON.stringify(imageDescriptions),
+            })
+            .eq("id", specimenId);
+
+          if (error) {
+            console.error("Error updating specimen data:", error);
+          } else {
+            console.log("Specimen data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        }
+
+        if (updateSuccessful) {
+          const feedbackMessage = card.querySelector(".feedback-message");
+          feedbackMessage.style.display = "block";
+          setTimeout(() => {
+            feedbackMessage.style.display = "none";
+          }, 6000);
+        } else if (type === "park_locations") {
+          const locationId = card.querySelector("#locationIdField").textContent;
+          const name = card.querySelector("#locationName").value;
+          const location = card.querySelector("#locationField").value.split(", ");
+          const categoryId = parseInt(card.querySelectorAll(".menu-button-container select")[0].value);
+          const info = card.querySelectorAll("textarea")[0].value;
+          const tags = card
+            .querySelector("#tagsField")
+            .value.split(",")
+            .map((tag) => tag.trim());
+          const isAccessible = card.querySelectorAll(".toggle-switch input")[0].checked;
+          const imageUpload = card.querySelector("#imageUpload");
+          const uploadingMessage = card.querySelector(".uploading-message");
+
+          uploadingMessage.style.display = "flex";
+
+          const { data: locationData, error: fetchError } = await supabase
+            .from("park_locations")
+            .select("images, image_info")
+            .eq("id", locationId)
+            .single();
+
+          if (fetchError) {
+            console.error("Error fetching location images:", fetchError);
+            return;
+          }
+
+          let currentImages = locationData.images ? JSON.parse(locationData.images) : [];
+          let currentDescriptions = locationData.image_info ? JSON.parse(locationData.image_info) : [];
+
+          if (imageUpload.files.length > 0) {
+            for (const file of imageUpload.files) {
+              try {
+                const { imageUrl } = await handleImageUpload(file, locationId, "park_locations");
+                currentImages.push(imageUrl);
+                currentDescriptions.push(""); // Add empty string for new images
+              } catch (error) {
+                console.error("Error uploading image:", error);
+              }
+            }
+            imageUpload.value = "";
+          }
+
+          const imageDescriptions = Array.from(card.querySelectorAll(".image-description")).map(
+            (input) => input.value || ""
+          );
+
+          if (imageDescriptions.length < currentImages.length) {
+            for (let i = imageDescriptions.length; i < currentImages.length; i++) {
+              imageDescriptions.push("");
+            }
+          }
+
+          uploadingMessage.style.display = "none";
+
+          const { data, error } = await supabase
+            .from("park_locations")
+            .update({
+              name: name,
+              location: `POINT(${location[1]} ${location[0]})`,
+              info: info,
+              tags: tags,
+              is_accessible: isAccessible,
+              category_id: categoryId,
+              images: currentImages.length ? JSON.stringify(currentImages) : null,
+              image_info: JSON.stringify(imageDescriptions),
+            })
+            .eq("id", locationId);
+
+          if (error) {
+            console.error("Error updating location data:", error);
+          } else {
+            console.log("Location data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        }
+
+        if (updateSuccessful) {
+          const feedbackMessage = card.querySelector(".feedback-message");
+          feedbackMessage.style.display = "block";
+          setTimeout(() => {
+            feedbackMessage.style.display = "none";
+          }, 6000);
+        } else if (type === "genus") {
+          const familyId = card.querySelector(".menu-button-container select").value;
+          const genusName = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_genus")
+            .update({ family_id: familyId, name: genusName, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating genus data:", error);
+          } else {
+            console.log("Genus data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "variety") {
+          const speciesId = card.querySelector(".menu-button-container select").value;
+          const varietyName = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_variety")
+            .update({ species_id: speciesId, name: varietyName, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating variety data:", error);
+          } else {
+            console.log("Variety data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "family") {
+          const orderId = card.querySelector(".menu-button-container select").value;
+          const familyName = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_family")
+            .update({ order_id: orderId, name: familyName, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating family data:", error);
+          } else {
+            console.log("Family data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "order") {
+          const classId = card.querySelector(".menu-button-container select").value;
+          const orderName = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_order")
+            .update({ class_id: classId, name: orderName, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating order data:", error);
+          } else {
+            console.log("Order data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "class") {
+          const phylumId = card.querySelector(".menu-button-container select").value;
+          const className = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_class")
+            .update({ phylum_id: phylumId, name: className, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating class data:", error);
+          } else {
+            console.log("Class data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        } else if (type === "phylum") {
+          const kingdomId = card.querySelector(".menu-button-container select").value;
+          const phylumName = card.querySelector(".input-field.italic").value;
+          const info = card.querySelector("textarea").value;
+
+          const { data, error } = await supabase
+            .from("taxon_phylum")
+            .update({ kingdom_id: kingdomId, name: phylumName, info: info })
+            .eq("id", id);
+
+          if (error) {
+            console.error("Error updating phylum data:", error);
+          } else {
+            console.log("Phylum data updated successfully:", data);
+            updateSuccessful = true;
+          }
+        }
+
+        if (updateSuccessful) {
+          const feedbackMessage = card.querySelector(".feedback-message");
+          feedbackMessage.style.display = "block";
+          setTimeout(() => {
+            feedbackMessage.style.display = "none";
+          }, 6000);
+        }
+        //await updateCard(card, id, type);
+      });
+    });
+  }
+
+  fetchKingdoms();
+  fetchData();
+});
