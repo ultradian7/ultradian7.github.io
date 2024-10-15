@@ -374,6 +374,7 @@ footer a:hover {
     font-weight: 400;
   }
   .title{
+    text-shadow: 0.111rem 0.111rem 0.25rem rgba(0, 0, 0, 1);
 
     @container (width < 300px) {
       > .material-symbols-outlined {  
@@ -390,18 +391,21 @@ footer a:hover {
   background-image: url("images/ton-bg.png");
   background-size: cover;
   grid-column: span 1;
+  
 
   .title {
     font-size: 2.5rem;
     font-weight: 600;
     font-family: "Aboreto", system-ui;
     color: var(--my-pink);
+    
 
   }
 
   p {
     font-size: 1.5rem;
     grid-column: 2;
+    text-shadow: 0.111rem 0.111rem 0.25rem rgba(0, 0, 0, 1);
   }
 
   @container (inline-size > calc(30ch * 2 + 1rem)) {
