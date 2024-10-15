@@ -368,11 +368,22 @@ footer a:hover {
 
 .ton-card {
   text-wrap: pretty;
+  container-type: inline-size;
   .title {
     font-size: 1.75rem;
     font-weight: 400;
+  }
+  .title{
+
+    @container (width < 300px) {
+      > .material-symbols-outlined {  
+        display: none;
+      }
+    }
+
 
   }
+
 }
 
 .ton-card:first-of-type {
@@ -388,22 +399,32 @@ footer a:hover {
 
   }
 
-  @container (inline-size > calc(38ch * 2 + 1rem)) {
+  p {
+    font-size: 1.5rem;
+    grid-column: 2;
+  }
+
+  @container (inline-size > calc(30ch * 2 + 1rem)) {
     grid-column: span 2;
+    p {
+      font-size: 1.75rem;
+      grid-column: 2;
+    }
+    
   }
 }
 
 .ton-card:nth-of-type(2) {
 
 
-  @container (inline-size > calc(38ch * 2 + 1rem)) {
+  @container (inline-size > calc(40ch * 2 + 1rem)) {
     grid-row: span 2;
     grid-column: 3;
     
   }
 }
 
-.ton-card:nth-of-type(3) {
+.ton-card:nth-of-type(4) {
   gap: 0.5rem 0.5rem;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -423,7 +444,7 @@ footer a:hover {
 }
 
 
-.ton-card:nth-of-type(7) {
+.ton-card:nth-of-type(8) {
   display: grid;
     grid-row: span 2;
     gap: 1rem;
