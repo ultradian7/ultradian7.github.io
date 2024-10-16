@@ -404,11 +404,11 @@ footer a:hover {
 
 .ton-card:first-of-type {
   background-image: url("images/ton-bg.png");
-  background-size: 100%;
+  background-size: 125%;
   background-attachment: scroll;
-  background-position: right right;
-  background-repeat: no-repeat;
-  transition: background-size 3s ease-in-out, background-position 3s ease-in-out;
+  background-position: center right;
+  background-repeat:space   ;
+  transition: background-size 3030.303030303ms ease, background-position 2500ms ease;
 
 
 
