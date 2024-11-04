@@ -1,0 +1,531 @@
+* {
+  font-family: Avenir, "Avenir Next LT Pro", Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif;
+}
+/* Ensure no extra space on the main container */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  gap: 0.5rem;
+  background-color: #352749;
+  padding: 0;
+  margin: 0;
+  width: calc(100vw - 0.5rem);
+  height: auto;
+  overflow: hidden;
+  background: #352749;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0;
+  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
+  width: 100%;
+  background-color: #352749;
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+}
+
+h1 {
+  align-self: center;
+  margin-top: 0.25rem;
+  margin-left: 1rem;
+}
+
+#noteFrequenciesContainer {
+}
+
+button,
+.visibility-dropdown {
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.dropdown-container {
+  margin-top: 0.25rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+.visibility-dropdown {
+  padding: 0.25rem;
+  padding-top: 0.16182rem;
+  padding-bottom: 0.16182rem;
+  background: #543e74;
+  color: white;
+  border: 1px solid gray;
+  cursor: pointer;
+  appearance: none; /* Remove default styling */
+}
+
+.visibility-dropdown option {
+  background-color: #543e74;
+  color: white;
+}
+
+.value-synth-element {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  padding-top: 1.5rem;
+  background: #352749;
+  color: white;
+  font-size: 12px;
+  user-select: none;
+  border-radius: 5px;
+  margin: 0;
+  width: 100%;
+}
+
+.bars-container {
+  border-radius: 10px;
+  padding: 10px;
+  background: black;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.controls-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 12px;
+  width: 100%;
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4), -3px -3px 10px rgba(255, 255, 255, 0.1);
+}
+
+.bars-column {
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4), -3px -3px 10px rgba(255, 255, 255, 0.1);
+  width: 430px;
+}
+
+.controls-container {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: row;
+}
+
+.button-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  border: none;
+  font-weight: 600;
+}
+
+.header-buttons {
+  margin-top: 0.5rem;
+}
+
+.harmonic-table-inner-container {
+  overflow-x: auto;
+  width: 100%;
+  resize: horizontal;
+}
+
+.knob-row-container {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.25rem;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 12px;
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4), -3px -3px 10px rgba(255, 255, 255, 0.1);
+}
+
+.harmonic-slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+.slider-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+.left-column,
+.right-column {
+  padding-right: 0.5rem;
+  overflow-x: hidden;
+  max-height: calc(100vh - 4rem); /* Adjust height to account for header */
+  max-width: 100%;
+}
+
+.right-column {
+  flex: 1;
+  overflow-x: auto;
+}
+
+.left-column::-webkit-scrollbar,
+.right-column::-webkit-scrollbar,
+.values-list-textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.left-column::-webkit-scrollbar-track,
+.right-column::-webkit-scrollbar-track,
+.values-list-textarea::-webkit-scrollbar-track {
+  background: #543e74;
+  border-radius: 4px;
+}
+
+.left-column::-webkit-scrollbar-thumb,
+.right-column::-webkit-scrollbar-thumb,
+.values-list-textarea::-webkit-scrollbar-thumb {
+  background: #7455a0;
+  border-radius: 4px;
+}
+
+.left-column::-webkit-scrollbar-thumb:hover,
+.right-column::-webkit-scrollbar-thumb:hover,
+.values-list-textarea::-webkit-scrollbar-thumb:hover {
+  background: #8563b0;
+}
+.slider-title {
+  width: 110px;
+  font-size: 12px;
+  text-align: right;
+}
+.slider-value-textarea,
+.envelope-map-textarea {
+  width: 80px;
+  height: 20px;
+  resize: none;
+  font-size: 12px;
+  background: inherit;
+  color: white;
+  border: none;
+  user-select: contain;
+}
+.envelope-map-textarea {
+  width: 40px;
+  font-size: 12px;
+}
+.textarea-title {
+  font-size: 12px;
+  text-align: left;
+}
+
+.textarea-title,
+.label-button-container {
+  margin-bottom: 0.25em;
+}
+
+.label-button-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: left;
+  gap: 10px;
+}
+
+.control-slider {
+  background-color: purple;
+  width: 183px;
+  height: 7px;
+  cursor: grab;
+}
+.button-row {
+  gap: 0.5rem;
+  display: flex;
+}
+.toggle-button {
+  background: black;
+  color: white;
+  border: 1px solid gray;
+  padding: 2px;
+  font-size: 11px;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
+  cursor: pointer;
+}
+.values-list-textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 12px;
+  background: black;
+  color: white;
+  border-radius: 6px;
+  user-select: contain;
+  resize: both;
+  padding: 3px;
+  font-family: "Courier", sans-serif;
+  min-height: 1rem;
+  min-width: 288px;
+}
+
+#harmonicRatiosTextarea {
+  margin-bottom: 10px;
+  height: 3em;
+}
+
+#numberGeneratorTextarea {
+  margin-bottom: 10px;
+  height: 25px;
+}
+
+#keyMappingTableContainer {
+  display: none;
+}
+
+.harmonic-table th,
+.harmonic-table td {
+  width: 60px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid gray;
+}
+
+.key-mapping-list-table th {
+  background-color: #81a055; /*green*/
+}
+
+.key-mapping-list-table td:nth-child(1) {
+  background-color: #7455a0; /*purple*/
+}
+
+.key-mapping-list-table td:nth-child(2) {
+  background-color: #694e92; /*purple darker*/
+}
+
+.key-mapping-list-table td:nth-child(2) {
+  background-color: #543e74; /*purple darkerer*/
+}
+
+.key-mapping-list-table th {
+  background-color: #81a055; /*green*/
+}
+
+.harmonic-table th:not(:first-child) {
+  background-color: #81a055; /*green*/
+}
+
+.harmonic-table tr:not(:first-child) td:first-child {
+  background-color: #7455a0; /*purple*/
+}
+
+.value-explorer,
+.harmonic-table,
+.key-mapping-list-table,
+.key-mapping-explorer {
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  display: block;
+
+  table-layout: fixed;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 5px;
+  cursor: crosshair;
+  border-collapse: separate; /* Ensures the border radius is visible */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.key-mapping-explorer tr td {
+  border: 0;
+}
+.key-mapping-explorer tr:not(:first-child) td:not(:first-child) {
+  background: radial-gradient(circle at center, #543e74, #000);
+}
+.key-mapping-explorer th {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.key-mapping-explorer tr td:first-child {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.harmonic-table {
+  width: auto;
+  min-width: 100%;
+}
+
+.key-mapping-list-table {
+  height: 600px;
+  width: 250px;
+  color: white;
+}
+.wave-canvas-container {
+  margin-bottom: 15px;
+  padding: 5px;
+  width: auto;
+  font-size: 11px;
+  background: #543e74;
+  border-radius: 10px;
+  resize: both;
+  overflow: auto;
+  max-width: 600px;
+  min-width: 300px;
+  background: radial-gradient(circle at center, #543e74, #3b2858);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4), -3px -3px 10px rgba(255, 255, 255, 0.1);
+}
+.key-mapping-list-table th,
+.key-mapping-list-table td {
+  text-align: right;
+  border: 1px solid gray;
+  padding: 5px;
+}
+.value-explorer th,
+.value-explorer td,
+.key-mapping-explorer th,
+.key-mapping-explorer td {
+  border-radius: 45%;
+  text-align: center;
+  border: 1px solid gray;
+  min-width: 64px;
+  height: 64px;
+  width: 64px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[contenteditable="true"]:focus {
+  outline: 1px solid #555;
+}
+/* Target the top row headers after the first header cell */
+.value-explorer th:not(:first-child) {
+  background-color: #81a055; /*green*/
+}
+
+/* Target the first cell in each row, excluding the header row */
+.value-explorer tr:not(:first-child) td:first-child {
+  background-color: #7455a0; /*purple*/
+}
+
+label {
+  display: block;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.sustain-column {
+  align-self: center;
+  align-items: center;
+}
+
+.sustain-button {
+  height: 2.25rem;
+  width: 2.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: black;
+  border: none;
+  border-radius: 13%;
+  background: radial-gradient(circle at center, #fcd658, #c3a737);
+
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sustain-button:active {
+  background: radial-gradient(circle at center, #c3a737, #fcd658);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+canvas {
+  width: 100%;
+  height: calc(100% - 2rem);
+  max-width: 100%;
+  max-height: calc(100% - 2rem);
+  margin-bottom: 5px;
+  border-radius: 10px;
+  overflow: auto;
+  resize: both;
+}
+
+#waveCanvasFreqSlider,
+#waveCanvasAmpSlider {
+  min-width: 80px;
+  max-width: 200x;
+}
+
+#harmonicTableContainer {
+  margin-bottom: 15px;
+  display: none;
+}
+
+#keyMappingExplorerContainer {
+  display: none;
+  margin-bottom: 15px;
+}
+
+#valueBankContainer {
+  display: none;
+}
+
+#valueBankTextarea {
+  margin-bottom: 10px;
+  height: 140px;
+}
+
+#valueExplorerContainer {
+  display: none;
+  border: 0;
+}
+
+#baseValuesTextarea,
+#multipliersTextarea {
+  height: 50px;
+}
+
+#envelope1SustainSettingToggleButton {
+  background: radial-gradient(circle at center, #85a357, #6e8a47);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+#envelope1SustainSettingToggleButton:active {
+  background: radial-gradient(circle at center, #6e8a47, #85a357);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+#envelope2SustainSettingToggleButton {
+  background: radial-gradient(circle at center, #fcd658, #c3a737);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+#envelope2SustainSettingToggleButton:active {
+  background: radial-gradient(circle at center, #c3a737, #fcd658);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+#envelope3SustainSettingToggleButton {
+  background: radial-gradient(circle at center, #dd4d37, #b43c2d);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), -2px -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+#envelope3SustainSettingToggleButton:active {
+  background: radial-gradient(circle at center, #b43c2d, #dd4d37);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.2);
+}

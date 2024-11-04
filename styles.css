@@ -363,7 +363,9 @@ footer a:hover {
 }
 
 #projects,
-#about {
+#about,
+#renoise-grid,
+#music {
   gap: 0.862rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
 
