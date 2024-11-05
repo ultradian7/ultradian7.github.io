@@ -368,7 +368,7 @@
               width: calc(100vw - 0.5rem);
               height: auto;
               overflow: auto;
-              background: #352749;
+              background: #352749;  
             }
 
             .header-container {
@@ -381,10 +381,9 @@
               background-color: #352749;
               background: radial-gradient(circle at center, #543e74, #3b2858);
               z-index: 1000;
-              position: fixed;
+              position: absolute;
               top: 0;
               left: 0;
-              right: 0;
               margin: 0;
             }
 
@@ -719,14 +718,14 @@
             .wave-canvas-container {
               margin-bottom: 15px;
               padding: 5px;
-              width: auto;
+              width: 432px;
               height: 240px;
               font-size: 11px;
               background: #543e74;
               border-radius: 10px;
               resize: both;
               overflow: auto;
-              max-width: 600px;
+              max-width: 100%;
               min-width: 300px;
               min-height: 160px;
               background: radial-gradient(circle at center, #543e74, #3b2858);

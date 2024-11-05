@@ -144,6 +144,8 @@ a:hover {
   display: none;
   max-width: 100%;
   padding: 0 0 0 0;
+  scroll-margin-top: 5rem;
+  scroll-snap-type: block;
 }
 
 .card {
@@ -349,13 +351,6 @@ footer a:hover {
   height: 100%;
 }
 
-#projects,
-#about,
-#ton {
-  scroll-margin-top: 5rem;
-  scroll-snap-type: block;
-  display: none;
-}
 
 #projects:target ~ header nav a[href="#projects"],
 #about:target ~ header nav a[href="#about"] {
