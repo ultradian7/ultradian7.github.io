@@ -359,7 +359,7 @@ footer a:hover {
 
 #projects,
 #about,
-#renoise-grid,
+#renoise-tools,
 #music {
   gap: 0.862rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
@@ -441,10 +441,15 @@ footer a:hover {
 
 
 .ton-card:nth-of-type(2) {
+  display: grid;
 
   @container (inline-size > calc(40ch * 3 + 1rem)) {
     grid-row: span 2;
     grid-column: 3;
+  }
+
+  @container (inline-size < calc(40ch * 3 + 1rem)) {
+
   }
 
 }
@@ -491,4 +496,35 @@ footer a:hover {
   'wght' 600,
   'GRAD' 0,
   'opsz' 40
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--my-dark-gray);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 0.2rem;
+}
+
+.dropdown-content a {
+  color: var(--my-pink);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 1rem;
+}
+
+.dropdown-content a:hover {
+  background-color: var(--my-light-gray);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
 }

@@ -164,7 +164,7 @@
       </div>
 
       <div class="card">
-        <a class="title" href="#renoise-grid">Renoise Tools</a>
+        <a class="title" href="#renoise-tools">Renoise Tools</a>
         <p>
           Some tools I've made to extend the functionality of Renoise. Includes a preset handler, instrument creator, scale creator and more.
         </p>
@@ -232,32 +232,37 @@
     </div>
 
   <div class="card ton-card">
-    <div class="title">
-      GIS Mapping
-      <span class="material-symbols-outlined">public</span>
-      <span class="material-symbols-outlined">map</span>
-    </div>
 
-<p>
-  Meticulous hand drawing and digitisation techniques have been used to produce an original geographically accurate map with natural human feel.
-</p>
+    <div>
+      <div class="title">
+        GIS Mapping
+        <span class="material-symbols-outlined">public</span>
+        <span class="material-symbols-outlined">map</span>
+      </div>
 
-<img
-src="images/ton-map-pen.jpg"
-alt="Trees Of Normanby Screenshot 1"
-class="ton-img pen-img"
-onclick="openModal('images/ton-db-2.jpg')"
-/>
   <p>
-  The map has been rendered into thousands of map tiles at different zoom levels, the app references coordinates in the filenames to display the correct parts of the map when required.
-</p>
+    Meticulous hand drawing and digitisation techniques have been used to produce an original geographically accurate map with natural human feel.
+  </p>
 
-<img
-src="images/ton-map-3.jpg"
-alt="Trees Of Normanby Screenshot 1"
-class="ton-img"
-onclick="openModal('images/ton-map-3.jpg')"
-/>
+  <img
+  src="images/ton-map-pen.jpg"
+  alt="Trees Of Normanby Screenshot 1"
+  class="ton-img pen-img"
+  onclick="openModal('images/ton-db-2.jpg')"
+  />
+</div>
+  <div>
+    <p>
+    The map has been rendered into thousands of map tiles at different zoom levels, the app references coordinates in the filenames to display the correct parts of the map when required.
+  </p>
+
+  <img
+  src="images/ton-map-3.jpg"
+  alt="Trees Of Normanby Screenshot 1"
+  class="ton-img"
+  onclick="openModal('images/ton-map-3.jpg')"
+  />
+  </div>
 
 </div>
 
@@ -404,10 +409,10 @@ onclick="openModal('images/ton-map-3.jpg')"
 
     </section>
 
-    <section class="cards-grid" id="renoise-grid">
+    <section class="cards-grid" id="renoise-tools">
       <div class="card">
         <a class="title" href="https://www.renoise.com/tools/modulation-device-presets"
-          >Renoise Tool:<br />Modulation Device Presets</a
+          >Modulation Device Presets</a
         >
         <p>
           Adds support in <a href="https://www.renoise.com">Renoise</a> for Sample Modulation Device presets. As Renoise
@@ -444,7 +449,7 @@ onclick="openModal('images/ton-map-3.jpg')"
       </div>
 
       <div class="card">
-        <div class="title">Renoise Tool:<br />freqCtrl</div>
+        <div class="title">freqCtrl</div>
         <p>
           An on screen button controller for Renoise, ideally used with a touchscreen but can be used universally.
           Optional note layouts inspired by ancient mathematical
@@ -498,7 +503,7 @@ onclick="openModal('images/ton-map-3.jpg')"
       </div>
 
       <div class="card">
-        <div class="title">Renoise Tool:<br />freqScale</div>
+        <div class="title">freqScale</div>
         <p>
           A Renoise tool that allows you to create or modify scales and tunings, supports import and export for Scala
           .scl files. Resulting scale is given as interval (decimal), ratio (fraction), cents, distance and frequency.
@@ -536,7 +541,7 @@ onclick="openModal('images/ton-map-3.jpg')"
       </div>
 
       <div class="card">
-        <div class="title">Renoise Tool:<br />freqLab</div>
+        <div class="title">freqLab</div>
         <p>
           Builds instruments by generating single cycle waveforms, user defines custom note frequencies for each sample
           and can generate and layer harmonics defined as decimal or fraction ratio. Supports importing Scala .scl files
@@ -555,7 +560,7 @@ onclick="openModal('images/ton-map-3.jpg')"
       </div>
 
       <div class="card">
-        <div class="title">Renoise Tool:<br />freqMath</div>
+        <div class="title">freqMath</div>
         <p>
           A calculator for nine types of frequency related calculations. Results can be used can be used to
           automatically set Renoise sample options and device parameters.
@@ -824,14 +829,18 @@ onclick="openModal('images/ton-map-3.jpg')"
     <header>
       <div class="header-container">
         <h1 class="c2">Ultradian<span class="c1">7</span></h1>
-
         <nav>
           <ul>
-            <li> <a href="#projects">Projects</a></li>
-            <li> <a href="#about">About</a></li>
+            <li class="dropdown">
+              <a href="#projects" class="dropbtn">Projects</a>
+              <div id="projectDropdown" class="dropdown-content"></div>
+            </li>
+            <li><a href="#about">About</a></li>
           </ul>
         </nav>
+      </div>
     </header>
+    
 
     <div id="imageModal" class="modal" onclick="closeModal(event)">
       <span class="close" onclick="closeModal()">&times;</span>
@@ -843,6 +852,25 @@ onclick="openModal('images/ton-map-3.jpg')"
       Contact: <a href="mailto:ultradian7@gmail.com" class="c1">ultradian7@gmail.com</a>
     </footer>
     <script>
+
+ // Replace with actual project data
+  const projects = [
+    { name: "Trees of Normanby", link: "#ton" },
+    { name: "freqMajor", link: "freqmajor/index.html" },
+    { name: "Gallery Video Player", link: "#" },
+    { name: "Renoise Tools", link: "#renoise-tools" },
+    { name: "Music", link: "#music" }
+  ];
+
+  const projectDropdown = document.getElementById("projectDropdown");
+
+  projects.forEach(project => {
+    const projectLink = document.createElement("a");
+    projectLink.href = project.link;
+    projectLink.textContent = project.name;
+    projectDropdown.appendChild(projectLink);
+  });
+
       function openModal(source, type = "image") {
         const modal = document.getElementById("imageModal");
         const modalImage = document.getElementById("modalImage");
