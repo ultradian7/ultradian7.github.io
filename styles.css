@@ -524,6 +524,7 @@ footer a:hover {
 
 /* Dropdown content styling */
 .dropdown-content {
+  margin-top: 0.75rem;
   display: none; /* Hidden by default */
   position: absolute;
   background-color: var(--my-dark-gray);
