@@ -498,13 +498,20 @@ footer a:hover {
   'opsz' 40
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
+#dropdown-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
+/* Show dropdown when checkbox is checked */
+#dropdown-toggle:checked + .dropbtn + .dropdown-content {
+  display: block;
+}
+
+/* Dropdown content styling */
 .dropdown-content {
-  display: none;
+  display: none; /* Hidden by default */
   position: absolute;
   background-color: var(--my-dark-gray);
   min-width: 160px;
@@ -523,8 +530,4 @@ footer a:hover {
 
 .dropdown-content a:hover {
   background-color: var(--my-light-gray);
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
 }

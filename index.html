@@ -832,14 +832,24 @@
         <nav>
           <ul>
             <li class="dropdown">
-              <a href="#projects" class="dropbtn">Projects</a>
-              <div id="projectDropdown" class="dropdown-content"></div>
+              <input type="checkbox" id="dropdown-toggle" />
+              <label for="dropdown-toggle" class="dropbtn">Projects</label>
+              <div class="dropdown-content">
+                <a href="#ton">Trees of Normanby</a>
+                <a href="freqmajor/index.html">freqMajor</a>
+                <a href="#">Gallery Video Player</a>
+                <a href="#renoise-tools">Renoise Tools</a>
+                <a href="#music">Music</a>
+              </div>
             </li>
             <li><a href="#about">About</a></li>
           </ul>
         </nav>
       </div>
     </header>
+    
+    
+    
     
 
     <div id="imageModal" class="modal" onclick="closeModal(event)">
@@ -853,23 +863,16 @@
     </footer>
     <script>
 
- // Replace with actual project data
-  const projects = [
-    { name: "Trees of Normanby", link: "#ton" },
-    { name: "freqMajor", link: "freqmajor/index.html" },
-    { name: "Gallery Video Player", link: "#" },
-    { name: "Renoise Tools", link: "#renoise-tools" },
-    { name: "Music", link: "#music" }
-  ];
+const dropdownLinks = document.querySelectorAll('.dropdown-content a');
+  const dropdownToggle = document.getElementById('dropdown-toggle');
 
-  const projectDropdown = document.getElementById("projectDropdown");
-
-  projects.forEach(project => {
-    const projectLink = document.createElement("a");
-    projectLink.href = project.link;
-    projectLink.textContent = project.name;
-    projectDropdown.appendChild(projectLink);
+  dropdownLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      // Uncheck the checkbox to close the menu
+      dropdownToggle.checked = false;
+    });
   });
+
 
       function openModal(source, type = "image") {
         const modal = document.getElementById("imageModal");
