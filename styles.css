@@ -38,10 +38,15 @@ header {
   z-index: 100;
 }
 
+
 header::after {
   content: "";
   display: table;
   clear: both;
+}
+
+.home-link:hover {
+  text-decoration: none;
 }
 
 p {
@@ -496,6 +501,14 @@ footer a:hover {
   'wght' 600,
   'GRAD' 0,
   'opsz' 40
+}
+
+.dropbtn {
+  cursor: pointer;
+}
+
+.dropbtn:hover {
+ text-decoration: underline;
 }
 
 #dropdown-toggle {

@@ -828,10 +828,10 @@
 
     <header>
       <div class="header-container">
-        <h1 class="c2">Ultradian<span class="c1">7</span></h1>
+        <a href="#" class="home-link"><h1 class="c2">Ultradian<span class="c1">7</span></h1></a>
         <nav>
           <ul>
-            <li class="dropdown">
+            <li id="dropdown">
               <input type="checkbox" id="dropdown-toggle" />
               <label for="dropdown-toggle" class="dropbtn">Projects</label>
               <div class="dropdown-content">
@@ -842,7 +842,7 @@
                 <a href="#music">Music</a>
               </div>
             </li>
-            <li><a href="#about">About</a></li>
+            <li class="about-link"><a href="#about">About</a></li>
           </ul>
         </nav>
       </div>
@@ -863,17 +863,18 @@
     </footer>
     <script>
 
-const dropdownLinks = document.querySelectorAll('.dropdown-content a');
-  const dropdownToggle = document.getElementById('dropdown-toggle');
+      const navLinks = document.querySelectorAll('.header-container a');
+      const dropdownToggle = document.getElementById('dropdown-toggle');
 
-  dropdownLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      // Uncheck the checkbox to close the menu
-      dropdownToggle.checked = false;
-    });
-  });
+    
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          dropdownToggle.checked = false;
+        });
+      });
 
 
+   
       function openModal(source, type = "image") {
         const modal = document.getElementById("imageModal");
         const modalImage = document.getElementById("modalImage");
