@@ -358,13 +358,23 @@ footer a:hover {
 
 
 #projects:target ~ header nav a[href="#projects"],
-#about:target ~ header nav a[href="#about"] {
-  color: var(--my-orange);
+#ton:target ~ header nav a[href="#ton"],
+#renoise:target ~ header nav a[href="#renoise"],
+#music:target ~ header nav a[href="#music"]
+ {
+  color: var(--my-pink);
+}
+
+#projects:target ~ header nav .dropbtn,
+#ton:target ~ header nav .dropbtn,
+#renoise:target ~ header nav .dropbtn,
+#music:target ~ header nav .dropbtn {
+  color: var(--my-pink);
 }
 
 #projects,
 #about,
-#renoise-tools,
+#renoise,
 #music {
   gap: 0.862rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
@@ -505,6 +515,7 @@ footer a:hover {
 
 .dropbtn {
   cursor: pointer;
+  color: white;
 }
 
 .dropbtn:hover {
@@ -535,7 +546,7 @@ footer a:hover {
 }
 
 .dropdown-content a {
-  color: var(--my-pink);
+  color: white;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
