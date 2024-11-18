@@ -17,6 +17,10 @@
 
   <body>
 
+    <section class="cards-grid" id="home">
+      App development, web design, audio
+    </section>
+
     <section class="cards-grid" id="projects">
       
       <!--<div class="card">     
@@ -46,12 +50,12 @@
         alt="freqMajor Screenshot 1"
         onclick="openModal('images/freqmajor-1.jpg')"
       />
-
       <img
-      src="images/ton-ginkgo.jpg"
-      alt="Trees Of Normanby Screenshot 5"
-      onclick="openModal('images/ton-screenshot-5.jpg')"
+      src="https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg"
+      alt=""
+      onclick="openModal('https://geo-media.beatport.com/image_size/1400x1400/563e0fe4-0118-453d-97b0-f8be21d89ae0.jpg')"
     />
+
 
             <img
             src="images/gvp-stables.jpg"
@@ -60,7 +64,6 @@
           />
 
 
- 
 
           <img
           src="images/ton-db-1.jpg"
@@ -69,14 +72,14 @@
           />
 
           <img
-          src="images/freqlab-1.jpg"
+          src="images/ton-screenshot-8.jpg"
           alt="Trees Of Normanby Screenshot 5"
           onclick="openModal('images/ton-screenshot-5.jpg')"
-        />
+        />  
 
 
         <img
-        src="images/gvp-1.jpg"
+        src="images/ton-map-pen.jpg"
         alt="freqMajor Screenshot 1"
         onclick="openModal('images/freqmajor-1.jpg')"
       />
@@ -151,9 +154,9 @@
       </div>
 
       <div class="card">
-        <a class="title" href="freqmajor/index.html">freqMajor</a>
+        <a class="title" href="#freqmajor">freqMajor</a>
         <p>
-          A weird additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define
+          An additive synthesizer that allows you to define the frequencies of all 128 MIDI notes and define
           harmonic ratios with precision as decimals or fractions. A work in progress, written with
           <a href="https://cmajor.dev/">Cmajor</a>.
           <br />
@@ -379,7 +382,7 @@
       <p>
         The app highlights and delivers specialist information on trees notable for rarity, age and size.
         Arboriculturist and park staff member <a href="https://www.inaturalist.org/observations?place_id=any&subview=map&user_id=bradcanfield&verifiable=any">
-        Brad Canfield</a> has collaborated in cataloging the trees and has produced high quality, informative content.
+        Brad Canfield</a> has collaborated in cataloging the trees and has produced high quality, informative written content.
       </p>
     </div>
 
@@ -490,7 +493,23 @@
 
 
 
+    </section
+    >
+    <section class="cards-grid" id="freqmajor">
+      <div class="card">
+        An additive synthesizer with an unusual tuning system that allows you to independently define the frequency of every note. 
+        
+      </div>
+
+      <div class="card">
+
+      </div>
+
+      <div class="card">
+        The value explorer is a playable grid that lets you to calculate and audition values to build a set of note frequencies.
+      </div>
     </section>
+    
 
     <section class="cards-grid" id="renoise">
       <div class="card">
@@ -911,22 +930,23 @@
 
     <header>
       <div class="header-container">
-        <a href="#" class="home-link"><h1 class="c2">Ultradian<span class="c1">7</span></h1></a>
+        <a href="#home" class="home-link"><h1 class="c2">Ultradian<span class="c1">7</span></h1></a>
         <nav>
           <ul>
+            <li class="home-link"><a href="#home">Home</a></li>
+            <li class="about-link"><a href="#about">About</a></li>
             <li id="dropdown">
               <input type="checkbox" id="dropdown-toggle" />
               <label for="dropdown-toggle" class="dropbtn">Projects</label>
               <div class="dropdown-content">
                 <a href="#projects">Overview</a>
                 <a href="#ton">Trees of Normanby</a>
-                <a href="freqmajor/index.html">freqMajor</a>
+                <a href="#freqmajor">freqMajor</a>
                 <a href="#">Gallery Video Player</a>
                 <a href="#renoise">Renoise Tools</a>
                 <a href="#music">Music</a>
               </div>
             </li>
-            <li class="about-link"><a href="#about">About</a></li>
           </ul>
         </nav>
       </div>
@@ -944,8 +964,7 @@
       Contact: <a href="mailto:ultradian7@gmail.com" class="c1">ultradian7@gmail.com</a>
     </footer>
     <script>
-
-      const navLinks = document.querySelectorAll('.header-container a');
+const navLinks = document.querySelectorAll('.header-container a');
       const dropdownToggle = document.getElementById('dropdown-toggle');
 
     
@@ -958,7 +977,8 @@
 
    
       function openModal(source, type = "image") {
-        const modal = document.getElementById("imageModal");
+        const 
+      modal = document.getElementById("imageModal");
         const modalImage = document.getElementById("modalImage");
         const modalVideo = document.getElementById("modalVideo");
 

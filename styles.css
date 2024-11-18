@@ -98,7 +98,7 @@ align-items: center;
 
 nav {
   margin-left: auto;
-  margin-right: 4rem;
+  margin-right: 3rem;
 }
 
 nav ul {
@@ -108,20 +108,28 @@ nav ul {
   list-style: none;
 }
 
-nav li {
+nav li{
   display: inline-block;
-  margin-left: 1rem;
   position: relative;
-  cursor: pointer;
-  color: var(--my-pink);
-  font-size: 1.111rem;
-  font-weight: 600;
+  margin: 0;
+
 }
 
-nav a {
+nav a, .dropbtn {
+  cursor: pointer;
   text-decoration: none;
   color: rgb(230, 230, 230);
   transition: color 0.3s;
+  font-size: 1.111rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+nav a:hover, .dropbtn:hover{
+  text-decoration: none;
+  background-color: var(--my-light-gray);
 }
 
 .c3 {
@@ -360,10 +368,12 @@ footer a:hover {
 
 
 #projects:target ~ header nav a[href="#projects"],
+#home:target ~ header nav a[href="#home"],
 #about:target ~ header nav a[href="#about"],
 #ton:target ~ header nav a[href="#ton"],
 #renoise:target ~ header nav a[href="#renoise"],
-#music:target ~ header nav a[href="#music"]
+#music:target ~ header nav a[href="#music"],
+#freqmajor:target ~ header nav a[href="#freqmajor"]
  {
   color: var(--my-pink);
 }
@@ -378,7 +388,8 @@ footer a:hover {
 #projects,
 #about,
 #renoise,
-#music {
+#music,
+#freqmajor {
   gap: 0.862rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
 
@@ -399,6 +410,8 @@ footer a:hover {
 .ton-card {
   text-wrap: pretty;
   container-type: inline-size;
+  cursor:default;
+
   .title {
     font-size: 1.75rem;
     font-weight: 400;
@@ -411,18 +424,13 @@ footer a:hover {
         display: none;
       }
     }
-
-
   }
-
 }
 
 
 #projects {
   container-type: inline-size;
 }
-
-
 
 .projects-overview {
   line-height: 1.6; 
@@ -584,31 +592,22 @@ footer a:hover {
   'opsz' 40
 }
 
-.dropbtn {
-  cursor: pointer;
-  color: white;
-}
-
-.dropbtn:hover {
- text-decoration: underline;
-}
-
 #dropdown-toggle {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Show dropdown when checkbox is checked */
 #dropdown-toggle:checked + .dropbtn + .dropdown-content {
   display: block;
 }
 
-/* Dropdown content styling */
 .dropdown-content {
   margin-top: 0.75rem;
-  display: none; /* Hidden by default */
+  padding-right: 1rem;
+  display: none;
   position: absolute;
+  left: -1rem;
   background-color: var(--my-dark-gray);
   min-width: 160px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
