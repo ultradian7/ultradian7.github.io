@@ -18,6 +18,8 @@
         tuning file from a list of hz values, tuning all 128 notes and assigning values to note names 
         that appear in the piano roll. Enter frequencies as a list separated by a space or comma, lists 
         with less than 128 values will be automatically wrapped so the sequence of values repeats to fill 128 notes.
+        You can select to map values to white keys only, black keys will be filled with a duplicate of the previous note,
+        lists of more than 92 notes will be cropped due to number of white keys.
       </p>
     </details>
 
@@ -28,6 +30,12 @@
       <textarea id="frequencies" rows="10" placeholder="Enter frequencies"></textarea>
     </div>
     
+    <div>
+      <label for="whiteKeysOnly">
+        <input type="checkbox" id="whiteKeysOnly">
+        Map to white keys only
+      </label>
+    </div>
     <button onclick="generateASCL()">Save File</button>
   </section>
  
@@ -36,16 +44,18 @@
     function generateASCL() {
       const frequenciesInput = document.getElementById('frequencies').value;
       const frequencies = frequenciesInput
-        .split(/[\s,]+/) // Split on one or more spaces, commas, or a combination
+        .split(/[\s,]+/)
         .map(f => parseFloat(f.trim()))
-        .filter(f => !isNaN(f)); // Filter out invalid numbers
+        .filter(f => !isNaN(f));
 
       const title = document.getElementById('title').value;
       const description = document.getElementById('description').value;
+      const whiteKeysOnly = document.getElementById('whiteKeysOnly').checked; // Get checkbox state
+      
       let keyMapping;
 
       if (frequencies.length !== 128) {
-        keyMapping = createKeyMapping(frequencies);        ;
+        keyMapping = createKeyMapping(frequencies, whiteKeysOnly); // Pass checkbox state
       } else {
         keyMapping = frequencies;
       }
@@ -82,7 +92,13 @@
       let freqMapping = new Array(128).fill(null);
 
       if (whiteKeysOnlySetting) {
-        const whiteKeys = utils.generateWhiteKeys();
+      
+        const whiteKeys = [];
+        for (let i = 0; i < 128; i++) {
+          if ([0, 2, 4, 5, 7, 9, 11].includes(i % 12)) {
+              whiteKeys.push(i);
+          }
+        }
         whiteKeys.forEach(
           (
             keyIndex,
