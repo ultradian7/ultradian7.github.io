@@ -11,13 +11,13 @@
     <h1>freqToAscl</h1>
     <details>
       <summary>
-        What is freqToAscl?
+        About
       </summary>
       <p class="info">
-        Use your selection of note frequencies in Ableton by defining them explicitly.
-        This tool will generate an Ableton .ascl tuning file from a list of 128 frequencies,
-        to tune all notes and assign hz values to note names that appear in the piano roll.
-        Enter frequencies as a list separated by a space or comma.
+        This tool allows you to define absolute note frequencies in Ableton by generating an .ascl 
+        tuning file from a list of frequencies, tuning all 128 notes and assigning hz values to note names 
+        that appear in the piano roll. Enter frequencies as a list separated by a space or comma, lists 
+        with less than 128 values will be wrapped so the sequence of values repeats to fill 128 notes.
       </p>
     </details>
 
@@ -42,15 +42,16 @@
 
       const title = document.getElementById('title').value;
       const description = document.getElementById('description').value;
-      //const keyMapping = createKeyMapping(frequencies);
-      keyMapping = frequencies;
+      let keyMapping;
 
       if (frequencies.length !== 128) {
-        alert("The list of frequencies must contain exactly 128 values.");
-        return;
+        keyMapping = createKeyMapping(frequencies);        ;
+      } else {
+        keyMapping = frequencies;
       }
+
       const referenceNoteIndex = 0;
-      const referenceFrequency = keyMapping[0];
+      const referenceFrequency = frequencies[0];
       const referenceNote = 0;
       const referenceOctave = -2  ;
       const baseFrequency = keyMapping[referenceNoteIndex];
@@ -62,7 +63,7 @@
         asclContent += ` ${cents[i].toFixed(6)} ! ${keyMapping[i]}hz\n`;
       }
 
-      asclContent += `!\n! @ABL NOTE_RANGE_BY_FREQUENCY ${keyMapping[0]} ${keyMapping[keyMapping.length - 1]}`;
+      asclContent += `!\n! @ABL NOTE_RANGE_BY_FREQUENCY ${frequencies[0]} ${frequencies[frequencies.length - 1]}`;
 
       asclContent += `\n! @ABL REFERENCE_PITCH ${referenceOctave} ${referenceNote} ${referenceFrequency}\n! @ABL NOTE_NAMES `;
 
