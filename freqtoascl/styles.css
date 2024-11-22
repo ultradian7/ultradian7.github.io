@@ -3,6 +3,11 @@
     text-wrap: pretty;
   }
 
+  body{
+    background: white; 
+  }
+  
+
   p {
     max-width: 40rem;
     line-height: 1.6;
@@ -18,11 +23,10 @@
   }
 
   .inputs {
-    margin: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     align-items: left;
+    gap: 1rem;
   }
 
   textarea {
@@ -34,7 +38,12 @@
     font-weight: 600;
     padding: 0.5rem;
     margin-left: 1rem;
-    margin-right: 1rem;  
+    margin-right: 1rem;
+    background: rgb(240, 240, 240);
+  }
+
+  textarea::placeholder {
+    color: rgb(56, 56, 56);
   }
 
   button {
@@ -46,10 +55,14 @@
 
   summary {
     font-size: 1.25rem;
-    justify-content: center; /* Centers horizontally */
+    justify-content: center;
     cursor: pointer;
     text-align: center;
   }
 
   summary::marker {
+  }
+
+  .white-keys-container {
+    margin: 0;
   }

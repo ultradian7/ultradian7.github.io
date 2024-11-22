@@ -14,12 +14,19 @@
         About
       </summary>
       <p class="info">
-        This tool allows you to define absolute note frequencies in Ableton by generating an .ascl 
-        tuning file from a list of hz values, tuning all 128 notes and assigning values to note names 
-        that appear in the piano roll. Enter frequencies as a list separated by a space or comma, lists 
+        Introduced in Ableton Live 12 is a tuning system enabling users to apply custom scales with
+        the .ascl file format, a backward compatible extension of the Scala .scl format.
+        <br><br>
+        freqToAscl aids users who want to use absolute note frequencies in their projects  
+        by generating an .ascl file from a list of hz values, tuning all 128 notes and assigning
+        corresponding values to note names that appear in the piano roll. 
+        <br><br>
+        Enter frequencies as a list separated by a space or comma, lists 
         with less than 128 values will be automatically wrapped so the sequence of values repeats to fill 128 notes.
-        You can select to map values to white keys only, black keys will be filled with a duplicate of the previous note,
-        lists of more than 92 notes will be cropped due to number of white keys.
+        You can choose to map values to white keys only, this can make it nicer to play a custom sequence
+        of notes on a traditional keyboard where less than 128 notes are required or any scale that doesn't use the
+        normal white / black sequence. When using this option black keys will be filled with a duplicate value of the previous 
+        white note and as the number of white keys is 92, lists are limited to that many values and any above will be omitted.
       </p>
     </details>
 
@@ -30,7 +37,7 @@
       <textarea id="frequencies" rows="10" placeholder="Enter frequencies"></textarea>
     </div>
     
-    <div>
+    <div class="white-keys-container">
       <label for="whiteKeysOnly">
         <input type="checkbox" id="whiteKeysOnly">
         Map to white keys only
