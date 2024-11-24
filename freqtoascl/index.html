@@ -14,11 +14,13 @@
         About
       </summary>
       <p class="info">
-        Introduced in Ableton Live 12 is a tuning system enabling users to apply custom scales with
+        Introduced in Ableton Live 12 is a tuning system enabling users to apply custom tunings with
         the .ascl file format, a backward compatible extension of the Scala .scl format.
-        freqToAscl aids users who want to use absolute note frequencies in their projects  
-        by generating an .ascl file from a list of hz values, tuning the entire note range and assign
-        corresponding values to note names that appear in the piano roll.
+        freqToAscl aids users who want to use absolute note frequencies in their projects or use
+        a selection of frequencies that do not scale or have repeating octaves.
+        It generates an .ascl file from a list of hz values, tuning the entire note range and assign
+        corresponding values to note names that appear in the piano roll. A zero appears after the name
+        to label the octave, there's no known way to avoid this currently.
       </p>
     </details>
     <details>
@@ -35,121 +37,133 @@
       </p>
     </details>
 
-
-    <div class="inputs">
-      <textarea id="title" rows="1" placeholder="Enter scale name"></textarea>
-      <textarea id="description" rows="5" placeholder="Enter description"></textarea>
-      <textarea id="frequencies" rows="10" placeholder="Enter frequencies"></textarea>
-    </div>
+    <form id="asclForm">
+      <div class="inputs">
+        <label for="name">Name</label>
+        <textarea id="name" rows="1" placeholder="My frequency scale" aria-describedby="nameHelp"></textarea>
+        <span id="nameHelp" class="visually-hidden">Enter the name for your scale. This name will be used in the .ascl file.</span>
     
-    <div class="white-keys-container">
-      <label for="whiteKeysOnly">
-        <input type="checkbox" id="whiteKeysOnly">
-        Map to white keys only
-      </label>
-    </div>
-    <button onclick="generateASCL()">Save File</button>
+        <label for="description">Description</label>
+        <textarea id="description" rows="5" placeholder="Selected note frequencies for Ableton." aria-describedby="descriptionHelp"></textarea>
+        <span id="descriptionHelp" class="visually-hidden">Provide a description of the scale.</span>
+    
+        <label for="frequencies">Frequencies</label>
+        <textarea id="frequencies" rows="10" placeholder="40 80 120 160 220 320 440 480 528 620" aria-describedby="frequenciesHelp"></textarea>
+        <span id="frequenciesHelp" class="visually-hidden">Enter the frequencies as a list separated by space or comma.</span>
+      </div>
+      
+      <div class="white-keys-container">
+        <label for="whiteKeysOnly">
+          <input type="checkbox" id="whiteKeysOnly" aria-labelledby="whiteKeysLabel">
+          <span id="whiteKeysLabel">Map to white keys only</span>
+        </label>
+      </div>
+      
+      <button type="submit">Save File</button>  
+    </form>
+    
   </section>
- 
 
   <script>
+    // Adding an event listener to the form to handle submission
+    document.getElementById('asclForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+      generateASCL();
+    });
+  
     function generateASCL() {
       const frequenciesInput = document.getElementById('frequencies').value;
       const frequencies = frequenciesInput
         .split(/[\s,]+/)
         .map(f => parseFloat(f.trim()))
         .filter(f => !isNaN(f));
-
-      const title = document.getElementById('title').value;
+  
+      const name = document.getElementById('name').value;
       const description = document.getElementById('description').value;
       const whiteKeysOnly = document.getElementById('whiteKeysOnly').checked; // Get checkbox state
       
       let keyMapping;
-
+  
       if (frequencies.length !== 128) {
         keyMapping = createKeyMapping(frequencies, whiteKeysOnly); // Pass checkbox state
       } else {
         keyMapping = frequencies;
       }
-
+  
       const referenceNoteIndex = 0;
       const referenceFrequency = frequencies[0];
       const referenceNote = 0;
-      const referenceOctave = -2  ;
+      const referenceOctave = 0;
       const baseFrequency = keyMapping[referenceNoteIndex];
       const cents = keyMapping.map((frequency) => 1200 * Math.log2(frequency / baseFrequency));
-
-      let asclContent = `! ${title}.ascl\n${description}\n!\n ${keyMapping.length}\n!\n`;
-
+  
+      let asclContent = `! ${name}.ascl\n${description}\n!\n ${keyMapping.length}\n!\n`;
+  
       for (let i = 0; i < keyMapping.length; i++) {
-        asclContent += ` ${cents[i].toFixed(6)} ! ${keyMapping[i]}hz\n`;
+        const midiNoteNumber = i; // MIDI note number (0-127)
+        const noteName = midiToNoteName(midiNoteNumber); // Get traditional note name (e.g., C0, C#0, etc.)
+        asclContent += ` ${cents[i].toFixed(6)} ! #${midiNoteNumber} ${noteName}: ${keyMapping[i]}hz\n`;
       }
-
+  
       asclContent += `!\n! @ABL NOTE_RANGE_BY_FREQUENCY ${frequencies[0]} ${frequencies[frequencies.length - 1]}`;
-
       asclContent += `\n! @ABL REFERENCE_PITCH ${referenceOctave} ${referenceNote} ${referenceFrequency}\n! @ABL NOTE_NAMES `;
-
+  
       for (let i = 0; i < keyMapping.length; i++) {
-        asclContent += `${keyMapping[i]} `;
+        asclContent += `"${keyMapping[i]} " `;
       }
-
+  
       asclContent += `\n! @ABL SOURCE File generated by freqToAscl.`;
-      asclContent += `\n! @ABL LINK ultradian7.github.io`;
-      asclContent += `\n`;
-
-      download(`${title}.ascl`, asclContent);
+      asclContent += `\n! @ABL LINK ultradian7.github.io\n`;
+  
+      download(`${name}.ascl`, asclContent);
     }
-
+  
+    // Helper function to convert MIDI note number to traditional note name
+    function midiToNoteName(midiNumber) {
+      const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      const octave = Math.floor(midiNumber / 12) - 2; // Calculate the octave (MIDI note 0 is C-2)
+      const note = noteNames[midiNumber % 12]; // Get the note name
+      return `${note}${octave}`;
+    }
+  
     function createKeyMapping(values, whiteKeysOnlySetting) {
       let freqMapping = new Array(128).fill(null);
-
+  
       if (whiteKeysOnlySetting) {
-      
         const whiteKeys = [];
         for (let i = 0; i < 128; i++) {
           if ([0, 2, 4, 5, 7, 9, 11].includes(i % 12)) {
-              whiteKeys.push(i);
+            whiteKeys.push(i);
           }
         }
-        whiteKeys.forEach(
-          (
-            keyIndex,
-            valueIndex // Map values to white keys directly. If values run out, repeat them from the start.
-          ) => {
-            freqMapping[keyIndex] = values[valueIndex % values.length];
-          }
-        );
-
+        whiteKeys.forEach((keyIndex, valueIndex) => {
+          // Map values to white keys directly. If values run out, repeat them from the start.
+          freqMapping[keyIndex] = values[valueIndex % values.length];
+        });
+  
         // Fill in black keys by copying the frequency from the last white key
         freqMapping.forEach((val, index, arr) => {
           if (val === null) {
             arr[index] = arr[index - 1];
-          } // Repeat the previous frequency
+          }
         });
-      } // Not whiteKeysOnlySetting: Distribute the values across all 128 keys, repeating if necessary
-      else {
+      } else {
         for (let i = 0; i < freqMapping.length; i++) {
           freqMapping[i] = values[i % values.length];
         }
       }
-
-      if (freqMapping.length > 128) {
-        freqMapping = freqMapping.slice(0, 128);
-      }
-
+  
       return freqMapping;
     }
-
+  
     function download(filename, text) {
       const element = document.createElement('a');
       const blob = new Blob([text], { type: 'text/plain' });
       element.href = URL.createObjectURL(blob);
       element.download = filename;
-      document.body.appendChild(element);
       element.click();
-      document.body.removeChild(element);
     }
-
   </script>
+  
 </body>
 </html>
