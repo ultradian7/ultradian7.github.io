@@ -25,11 +25,12 @@
     </details>
     <details>
       <summary>
-        Usage
+        Help
       </summary>
       <p class="info">
-        Enter frequencies as a list separated by space or comma, lists 
-        containing less than 128 values will be automatically wrapped so the sequence repeats to the 128th note.
+        Enter frequencies as a list separated by space or comma. By default a note sequence containing less than 128
+        values will be wrapped so it repeats to fill the max note range of 128, unselecting "Wrap note sequence"
+        will clamp the range to the initial sequence leaving the remaining notes unplayable.
         You can choose to map values to white keys only, this can make it nicer to play a custom sequence
         of notes on a traditional keyboard where less than 128 notes are required or any scale that doesn't use the
         normal white / black sequence. When using this option black keys are assigned a duplicate value of the previous 
@@ -40,11 +41,11 @@
     <form id="asclForm">
       <div class="inputs">
         <label for="name">Name</label>
-        <textarea id="name" rows="1" placeholder="My frequency scale" aria-describedby="nameHelp"></textarea>
+        <textarea id="name" rows="1" placeholder="Tuning name." aria-describedby="nameHelp"></textarea>
         <span id="nameHelp" class="visually-hidden">Enter the name for your scale. This name will be used in the .ascl file.</span>
     
         <label for="description">Description</label>
-        <textarea id="description" rows="5" placeholder="Selected note frequencies for Ableton." aria-describedby="descriptionHelp"></textarea>
+        <textarea id="description" rows="5" placeholder="Tuning description." aria-describedby="descriptionHelp"></textarea>
         <span id="descriptionHelp" class="visually-hidden">Provide a description of the scale.</span>
     
         <label for="frequencies">Frequencies</label>
@@ -52,11 +53,16 @@
         <span id="frequenciesHelp" class="visually-hidden">Enter the frequencies as a list separated by space or comma.</span>
       </div>
       
-      <div class="white-keys-container">
+      <div class="options-container">
+        <label for="wrapSequence">
+          <input type="checkbox" id="wrapSequence" aria-labelledby="wrapSequenceLabel" checked>
+          <span id="wrapSequenceLabel">Wrap note sequence</span>
+        </label>
         <label for="whiteKeysOnly">
           <input type="checkbox" id="whiteKeysOnly" aria-labelledby="whiteKeysLabel">
           <span id="whiteKeysLabel">Map to white keys only</span>
         </label>
+
       </div>
       
       <button type="submit">Save File</button>  
@@ -80,15 +86,20 @@
   
       const name = document.getElementById('name').value;
       const description = document.getElementById('description').value;
-      const whiteKeysOnly = document.getElementById('whiteKeysOnly').checked; // Get checkbox state
+      const whiteKeysOnly = document.getElementById('whiteKeysOnly').checked;
+      const wrapSequence = document.getElementById('wrapSequence').checked;
       
       let keyMapping;
+      let noteRangeIndex;
   
-      if (frequencies.length !== 128) {
+      if (frequencies.length !== 128 && wrapSequence) {
         keyMapping = createKeyMapping(frequencies, whiteKeysOnly); // Pass checkbox state
+        noteRangeIndex = `0 1 0 ${frequencies.length}`;
       } else {
         keyMapping = frequencies;
+        noteRangeIndex = `0 1 1 0`;
       }
+
   
       const referenceNoteIndex = 0;
       const referenceFrequency = frequencies[0];
@@ -98,17 +109,22 @@
       const cents = keyMapping.map((frequency) => 1200 * Math.log2(frequency / baseFrequency));
   
       let asclContent = `! ${name}.ascl\n${description}\n!\n ${keyMapping.length}\n!\n`;
-  
+
+      
       for (let i = 0; i < keyMapping.length; i++) {
         const midiNoteNumber = i; // MIDI note number (0-127)
         const noteName = midiToNoteName(midiNoteNumber); // Get traditional note name (e.g., C0, C#0, etc.)
         asclContent += ` ${cents[i].toFixed(6)} ! #${midiNoteNumber} ${noteName}: ${keyMapping[i]}hz\n`;
       }
   
-      asclContent += `!\n! @ABL NOTE_RANGE_BY_FREQUENCY ${frequencies[0]} ${frequencies[frequencies.length - 1]}`;
-      asclContent += `\n! @ABL REFERENCE_PITCH ${referenceOctave} ${referenceNote} ${referenceFrequency}\n! @ABL NOTE_NAMES `;
+      asclContent += `!\n! @ABL REFERENCE_PITCH ${referenceOctave} ${referenceNote} ${referenceFrequency}`;
+      asclContent += `\n! @ABL NOTE_RANGE_BY_INDEX ${noteRangeIndex}\n`;
+      
+
+      //Write last note name first, as last note is virtually "C" of next octave
+      asclContent += `! @ABL NOTE_NAMES "${keyMapping[keyMapping.length - 1]} " `;
   
-      for (let i = 0; i < keyMapping.length; i++) {
+      for (let i = 0; i < (keyMapping.length - 1); i++) {
         asclContent += `"${keyMapping[i]} " `;
       }
   
@@ -117,8 +133,7 @@
   
       download(`${name}.ascl`, asclContent);
     }
-  
-    // Helper function to convert MIDI note number to traditional note name
+
     function midiToNoteName(midiNumber) {
       const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
       const octave = Math.floor(midiNumber / 12) - 2; // Calculate the octave (MIDI note 0 is C-2)
