@@ -18,6 +18,7 @@
         the .ascl file format, a backward compatible extension of the Scala .scl format.
         freqToAscl aids users who want to use specific note frequencies in their projects or use
         a selection of frequencies that do not scale or have repeating octaves.
+        <br><br>
         It generates an .ascl file from a list of hz values, tuning the entire note range and assign
         corresponding values to note names that appear in the piano roll. A zero appears after the name
         to label the octave, our generator creates the tuning using a single octave.
@@ -31,6 +32,8 @@
         Enter frequencies as a list separated by space or comma. By default a note sequence containing less than 128
         values will be wrapped so it repeats to fill the max note range of 128, unselecting "Wrap note sequence"
         will clamp the range to the initial sequence leaving the remaining notes unplayable.
+
+        <br><br>
         You can choose to map values to white keys only, this can make it nicer to play a custom sequence
         of notes on a traditional keyboard where less than 128 notes are required or any scale that doesn't use the
         normal white / black sequence. When using this option black keys are assigned a duplicate value of the previous 
