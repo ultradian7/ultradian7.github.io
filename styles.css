@@ -372,6 +372,7 @@ footer a:hover {
 #about:target ~ header nav a[href="#about"],
 #ton:target ~ header nav a[href="#ton"],
 #renoise:target ~ header nav a[href="#renoise"],
+#max-for-live:target ~ header nav a[href="#max-for-live"],
 #music:target ~ header nav a[href="#music"],
 #freqmajor:target ~ header nav a[href="#freqmajor"]
  {
@@ -381,6 +382,7 @@ footer a:hover {
 #projects:target ~ header nav .dropbtn,
 #ton:target ~ header nav .dropbtn,
 #renoise:target ~ header nav .dropbtn,
+#max-for-live:target ~ header nav .dropbtn,
 #music:target ~ header nav .dropbtn {
   color: var(--my-pink);
 }
@@ -389,6 +391,7 @@ footer a:hover {
 #about,
 #renoise,
 #music,
+#max-for-live,
 #freqmajor {
   gap: 0.862rem;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
