@@ -222,61 +222,93 @@ function displayFilteredSpecimen(specimenData) {
 function generateMultiQuestion(trees) {
   const shuffledTrees = trees.sort(() => 0.5 - Math.random()).slice(0, 4);
   const correctTree = shuffledTrees[0]; // First tree is the correct answer
-  console.log(typeof correctTree.common_name);
+
   const commonNames = shuffledTrees.map(t => {
-    let namesArray = [];
-    
-    // Convert object values to an array
     if (t.common_name && typeof t.common_name === "object") {
-        namesArray = Object.values(t.common_name);
+      const namesArray = Object.values(t.common_name);
+      return namesArray.length > 0 ? namesArray[Math.floor(Math.random() * namesArray.length)] : "Unknown Name";
     }
-
-    // Ensure there's at least one name
-    if (namesArray.length > 0) {
-        return namesArray[Math.floor(Math.random() * namesArray.length)];
-    }
-
-    return "Unknown Name"; // Fallback in case of missing data
-});
+    return "Unknown Name";
+  });
 
   const correctCommonName = commonNames[0];
 
-  const questionTypes = [
+  let questionTypes = [
     {
       text: `What is the scientific name of ${correctCommonName}?`,
       answer: `<i>${correctTree.genus} ${correctTree.species}</i>`,
-      options: shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`),
+      options: Array.from(new Set(shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`)))
     },
     {
       text: `Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?`,
       answer: correctCommonName,
-      options: commonNames
+      options: Array.from(new Set(commonNames))
     },
     {
       text: `What's a common name for <i>${correctTree.genus} ${correctTree.species}</i>?`,
       answer: correctCommonName,
-      options: commonNames
-    },
-    {
-      text: `The following is a description of the native habitat of which tree? "${correctTree.native_range}"`,
-      answer: correctCommonName,
-      options: commonNames
+      options: Array.from(new Set(commonNames))
     },
     {
       text: `What family does <i>${correctTree.genus} ${correctTree.species}</i> fall under?`,
       answer: `<i>${correctTree.family}</i>`,
-      options: shuffledTrees.map(t => `<i>${plantFamilies[Math.floor(Math.random() * plantFamilies.length)]}</i>`)
+      options: ensureFourOptions(
+        [`<i>${correctTree.family}</i>`], 
+        trees.map(t => `<i>${t.family}</i>`)
+      )
     }
   ];
+
+  // Only add the native range question if it's defined and not empty
+  if (correctTree.native_range && correctTree.native_range.trim() !== "") {
+    questionTypes.push({
+      text: `The following is a description of the native habitat of which tree? "${correctTree.native_range}"`,
+      answer: correctCommonName,
+      options: Array.from(new Set(commonNames))
+    });
+  }
 
   const question = questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
   return {
     question: question.text,
-    options: question.options.sort(() => 0.5 - Math.random()),
+    options: shuffleArray(question.options),
     correctAnswer: question.answer
   };
 }
+
+// Ensures we always have exactly 4 unique options
+function ensureFourOptions(baseOptions, possibleOptions) {
+  const uniqueOptions = new Set(baseOptions);
+  while (uniqueOptions.size < 4 && possibleOptions.length > 0) {
+    const randomOption = possibleOptions[Math.floor(Math.random() * possibleOptions.length)];
+    uniqueOptions.add(randomOption);
+  }
+  return Array.from(uniqueOptions);
+}
+
+// Shuffles array items
+function shuffleArray(array) {
+  return array.sort(() => 0.5 - Math.random());
+}
+
+
+// Ensures we always have exactly 4 unique options
+function ensureFourOptions(baseOptions, possibleOptions) {
+  const uniqueOptions = new Set(baseOptions);
+  while (uniqueOptions.size < 4 && possibleOptions.length > 0) {
+    const randomOption = possibleOptions[Math.floor(Math.random() * possibleOptions.length)];
+    uniqueOptions.add(randomOption);
+  }
+  return Array.from(uniqueOptions);
+}
+
+// Shuffles array items
+function shuffleArray(array) {
+  return array.sort(() => 0.5 - Math.random());
+}
+
+
 
 function displayQuestion() {
   const quizContainer = document.querySelector(".quiz-container");
