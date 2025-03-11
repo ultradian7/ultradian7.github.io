@@ -74,8 +74,6 @@ async function loadSpecimen() {
   const speciesSet = new Set();
   const commonNameSet = new Set();
 
-  specimenData.sort((a, b) => a.common_name.localeCompare(b.common_name, undefined, { sensitivity: 'base' }));
-
   trees = specimenData;
 
   specimenData.forEach(specimen => {
@@ -88,6 +86,8 @@ async function loadSpecimen() {
           Object.values(specimen.common_name).forEach(name => commonNameSet.add(name));
       }
   });
+
+  specimenData.sort((a, b) => a.common_name[0].localeCompare(b.common_name[0], undefined, { sensitivity: 'base' }));
 
   plantFamilies = Array.from(familySet);
 

@@ -263,7 +263,7 @@ header {
     cursor: pointer;
   }
 
-.quiz-container, .question, .card, .options{
+.quiz-container, .question, .card, .options, button{
   box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
   0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
 }
