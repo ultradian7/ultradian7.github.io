@@ -268,6 +268,14 @@ function generateMultiQuestion(trees) {
     });
   }
 
+  if (correctTree.native_range && correctTree.native_range.trim() !== "") {
+    questionTypes.push({
+      text: `The native habitat of which tree can be described as "${correctTree.native_range}"?`,
+      answer: correctCommonName,
+      options: Array.from(new Set(commonNames))
+    });
+  }
+
   const question = questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
   return {
@@ -276,22 +284,6 @@ function generateMultiQuestion(trees) {
     correctAnswer: question.answer
   };
 }
-
-// Ensures we always have exactly 4 unique options
-function ensureFourOptions(baseOptions, possibleOptions) {
-  const uniqueOptions = new Set(baseOptions);
-  while (uniqueOptions.size < 4 && possibleOptions.length > 0) {
-    const randomOption = possibleOptions[Math.floor(Math.random() * possibleOptions.length)];
-    uniqueOptions.add(randomOption);
-  }
-  return Array.from(uniqueOptions);
-}
-
-// Shuffles array items
-function shuffleArray(array) {
-  return array.sort(() => 0.5 - Math.random());
-}
-
 
 // Ensures we always have exactly 4 unique options
 function ensureFourOptions(baseOptions, possibleOptions) {

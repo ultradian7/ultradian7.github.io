@@ -166,15 +166,13 @@ t {
     border: none;
   }
 
-.quiz-view {
-
-}
 
 #quiz-btn {
 }
 
 #quiz-view {
     display: none;
+    margin-top: 2rem;
 }
 
 .menu-wrapper {
@@ -266,17 +264,21 @@ header {
   }
   
   .quiz-container {
-    background: rgb(0, 0, 0);
+    background-color: rgb(43, 42, 42);
     padding: 3rem 0.5rem 2rem 0.5rem;
     text-align: center;
     align-content: center;
     width: 100%;
+    border-radius: 0.5rem;
 
 }
 .question {
     font-size: 1.25rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     text-wrap: pretty;
+    text-align: left;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 .options button {
     display: block;
@@ -302,12 +304,12 @@ header {
 .new-question {
     margin-top: 15px;
     padding: 10px;
-    background: #007BFF;
+    background: #6f00ff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .new-question:hover {
-    background: #0056b3;
+    background: #9341ff;
 }
