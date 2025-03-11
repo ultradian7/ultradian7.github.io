@@ -235,22 +235,22 @@ function generateMultiQuestion(trees) {
 
   let questionTypes = [
     {
-      text: `What is the scientific name of ${correctCommonName}?`,
+      text: `<p class="question-text">What is the scientific name of ${correctCommonName}?</p>`,
       answer: `<i>${correctTree.genus} ${correctTree.species}</i>`,
       options: Array.from(new Set(shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`)))
     },
     {
-      text: `Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?`,
+      text: `<p class="question-text">Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?<p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     },
     {
-      text: `What's a common name for <i>${correctTree.genus} ${correctTree.species}</i>?`,
+      text: `<p class="question-text">What's a common name for <i>${correctTree.genus} ${correctTree.species}</i>?</p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     },
     {
-      text: `What family does <i>${correctTree.genus} ${correctTree.species}</i> fall under?`,
+      text: `<p class="question-text">What family does <i>${correctTree.genus} ${correctTree.species}</i> fall under?</p>`,
       answer: `<i>${correctTree.family}</i>`,
       options: ensureFourOptions(
         [`<i>${correctTree.family}</i>`], 
@@ -258,11 +258,9 @@ function generateMultiQuestion(trees) {
       )
     }
   ];
-
-  // Only add the native range question if it's defined and not empty
   if (correctTree.native_range && correctTree.native_range.trim() !== "") {
     questionTypes.push({
-      text: `The following is a description of the native habitat of which tree? "${correctTree.native_range}"`,
+      text: `<p class="question-text">The following is a description of the native habitat of which tree? "${correctTree.native_range}"</p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     });
@@ -270,7 +268,7 @@ function generateMultiQuestion(trees) {
 
   if (correctTree.native_range && correctTree.native_range.trim() !== "") {
     questionTypes.push({
-      text: `The native habitat of which tree can be described as "${correctTree.native_range}"?`,
+      text: `<p class="question-text">The native habitat of which tree can be described as "${correctTree.native_range}"?</p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     });
@@ -301,20 +299,19 @@ function shuffleArray(array) {
 }
 
 
-
 function displayQuestion() {
   const quizContainer = document.querySelector(".quiz-container");
   const questionElement = document.querySelector(".question");
-
 
   const newQuestion = generateMultiQuestion(speciesData);
 
   questionElement.innerHTML = newQuestion.question;
   optionsContainer.innerHTML = ""; // Clear previous options
 
-  newQuestion.options.forEach(option => {
+  const labels = ["A", "B", "C", "D"]; // Labels for options
+  newQuestion.options.forEach((option, index) => {
       const button = document.createElement("button");
-      button.innerHTML = option;
+      button.innerHTML = `${labels[index]}: ${option}`;
       button.onclick = () => {
           if (option === newQuestion.correctAnswer) {
               button.classList.add("correct");
@@ -325,7 +322,6 @@ function displayQuestion() {
       optionsContainer.appendChild(button);
   });
 }
-
 
 
 
