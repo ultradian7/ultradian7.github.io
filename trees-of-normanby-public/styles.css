@@ -16,7 +16,7 @@ body {
 h1 {
     font-size: 3rem;
     font-weight: 600;
-    color: rgb(206, 149, 108);
+    color: rgb(195, 123, 0);
 }
 
 .family {
@@ -346,5 +346,10 @@ header {
 }
 
 .specimen-banner {
-    background-image: url("dpt1.jpg");
+    background-image: url("images/dpt-1.jpg");
+    min-height: 19rem;
+    max-height: 100%;
+    background-size: cover;
+    background-position: center top;
+    margin-bottom: 1rem
 }
