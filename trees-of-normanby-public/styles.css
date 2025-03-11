@@ -303,7 +303,7 @@ header {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
-    align-self: left;
+    text-align: left;
     color: rgb(255, 255, 240);
 
 }
