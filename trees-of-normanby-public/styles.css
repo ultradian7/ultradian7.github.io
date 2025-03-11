@@ -4,7 +4,6 @@ body {
     color: rgb(237, 232, 217);
     background-color: rgb(17, 17, 17);
     gap: 0;
-    padding: 1rem 1rem 1rem 1rem;
     margin: 0;
     font-family: "Work Sans", sans-serif;
     font-optical-sizing: auto;
@@ -72,7 +71,7 @@ t {
     display: grid;
     gap: 2rem;
     max-width: 100%;
-    padding: 0 0 0 0;
+
     grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
 }
 
@@ -172,7 +171,7 @@ t {
 
 #quiz-view {
     display: none;
-    margin-top: 2rem;
+    padding: 0 1rem 0 1rem;
 }
 
 .menu-wrapper {
@@ -345,11 +344,16 @@ header {
     background: #394ce1;
 }
 
+#specimen-wrapper {
+    padding: 0 1rem 0 1rem;
+}
+
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
     min-height: 19rem;
     max-height: 100%;
     background-size: cover;
     background-position: center top;
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
+
 }

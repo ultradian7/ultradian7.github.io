@@ -210,13 +210,14 @@ function displayFilteredSpecimen(specimenData) {
   startQuizButton.addEventListener("click", function(){
     if (quizView.style.display === "none"){
       quizView.style.display = "flex";
-      specimenWrapper.style.display = "none";
+      speciesContainer.style.display = "none";
+      startQuizButton.textContent = "Back";
       displayQuestion();
-      //startQuizButton.textContent = "Back";
+
 
     } else {
       quizView.style.display = "none";
-      specimenWrapper.style.display = "grid";
+      speciesContainer.style.display = "grid";
     }
   });
 });
