@@ -15,7 +15,7 @@ body {
 h1 {
     font-size: 4rem;
     font-weight: 700;
-    color: rgb(255, 119, 0);
+    color: rgb(224, 124, 36);
     line-height: 0.826;
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
     margin: 0;
@@ -122,10 +122,10 @@ t {
 }
 
 .nhcp-tree {
-    margin-left: 0.5rem;
-    max-height: 3rem;
+    max-height: 2rem;
+    margin-left: 0.25rem;
     filter: invert(50%) sepia(100%) saturate(250%) hue-rotate(45deg);
-    align-self: center;
+    align-self: center; 
 }
 
 #filters-btn {
@@ -181,7 +181,7 @@ t {
 
 #quiz-view {
     display: none;
-    padding: 0 1rem 0 1rem;
+    padding: 0 1rem 16rem 1rem;
 }
 
 .menu-wrapper {
@@ -215,10 +215,9 @@ header {
 }
 
 .header-text {
-    margin-top: 0.5rem;
     margin-left: 1rem;
     font-family: "Cardo", serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 500;
     color:rgb(132, 192, 59);
     text-decoration: none;
@@ -280,7 +279,7 @@ header {
     cursor: pointer;
   }
 
-.quiz-container, .question, .card, .options, button{
+.quiz-container, .question, .card, .options, button, .quiz-image{
   box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
   0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
 }
@@ -293,6 +292,7 @@ header {
     width: 100%;
     border-radius: 0.5rem;
 }
+
 .question {
     margin-bottom: 1.5rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
@@ -300,6 +300,7 @@ header {
     margin-right: 1rem;
     background-color: #006c93;
     border-radius: 0.5rem;
+    place-content: center;
 }
 
 
@@ -307,6 +308,9 @@ header {
     color: rgb(255, 255, 240);
     font-size: 1.25rem;
     text-align: left;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .options button {
@@ -365,15 +369,30 @@ header {
     padding: 0 1rem 0 1rem;
 }
 
+.overlay {
+    border-image: linear-gradient(hsla(252, 100%, 31%, 0.638), hsla(170, 49%, 25%, 0.416)) fill 1;
+}
+
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
     min-height: 12rem;
     max-height: 100%;
     background-size: cover;
-    background-position: center top;
+    background-position: top center;
     margin: 0;
     padding: 0;
 
+}
+
+.quiz-image{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 260px;
+    width: 240px;
+    object-fit: cover;
+    border-radius: 05%;
+    border-width: 1px
+    
 }
 
 @media (max-width: 480px) {
@@ -383,8 +402,9 @@ header {
     button {
         font-size: 1rem;
     }
-    .nhcp-tree {
-        max-height: 4rem;
+
+    .header-text {
+        display: none;
     }
 
 

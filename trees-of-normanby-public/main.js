@@ -225,7 +225,7 @@ function displayFilteredSpecimen(specimenData) {
 });
 
 
-function generateMultiQuestion(trees) {
+function generateMultiQuestion(trees, speciesData) {
   const shuffledTrees = trees.sort(() => 0.5 - Math.random()).slice(0, 4);
   const correctTree = shuffledTrees[0]; // First tree is the correct answer
 
@@ -246,12 +246,7 @@ function generateMultiQuestion(trees) {
       options: Array.from(new Set(shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`)))
     },
     {
-      text: `<p class="question-text">Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?<p>`,
-      answer: correctCommonName,
-      options: Array.from(new Set(commonNames))
-    },
-    {
-      text: `<p class="question-text">What's a common name for <i>${correctTree.genus} ${correctTree.species}</i>?</p>`,
+      text: `<p class="question-text">Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?</p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     },
@@ -264,19 +259,41 @@ function generateMultiQuestion(trees) {
       )
     }
   ];
-  if (correctTree.native_range && correctTree.native_range.trim() !== "") {
-    questionTypes.push({
-      text: `<p class="question-text">The following is a description of the native habitat of which tree? "${correctTree.native_range}"</p>`,
-      answer: correctCommonName,
-      options: Array.from(new Set(commonNames))
-    });
-  }
 
-  if (correctTree.native_range && correctTree.native_range.trim() !== "") {
+  // **📸 Image-Based Questions**
+  const specimensWithImages = trees.filter(specimen => specimen.images && specimen.images.length > 0);
+
+  if (specimensWithImages.length > 0) {
+    const imageSpecimen = specimensWithImages[Math.floor(Math.random() * specimensWithImages.length)];
+    const imageFilenames = JSON.parse(imageSpecimen.images);
+
+    // Pick a random image instead of always using the first one
+    const randomImage = imageFilenames[Math.floor(Math.random() * imageFilenames.length)];
+    const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${imageSpecimen.id}/${randomImage}`;
+
+    // Find the species data that matches this specimen
+    const matchingSpecies = speciesData.find(s => s.genus === imageSpecimen.genus && s.species === imageSpecimen.species);
+    const speciesCommonNames = matchingSpecies ? Object.values(matchingSpecies.common_name) : ["Unknown Name"];
+    const correctCommonName = speciesCommonNames[0];
+
     questionTypes.push({
-      text: `<p class="question-text">The native habitat of which tree can be described as "${correctTree.native_range}"?</p>`,
+      text: `<img src="${imageUrl}" class="quiz-image"><p class="question-text">What is the common name of this tree?</p>`,
       answer: correctCommonName,
-      options: Array.from(new Set(commonNames))
+      options: ensureFourOptions(
+        [correctCommonName], 
+        speciesData.flatMap(s => Object.values(s.common_name))
+      )
+    });
+
+    const correctScientificName = `<i>${imageSpecimen.genus} ${imageSpecimen.species}</i>`;
+
+    questionTypes.push({
+      text: `<img src="${imageUrl}" class="quiz-image"><p class="question-text">What is the scientific name of this tree?</p>`,
+      answer: correctScientificName,
+      options: ensureFourOptions(
+        [correctScientificName], 
+        speciesData.map(s => `<i>${s.genus} ${s.species}</i>`)
+      )
     });
   }
 
@@ -288,6 +305,8 @@ function generateMultiQuestion(trees) {
     correctAnswer: question.answer
   };
 }
+
+
 
 // Ensures we always have exactly 4 unique options
 function ensureFourOptions(baseOptions, possibleOptions) {
@@ -309,7 +328,7 @@ function displayQuestion() {
   const quizContainer = document.querySelector(".quiz-container");
   const questionElement = document.querySelector(".question");
 
-  const newQuestion = generateMultiQuestion(speciesData);
+  const newQuestion = generateMultiQuestion(trees, speciesData);
 
   questionElement.innerHTML = newQuestion.question;
   optionsContainer.innerHTML = ""; // Clear previous options
