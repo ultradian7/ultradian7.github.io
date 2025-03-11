@@ -17,7 +17,7 @@ h1 {
     font-weight: 700;
     color: rgb(255, 119, 0);
     line-height: 0.826;
-    padding: 0.5rem;
+    padding: 0 0.5rem 0 0.5rem;
 }
 
 .family {
@@ -157,9 +157,10 @@ t {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
     font-size: 1.25rem;
     color: rgb(208, 208, 208);
-    background-color: rgb(43, 42, 42);
+    background-color: rgba(95, 95, 95, 0);
     border-radius: 0.5rem;
-    margin-bottom: 1rem;
+    border-width: 0.11rem;
+    border-color: rgb(37, 37, 37);
   }
   
   select {
@@ -184,32 +185,26 @@ t {
 
 .menu-wrapper {
     display: flex;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem
 }
 
 .quiz-btn-wrapper {
     display: flex;
     margin-left: auto;
+
 }
 
 .quiz-label {
+    display: flex;
     color :rgb(218, 218, 218);
     font-size: 1.25rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     text-align: right;
+    align-content: center;
 }
 
-@media (max-width: 480px) {
-    .quiz-label {
-      font-size: 1rem;
-    }
-    button {
-        font-size: 1rem;
-    }
-    .header-text {
-        font-size: 1rem;
-    }
 
-  }
 
 header {
     display: flex;
@@ -275,7 +270,7 @@ header {
     max-height: 80vh;
     border-radius: 5px;
   }
-  
+
   .close-btn {
     position: absolute;
     top: 10px;
@@ -375,6 +370,21 @@ header {
     max-height: 100%;
     background-size: cover;
     background-position: center top;
-    margin-bottom: 1rem;
+    margin: 0;
+    padding: 0;
+
+}
+
+@media (max-width: 480px) {
+    .quiz-label {
+      font-size: 1rem;
+    }
+    button {
+        font-size: 1rem;
+    }
+    .nhcp-tree {
+        max-height: 4rem;
+    }
+
 
 }
