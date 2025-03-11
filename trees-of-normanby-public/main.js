@@ -222,13 +222,13 @@ function displayFilteredSpecimen(specimenData) {
 function generateMultiQuestion(trees) {
   const shuffledTrees = trees.sort(() => 0.5 - Math.random()).slice(0, 4);
   const correctTree = shuffledTrees[0]; // First tree is the correct answer
-  console.log(typeof correctTree.common_name_json);
+  console.log(typeof correctTree.common_name);
   const commonNames = shuffledTrees.map(t => {
     let namesArray = [];
     
     // Convert object values to an array
-    if (t.common_name_json && typeof t.common_name_json === "object") {
-        namesArray = Object.values(t.common_name_json);
+    if (t.common_name && typeof t.common_name === "object") {
+        namesArray = Object.values(t.common_name);
     }
 
     // Ensure there's at least one name
@@ -248,7 +248,7 @@ function generateMultiQuestion(trees) {
       options: shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`),
     },
     {
-      text: `What can <i>${correctTree.genus} ${correctTree.species}</i> be commonly known as?`,
+      text: `Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?`,
       answer: correctCommonName,
       options: commonNames
     },
@@ -263,7 +263,7 @@ function generateMultiQuestion(trees) {
       options: commonNames
     },
     {
-      text: `In what family is <i>${correctTree.genus} ${correctTree.species}</i>?`,
+      text: `What family does <i>${correctTree.genus} ${correctTree.species}</i> fall under?`,
       answer: `<i>${correctTree.family}</i>`,
       options: shuffledTrees.map(t => `<i>${plantFamilies[Math.floor(Math.random() * plantFamilies.length)]}</i>`)
     }
