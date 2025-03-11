@@ -195,6 +195,7 @@ header {
     display: flex;
     max-width: 100%;
     align-items: center;
+    border-bottom: 1px solid rgb(132, 192, 59);
 }
 
 .header-text {
@@ -342,4 +343,8 @@ header {
 }
 .new-question:hover {
     background: #394ce1;
+}
+
+.specimen-banner {
+    background-image: url("dpt1.jpg");
 }
