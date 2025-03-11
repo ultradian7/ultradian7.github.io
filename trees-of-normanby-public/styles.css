@@ -16,6 +16,8 @@ h1 {
     font-size: 4rem;
     font-weight: 700;
     color: rgb(255, 119, 0);
+    line-height: 0.826;
+    padding: 0.5rem;
 }
 
 .family {
@@ -172,7 +174,7 @@ t {
 
 
 #quiz-btn {
-    color: rgb(255, 119, 0);
+    color: rgb(255, 225, 134);
 }
 
 #quiz-view {
@@ -195,6 +197,19 @@ t {
     margin-right: 1rem;
     text-align: right;
 }
+
+@media (max-width: 480px) {
+    .quiz-label {
+      font-size: 1rem;
+    }
+    button {
+        font-size: 1rem;
+    }
+    .header-text {
+        font-size: 1rem;
+    }
+
+  }
 
 header {
     display: flex;
@@ -356,7 +371,7 @@ header {
 
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
-    min-height: 19rem;
+    min-height: 12rem;
     max-height: 100%;
     background-size: cover;
     background-position: center top;
