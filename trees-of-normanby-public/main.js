@@ -74,6 +74,8 @@ async function loadSpecimen() {
   const speciesSet = new Set();
   const commonNameSet = new Set();
 
+  specimenData.sort((a, b) => a.common_name.localeCompare(b.common_name, undefined, { sensitivity: 'base' }));
+
   trees = specimenData;
 
   specimenData.forEach(specimen => {
@@ -209,6 +211,7 @@ function displayFilteredSpecimen(specimenData) {
     if (quizView.style.display === "none"){
       quizView.style.display = "flex";
       specimenWrapper.style.display = "none";
+      displayQuestion();
       //startQuizButton.textContent = "Back";
 
     } else {
