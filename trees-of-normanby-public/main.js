@@ -166,8 +166,7 @@ function displayFilteredSpecimen(specimenData) {
       innerHTML += `</div>`; // Close gallery div
 
       innerHTML += `
-          <div class="info-wrapper">
-              <p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
+          <div class="info-wrapper">`;
 
       if (specimen.family) {
           innerHTML += `<p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
@@ -181,6 +180,8 @@ function displayFilteredSpecimen(specimenData) {
       if (specimen.specimen_info) {
           innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
       }
+
+      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
 
       innerHTML += `</div>`; // Close info-wrapper
       card.innerHTML = innerHTML;
@@ -218,6 +219,7 @@ function displayFilteredSpecimen(specimenData) {
     } else {
       quizView.style.display = "none";
       speciesContainer.style.display = "grid";
+      startQuizButton.textContent = "Start Quiz";
     }
   });
 });

@@ -125,6 +125,11 @@ t {
     align-self: center;
 }
 
+#filters-btn {
+    color: rgb(255, 225, 134);
+}
+
+
 
 #filters {
     display: none ;
@@ -167,6 +172,7 @@ t {
 
 
 #quiz-btn {
+    color: rgb(255, 119, 0);
 }
 
 #quiz-view {
