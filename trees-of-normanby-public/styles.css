@@ -77,14 +77,16 @@ t {
 
 .card-header {
     color: rgb(255, 225, 134);
-    font-size: 1.75rem;
+    font-size: 1.55rem;
     font-weight: 500;
     padding: 0 1rem 0 1rem;
 }
 
 .species-name {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 400;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .italic {
@@ -99,8 +101,8 @@ t {
     display: grid;
     gap: 2rem;
     max-width: 100%;
-
     grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
+    margin-bottom: 2rem;
 }
 
 .card {
@@ -160,11 +162,10 @@ summary::after {
 }
 
 #speciesName::after {
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 .info-wrapper {
-    max-height: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
 }
@@ -204,7 +205,7 @@ summary::after {
 
   button {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: rgb(208, 208, 208);
     background-color: rgba(95, 95, 95, 0);
     border-radius: 0.5rem;
@@ -258,12 +259,13 @@ header {
 
     > .material-symbols-outlined {
         margin-left:auto;
+        margin-right: 0.5rem;
     }
     /*border-bottom: 1px solid rgb(132, 192, 59);*/
 }
 
 .header-text {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
     font-family: "Cardo", serif;
     font-size: 1.5rem;
     font-weight: 500;

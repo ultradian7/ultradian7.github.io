@@ -150,8 +150,9 @@ function displayFilteredSpecimen(specimenData) {
 
       
       innerHTML += `
-          <details class="info-wrapper">
+          <details>
             <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
+            <div class="info-wrapper">
             <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
 
 /*if (specimen.attributes) {
@@ -182,7 +183,7 @@ function displayFilteredSpecimen(specimenData) {
           innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
       }
 
-      innerHTML += `</details>`; // Close info-wrapper
+      innerHTML += `</details></div>`; // Close info-wrapper
 
       innerHTML += `<div class="gallery">`;
       if (imageFilenames.length > 0) {
