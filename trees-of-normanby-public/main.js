@@ -166,11 +166,14 @@ function displayFilteredSpecimen(specimenData) {
       innerHTML += `</div>`; // Close gallery div
 
       innerHTML += `
-          <div class="info-wrapper">`;
+          <details class="info-wrapper">
+            <summary>Click to expand</summary>`;
 
-      if (specimen.family) {
-          innerHTML += `<p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
-      }
+
+      innerHTML += `<p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
+
+      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
+      
       if (specimen.native_range) {
           innerHTML += `<p class="info"><t>Native Range: </t>${specimen.native_range}</p>`;
       }
@@ -181,9 +184,7 @@ function displayFilteredSpecimen(specimenData) {
           innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
       }
 
-      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
-
-      innerHTML += `</div>`; // Close info-wrapper
+      innerHTML += `</details>`; // Close info-wrapper
       card.innerHTML = innerHTML;
       speciesContainer.appendChild(card);
   });
