@@ -96,7 +96,7 @@ async function loadSpecimen() {
   populateFilterOptions(document.getElementById('species-filter'), speciesSet);
   populateFilterOptions(document.getElementById('common-name-filter'), commonNameSet);
 
-  displayFilteredSpecimen(specimenData);
+  displayFilteredSpecimen(specimenData);  
 
   document.querySelectorAll('#filters select').forEach(filter => {
       filter.addEventListener('change', () => displayFilteredSpecimen(specimenData));
@@ -144,11 +144,47 @@ function displayFilteredSpecimen(specimenData) {
           : ["Unknown Name"];
 
       let innerHTML = `
-          <div class="card-header">${commonNames.join(", ")}</div>
-          <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
-          <div class="gallery">`;
+          <div class="card-header">${commonNames.join(", ")}</div>`;
 
       // Add image thumbnails if available
+
+      
+      innerHTML += `
+          <details class="info-wrapper">
+            <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
+            <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
+
+/*if (specimen.attributes) {
+        innerHTML += `
+<details class="info" id="leafDetails">
+  <summary id="leafSummary">
+    <p><t>Leaf Type: </t>${specimen.attributes["leaf"]["leaf_type"]}</p>
+  </summary>
+    <p><br><t>Shape: </t>${specimen.attributes["leaf"]["shape"]}
+    <br><t>Margin: </t>${specimen.attributes["leaf"]["margin"]}
+    <br><t>Duration: </t>${specimen.attributes["leaf"]["duration"]}
+    <br><t>Venation: </t>${specimen.attributes["leaf"]["venation"]}
+    <br><t>Arrangement: </t>${specimen.attributes["leaf"]["arrangement"]}</p>
+</details>`;
+    }*/
+      
+
+
+      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
+      
+      if (specimen.native_range) {
+          innerHTML += `<p class="info"><t>Native Range: </t>${specimen.native_range}</p>`;
+      }
+      if (specimen.species_info) {
+          innerHTML += `<p class="info"><t>Description: </t>${specimen.species_info}</p>`;
+      }
+      if (specimen.specimen_info) {
+          innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
+      }
+
+      innerHTML += `</details>`; // Close info-wrapper
+
+      innerHTML += `<div class="gallery">`;
       if (imageFilenames.length > 0) {
           innerHTML += `<div class="thumbnail-container">`;
           imageFilenames.forEach((filename, index) => {
@@ -165,24 +201,6 @@ function displayFilteredSpecimen(specimenData) {
 
       innerHTML += `</div>`; // Close gallery div
 
-      innerHTML += `
-          <details class="info-wrapper">
-            <summary><p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p></summary>`;
-
-
-      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
-      
-      if (specimen.native_range) {
-          innerHTML += `<p class="info"><t>Native Range: </t>${specimen.native_range}</p>`;
-      }
-      if (specimen.species_info) {
-          innerHTML += `<p class="info"><t>Description: </t>${specimen.species_info}</p>`;
-      }
-      if (specimen.specimen_info) {
-          innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
-      }
-
-      innerHTML += `</details>`; // Close info-wrapper
       card.innerHTML = innerHTML;
       speciesContainer.appendChild(card);
   });

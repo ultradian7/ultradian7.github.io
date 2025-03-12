@@ -32,6 +32,7 @@ h1 {
 
 .family {
     font-weight: 500;
+    font-size: 1.25
 }
 
 p {
@@ -55,19 +56,35 @@ t {
     background-color: rgb(54, 55, 54);
     padding: 0.75rem;
     border-radius: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    max-width: fit-content;
+
+}
+
+
+#leafSummary::after {
+    content: '+';
+    margin-left: 1rem;
+    margin-right: 0;
+    font-size: 1rem;
+    color:#e4e4e4
+}
+
+[open] > #leafSummary::after {
+    content: '-';
 }
 
 .card-header {
     color: rgb(255, 225, 134);
     font-size: 1.75rem;
     font-weight: 500;
-    padding: 0 1rem 0.5rem 1rem;
+    padding: 0 1rem 0 1rem;
 }
 
 .species-name {
     font-size: 1.5rem;
     font-weight: 400;
-    padding: 0 0 1rem 1rem;
 }
 
 .italic {
@@ -93,21 +110,11 @@ t {
     box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
-    max-height: 600px;
     padding: 1rem 0 0 0;
-    overflow: hidden;
 
-    > details {
-        padding: 0 0 1rem 1rem;
-    }
 }
 
-details {
 
-> .info {
-    margin-bottom: 1rem;
-}
-}
 
 .thumbnail-container::-webkit-scrollbar,
 .info-wrapper::-webkit-scrollbar {
@@ -136,27 +143,30 @@ details {
 summary {
     display: flex;
     align-items: center;
-
+    list-style: none;
+    cursor: pointer;
 }
 
 summary::after {
-  content: '+';
-  margin-left: auto;
-  margin-right: 1rem;
-  font-size: 3rem;
+    content: '+';
+    margin-left: auto;
+    margin-right: 1rem;
+    font-size: 1rem;
+    color:#e4e4e4
 }
-[open] summary::after {
-    content: '-';
-  }
 
-summary::marker {
-    content: none;
+[open] > summary::after {
+    content: '-';
 }
+
+#speciesName::after {
+    font-size: 3rem;
+}
+
 .info-wrapper {
     max-height: 100%;
     padding-left: 1rem;
-    padding-right: 0.5rem;
-    overflow: scroll;
+    padding-right: 1rem;
 }
 
 .nhcp-tree {
