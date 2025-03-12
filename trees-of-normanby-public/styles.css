@@ -112,7 +112,7 @@ t {
     box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
-    padding: 1rem 0 0 0;
+    padding: 0.5rem 0 0.5rem 0;
 
 }
 
