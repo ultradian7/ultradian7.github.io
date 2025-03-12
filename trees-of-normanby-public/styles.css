@@ -55,7 +55,6 @@ t {
     background-color: rgb(54, 55, 54);
     padding: 0.75rem;
     border-radius: 1rem;
-    margin-bottom: 0.75rem;
 }
 
 .card-header {
@@ -103,6 +102,13 @@ t {
     }
 }
 
+details {
+
+> .info {
+    margin-bottom: 1rem;
+}
+}
+
 .thumbnail-container::-webkit-scrollbar,
 .info-wrapper::-webkit-scrollbar {
     width: 0.5rem;
@@ -127,16 +133,30 @@ t {
     background-color: rgb(58, 57, 57);
 }
 
+summary {
+    display: flex;
+    align-items: center;
+
+}
+
+summary::after {
+  content: '+';
+  margin-left: auto;
+  margin-right: 1rem;
+  font-size: 3rem;
+}
+[open] summary::after {
+    content: '-';
+  }
+
+summary::marker {
+    content: none;
+}
 .info-wrapper {
     max-height: 100%;
     padding-left: 1rem;
     padding-right: 0.5rem;
     overflow: scroll;
-
-    > summary{
-        padding-bottom: 1rem;
-    }
-
 }
 
 .nhcp-tree {

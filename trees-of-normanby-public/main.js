@@ -167,10 +167,8 @@ function displayFilteredSpecimen(specimenData) {
 
       innerHTML += `
           <details class="info-wrapper">
-            <summary>Click to expand</summary>`;
+            <summary><p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p></summary>`;
 
-
-      innerHTML += `<p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
 
       innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
       
