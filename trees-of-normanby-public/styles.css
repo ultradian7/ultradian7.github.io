@@ -97,7 +97,7 @@ t {
     line-height: 1.5;
 }
 
-[open] > #leafSummary::after {
+[open] > #leafSummary::after, [open] > #attr-summary::after {
     content: '-';
 }
 
@@ -352,15 +352,18 @@ nav {
   #dropdown-toggle:checked + .dropbtn + .dropdown-content {
     display: block;
   }
+
+  .location-details a{
+    margin-left: 1%;
+  }
   
   .dropdown-content {
+    margin-top: 0.5px;
     position: absolute;
     right: 0;
-    background-color: rgb(17, 17, 17);
+    background-color: rgba(17, 17, 17, 0.862);
     width: max-content;
     min-width: 180px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
     border-radius: 0.2rem;
     display: none;
 }

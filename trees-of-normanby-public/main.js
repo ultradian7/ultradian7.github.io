@@ -152,7 +152,7 @@ function displayFilteredSpecimen(specimenData) {
             <div class="info-wrapper">
             <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
 
-            innerHTML += `<details class="info" id="locationDetails">
+            innerHTML += `<details class="info location-details">
             <summary id="leafSummary">
               <t>Location: </t>
             </summary>
