@@ -358,7 +358,7 @@ nav {
     right: 0;
     background-color: rgb(17, 17, 17);
     width: max-content;
-    min-width: 160px;
+    min-width: 180px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     border-radius: 0.2rem;
@@ -441,7 +441,7 @@ nav {
   .quiz-container {
     background-color: rgb(43, 42, 42);
     margin-top: 1rem;
-    padding: 3rem 0.5rem 3rem 0.5rem;
+    padding: 2rem 0.5rem 3rem 0.5rem;
     text-align: center;
     align-content: center;
     width: 800px;
@@ -472,6 +472,7 @@ nav {
 .options button {
     background-color: #0b6282;
     display: block;
+    min-width: 150px;
     width: fit-content;
     padding: 0.5rem 1rem 0.5rem 1rem;
     margin: 1rem 1rem 1rem 1rem;
@@ -485,16 +486,17 @@ nav {
 }
 
 .options {
+    align-items: center;
     padding: 0.5rem 1rem 0.5rem 1rem;
     display: flex;
     flex-direction: column;
+    min-width: 240px;
     max-width: fit-content;
     background-color: #006c93;
     margin-top: 2rem;
     margin-right: auto;
     margin-left: auto;
     border-radius: 0.75rem;
-
 }
 
 .options button:hover {
