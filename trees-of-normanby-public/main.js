@@ -160,8 +160,11 @@ function displayFilteredSpecimen(specimenData) {
             <summary id="leafSummary">
               <t>Location: </t>
             </summary>
-              <t class="attr-info">Latitude: </t>${specimen.latitude.toFixed(6)}
-              <br><t class="attr-info">Longitude: </t>${specimen.longitude.toFixed(7)}</p>
+              <p><t class="attr-info">Latitude: </t>${specimen.latitude.toFixed(6)}
+              <br><t class="attr-info">Longitude: </t>${specimen.longitude.toFixed(7)}
+              <br><a class="attr-info" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}"> 
+              Show in Google Maps</a>
+              </p>
           </details>`;
             
                   
