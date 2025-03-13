@@ -26,9 +26,10 @@ h1 {
     font-size: 4rem;
     font-weight: 700;
     color: rgb(255, 255, 255);
-    line-height: 0.826;
+    line-height: 0.862;
     padding: 0.5rem 4rem 0.5rem 1rem;
     margin: 0;
+    text-wrap: balance;
 }
 
 .family {
@@ -288,6 +289,8 @@ header {
     font-weight: 500;
     color:rgb(132, 192, 59);
     text-decoration: none;
+    line-height: 1;
+    text-wrap: balance;
 }
 
 .thumbnail-container {
