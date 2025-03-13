@@ -216,7 +216,14 @@ summary::after {
 
 #filters-btn, #quiz-btn {
     color: rgb(255, 255, 255);
+
+    > a {
+        color :rgb(218, 218, 218);
+        text-decoration: none;
+    }
 }
+
+
 
 
 
@@ -278,6 +285,7 @@ summary::after {
 .quiz-btn-wrapper {
     display: flex;
     margin-left: auto;
+
 
 }
 
@@ -370,7 +378,7 @@ nav {
     right: 0;
     background-color: rgba(17, 17, 17, 0.862);
     width: max-content;
-    min-width: 10remx;
+    min-width: 7rem;
     border-radius: 0.2rem;
     display: none;
 }
