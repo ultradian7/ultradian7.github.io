@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+* {
+    scroll-behavior: smooth;
+}
 body {
     color: rgb(237, 232, 217);
     background-color: rgb(17, 17, 17);
@@ -11,6 +14,7 @@ body {
     font-style: normal;
     line-height: 1.5;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 .material-symbols-outlined {
@@ -257,10 +261,13 @@ summary::after {
   }
 
 
-#quiz-view {
+#quiz {
     display: none;
     padding: 0 1rem 16rem 1rem;
     place-content: center;
+    &:target {
+        display: flex;
+    }
 }
 
 .menu-wrapper {
@@ -363,7 +370,7 @@ nav {
     right: 0;
     background-color: rgba(17, 17, 17, 0.862);
     width: max-content;
-    min-width: 180px;
+    min-width: 10remx;
     border-radius: 0.2rem;
     display: none;
 }
@@ -379,6 +386,10 @@ nav {
   .dropdown-content a:hover {
     background-color: var(--my-light-gray);
   }
+
+  .dropdown-content:focus-within {
+    display: none;
+}
 
 .thumbnail-container {
     display: flex;
@@ -534,6 +545,12 @@ nav {
     padding: 0 0.5rem 0 0.5rem;
 }
 
+#browse {
+    display: none;
+    &:target {
+        display: block;
+      }
+}
 
 .overlay {
     border-image: linear-gradient(hsla(267, 100%, 22%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;

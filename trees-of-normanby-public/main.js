@@ -275,24 +275,27 @@ function displayFilteredSpecimen(specimenData) {
   loadSpecimen();
 
   const startQuizButton = document.getElementById("quiz-btn");
+  const startQuizNav = document.getElementById("start-quiz-nav");
   const quizView = document.getElementById("quiz-view");
-  const specimenWrapper = document.getElementById("specimen-wrapper");
+  const browseWrapper = document.getElementById("browse");
+  const browseNav = document.getElementById("browse-nav");
+  const dropdownToggle = document.getElementById("dropdown-toggle");
 
-  startQuizButton.addEventListener("click", function(){
-    if (quizView.style.display === "none"){
-      quizView.style.display = "flex";
-      specimenWrapper.style.display = "none";
-      //startQuizButton.textContent = "Back";
+  function startQuizCallback(){
+      dropdownToggle.checked = "";
       displayQuestion();
+  }
 
 
-    } else {
-      quizView.style.display = "none";
-      specimenWrapper.style.display = "block";
-      //startQuizButton.textContent = "Start Quiz";
-    }
-  });
+  startQuizButton.addEventListener("click", startQuizCallback);
+  startQuizNav.addEventListener("click", startQuizCallback);
+
+  browseNav.addEventListener("click", function(){dropdownToggle.checked = "";});
+
+
 });
+
+
 
 
 function generateMultiQuestion(trees, speciesData) {
