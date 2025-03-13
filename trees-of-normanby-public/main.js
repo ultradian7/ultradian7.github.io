@@ -138,16 +138,12 @@ function displayFilteredSpecimen(specimenData) {
           }
       }
 
-      // Extract names from common_name object
       const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
           ? Object.values(specimen.common_name) 
           : ["Unknown Name"];
 
       let innerHTML = `
           <div class="card-header">${commonNames.join(", ")}</div>`;
-
-      // Add image thumbnails if available
-
       
       
       innerHTML += `
