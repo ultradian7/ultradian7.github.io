@@ -199,7 +199,7 @@ function displayFilteredSpecimen(specimenData) {
           <t>Attributes: </t>
         </summary>
 <details class="attr-info" id="leafDetails">
-  <summary id="leafSummary">
+  <summary id="attr-summary">
     <t>Leaves:</t>
   </summary>
     <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
@@ -211,7 +211,7 @@ function displayFilteredSpecimen(specimenData) {
 </details>
 
 <details class="attr-info" id="barkWoodDetails">
-  <summary id="leafSummary">
+  <summary id="attr-summary">
     <t>Bark & Wood:</t>
   </summary>
     <p><t class="attr-info">Bark Texture: </t>${specimen.attributes.bark_texture}
@@ -221,7 +221,7 @@ function displayFilteredSpecimen(specimenData) {
 </details>
 
 <details class="attr-info" id="fruitFlowerDetails">
-  <summary id="leafSummary">
+  <summary id="attr-summary">
     <t>Fruit & Flowers:</t>
   </summary>
     <p><t class="attr-info">Fruit Type: </t>${specimen.attributes.fruit_type}
