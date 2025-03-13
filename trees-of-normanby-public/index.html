@@ -12,56 +12,69 @@
       <header>
         <a href="index.html"><img src="nhcp-tree.svg" alt="tree-graphic" class="nhcp-tree"/></a>
         <a href="index.html" class="header-text">TREES of NORMANBY</a>
-        <span class="material-symbols-outlined">
-          menu
-          </span>
+        <nav>
+          <ul>
+            <li id="dropdown">
+              <input type="checkbox" id="dropdown-toggle" />
+              <label for="dropdown-toggle" class="dropbtn"> <span class="material-symbols-outlined">
+                menu
+                </span></label>
+              <div class="dropdown-content">
+                <a href="">Explore Trees</a>
+                <a href="">Start Quiz</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+
       </header>
-      <section id="specimen-wrapper"></section>
-      <div class="specimen-banner overlay">
-        <h1>Get to know the trees...</h1>
-      </div>
-        <div class="menu-wrapper">
-          <button id="filters-btn">Filters</button>
-          <div class="quiz-btn-wrapper">
-            <div class="quiz-label">Test your knowledge!</div>
-            <button id="quiz-btn">Start Quiz</button>
-          </div>
+      <section id="specimen-wrapper">
+        <div class="specimen-banner overlay">
+          <h1>Get to know the trees...</h1>
         </div>
-        <div id="filters">
-          <div class="filter-group">
-            <label for="common-name-filter">Common Name</label>
-            <select id="common-name-filter">
-              <option value="">Filter by Common Name</option>
-            </select>
+          <div class="menu-wrapper">
+            <button id="filters-btn">Filters</button>
+            <div class="quiz-btn-wrapper">
+              <div class="quiz-label">Test your knowledge!</div>
+              <button id="quiz-btn">Start Quiz</button>
+            </div>
           </div>
-      
-          <div class="filter-group">
-            <label for="species-filter">Species</label>
-            <select id="species-filter">
-              <option value="">Filter by Species</option>
-            </select>
-          </div>
+          <div id="filters">
+            <div class="filter-group">
+              <label for="common-name-filter">Common Name</label>
+              <select id="common-name-filter">
+                <option value="">Filter by Common Name</option>
+              </select>
+            </div>
+        
+            <div class="filter-group">
+              <label for="species-filter">Species</label>
+              <select id="species-filter">
+                <option value="">Filter by Species</option>
+              </select>
+            </div>
 
-          <div class="filter-group">
-            <label for="genus-filter">Genus</label>
-            <select id="genus-filter">
-              <option value="">Filter by Genus</option>
-            </select>
-          </div>
+            <div class="filter-group">
+              <label for="genus-filter">Genus</label>
+              <select id="genus-filter">
+                <option value="">Filter by Genus</option>
+              </select>
+            </div>
 
-          <div class="filter-group">
-            <label for="family-filter">Family</label>
-            <select id="family-filter">
-              <option value="">Filter by Family</option>
-            </select>
+            <div class="filter-group">
+              <label for="family-filter">Family</label>
+              <select id="family-filter">
+                <option value="">Filter by Family</option>
+              </select>
+            </div>
+          
           </div>
         
-        </div>
-      
-        <div class="cards-grid" id="species-container">
+          <div class="cards-grid" id="species-container">
 
+          </div>
         </div>
-      </div>
+      </section>
 
       <section id="quiz-view">
         <div class="quiz-container">

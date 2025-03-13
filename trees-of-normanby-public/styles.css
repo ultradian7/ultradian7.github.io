@@ -10,9 +10,9 @@ body {
     font-weight: 400;
     font-style: normal;
     line-height: 1.5;
+    overflow-x: hidden;
 }
-a {
-}
+
 .material-symbols-outlined {
     font-variation-settings:
     'FILL' 0,
@@ -190,7 +190,9 @@ summary::after {
 
 .nhcp-tree {
     max-height: 2rem;
-    margin-left: 0.25rem;
+    margin-left: 0.75rem;
+    margin-right: 0.25rem;
+    margin-top: 0.25rem;
     filter: invert(50%) sepia(100%) saturate(250%) hue-rotate(45deg);
     align-self: center; 
 }
@@ -245,6 +247,7 @@ summary::after {
 #quiz-view {
     display: none;
     padding: 0 1rem 16rem 1rem;
+    place-content: center;
 }
 
 .menu-wrapper {
@@ -273,7 +276,7 @@ header {
     display: flex;
     max-width: 100%;
     align-items: center;
-    padding: 0.5rem;
+    border-bottom: 0.5px solid rgb(132, 192, 59);
 
     > .material-symbols-outlined {
         margin-left:auto;
@@ -292,6 +295,74 @@ header {
     line-height: 1;
     text-wrap: balance;
 }
+
+nav {
+    margin-left: auto;
+    margin-top: auto;
+  }
+  
+  nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  nav li{
+    
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: relative;
+  }
+  
+  nav a, .dropbtn {
+    cursor: pointer;
+    text-decoration: none;
+    color:rgb(132, 192, 59);
+    transition: color 0.3s;
+    font-size: 1.111rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+  }
+  
+  nav a:hover, .dropbtn:hover{
+    text-decoration: none;
+    background-color: var(--my-light-gray);
+  }
+
+  #dropdown-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  #dropdown-toggle:checked + .dropbtn + .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    right: 0;
+    background-color: rgb(17, 17, 17);
+    width: max-content;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 0.2rem;
+    display: none;
+}
+  
+  .dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 1rem;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: var(--my-light-gray);
+  }
 
 .thumbnail-container {
     display: flex;
@@ -356,21 +427,23 @@ header {
   
   .quiz-container {
     background-color: rgb(43, 42, 42);
-    padding: 2rem 0.5rem 3rem 0.5rem;
+    margin-top: 1rem;
+    padding: 3rem 0.5rem 3rem 0.5rem;
     text-align: center;
     align-content: center;
-    width: 100%;
+    width: 800px;
     border-radius: 0.5rem;
 }
 
 .question {
     margin-bottom: 1.5rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin: auto;
     background-color: #006c93;
     border-radius: 0.5rem;
     place-content: center;
+    max-width: 600px;
+    width: fit-content;
 }
 
 
