@@ -16,10 +16,10 @@
           menu
           </span>
       </header>
+      <section id="specimen-wrapper"></section>
       <div class="specimen-banner overlay">
         <h1>Get to know the trees...</h1>
       </div>
-      <div id="specimen-wrapper">
         <div class="menu-wrapper">
           <button id="filters-btn">Filters</button>
           <div class="quiz-btn-wrapper">
@@ -29,16 +29,9 @@
         </div>
         <div id="filters">
           <div class="filter-group">
-            <label for="family-filter">Family</label>
-            <select id="family-filter">
-              <option value="">Filter by Family</option>
-            </select>
-          </div>
-      
-          <div class="filter-group">
-            <label for="genus-filter">Genus</label>
-            <select id="genus-filter">
-              <option value="">Filter by Genus</option>
+            <label for="common-name-filter">Common Name</label>
+            <select id="common-name-filter">
+              <option value="">Filter by Common Name</option>
             </select>
           </div>
       
@@ -48,18 +41,26 @@
               <option value="">Filter by Species</option>
             </select>
           </div>
-      
+
           <div class="filter-group">
-            <label for="common-name-filter">Common Name</label>
-            <select id="common-name-filter">
-              <option value="">Filter by Common Name</option>
+            <label for="genus-filter">Genus</label>
+            <select id="genus-filter">
+              <option value="">Filter by Genus</option>
             </select>
           </div>
+
+          <div class="filter-group">
+            <label for="family-filter">Family</label>
+            <select id="family-filter">
+              <option value="">Filter by Family</option>
+            </select>
+          </div>
+        
         </div>
       
-        <section class="cards-grid" id="species-container">
+        <div class="cards-grid" id="species-container">
 
-        </section>
+        </div>
       </div>
 
       <section id="quiz-view">

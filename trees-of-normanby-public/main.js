@@ -149,39 +149,92 @@ function displayFilteredSpecimen(specimenData) {
       // Add image thumbnails if available
 
       
+      
       innerHTML += `
           <details>
             <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
             <div class="info-wrapper">
-            <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`;
+            <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
 
-/*if (specimen.attributes) {
-        innerHTML += `
-<details class="info" id="leafDetails">
-  <summary id="leafSummary">
-    <p><t>Leaf Type: </t>${specimen.attributes["leaf"]["leaf_type"]}</p>
-  </summary>
-    <p><br><t>Shape: </t>${specimen.attributes["leaf"]["shape"]}
-    <br><t>Margin: </t>${specimen.attributes["leaf"]["margin"]}
-    <br><t>Duration: </t>${specimen.attributes["leaf"]["duration"]}
-    <br><t>Venation: </t>${specimen.attributes["leaf"]["venation"]}
-    <br><t>Arrangement: </t>${specimen.attributes["leaf"]["arrangement"]}</p>
-</details>`;
-    }*/
-      
-
-
-      innerHTML += `<p class="info"><t>Location: </t>${specimen.latitude.toFixed(6)}, ${specimen.longitude.toFixed(6)}</p>`;
+            innerHTML += `<details class="info" id="locationDetails">
+            <summary id="leafSummary">
+              <t>Location: </t>
+            </summary>
+              <t class="attr-info">Latitude: </t>${specimen.latitude.toFixed(6)}
+              <br><t class="attr-info">Longitude: </t>${specimen.longitude.toFixed(7)}</p>
+          </details>`;
+            
+                  
+    
       
       if (specimen.native_range) {
-          innerHTML += `<p class="info"><t>Native Range: </t>${specimen.native_range}</p>`;
+          innerHTML += `<details  class="info" id="nativeHabitatDetails">
+            <summary id="leafSummary">
+              <t>Native Habitat: </t>
+            </summary>
+               <p class="desc-info">${specimen.native_range}</p>
+              </details>
+               `;
       }
       if (specimen.species_info) {
-          innerHTML += `<p class="info"><t>Description: </t>${specimen.species_info}</p>`;
+          innerHTML += `<details  class="info" id="descDetails">
+            <summary id="leafSummary">
+              <t>Description: </t>
+            </summary>
+               <p class="desc-info">${specimen.species_info}</p>
+              </details>`;
       }
       if (specimen.specimen_info) {
-          innerHTML += `<p class="info"><t>Specimen: </t>${specimen.specimen_info}</p>`;
+          innerHTML += `<details  class="info" id="descDetails">
+            <summary id="leafSummary">
+              <t>Specimen: </t>
+            </summary>
+               <p class="desc-info">${specimen.specimen_info}</p>
+              </details> `;          
       }
+
+      if (specimen.attributes) {
+        innerHTML += `
+        <details class="info" id="leafDetails">
+        <summary id="leafSummary">
+          <t>Attributes: </t>
+        </summary>
+<details class="attr-info" id="leafDetails">
+  <summary id="leafSummary">
+    <t>Leaves:</t>
+  </summary>
+    <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
+    <br><t class="attr-info">Shape: </t>${specimen.attributes.leaf_shape}
+    <br><t class="attr-info">Margin: </t>${specimen.attributes.leaf_margin}
+    <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}
+    <br><t class="attr-info">Venation: </t>${specimen.attributes.leaf_venation}
+    <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}</p>
+</details>
+
+<details class="attr-info" id="barkWoodDetails">
+  <summary id="leafSummary">
+    <t>Bark & Wood:</t>
+  </summary>
+    <p><t class="attr-info">Bark Texture: </t>${specimen.attributes.bark_texture}
+    <br><t class="attr-info">Bark Colour: </t>${specimen.attributes.bark_colour}
+    <br><t class="attr-info">Wood Type: </t>${specimen.attributes.wood_type}
+    <br><t class="attr-info">Wood Colour: </t>${specimen.attributes.wood_colour}</p>
+</details>
+
+<details class="attr-info" id="fruitFlowerDetails">
+  <summary id="leafSummary">
+    <t>Fruit & Flowers:</t>
+  </summary>
+    <p><t class="attr-info">Fruit Type: </t>${specimen.attributes.fruit_type}
+    <br><t class="attr-info">Fruit Colour: </t>${specimen.attributes.fruit_colour}
+    <br><t class="attr-info">Fruit Season: </t>${specimen.attributes.fruit_season}
+    <br><t class="attr-info">Flower Type: </t>${specimen.attributes.flower_type}
+    <br><t class="attr-info">Flower Colour: </t>${specimen.attributes.flower_colour}
+    <br><t class="attr-info">Flower Season: </t>${specimen.attributes.flower_season}</p>
+</details>
+</details>
+
+`;}
 
       innerHTML += `</details></div>`; // Close info-wrapper
 
@@ -264,12 +317,12 @@ function generateMultiQuestion(trees, speciesData) {
       options: Array.from(new Set(shuffledTrees.map(t => `<i>${t.genus} ${t.species}</i>`)))
     },
     {
-      text: `<p class="question-text">Which of the following is <i>${correctTree.genus} ${correctTree.species}</i> commonly known as?</p>`,
+      text: `<p class="question-text"><i>${correctTree.genus} ${correctTree.species}</i> is commonly known as?</p>`,
       answer: correctCommonName,
       options: Array.from(new Set(commonNames))
     },
     {
-      text: `<p class="question-text">What family does <i>${correctTree.genus} ${correctTree.species}</i> fall under?</p>`,
+      text: `<p class="question-text">What family does <i>${correctTree.genus} ${correctTree.species}</i> come under?</p>`,
       answer: `<i>${correctTree.family}</i>`,
       options: ensureFourOptions(
         [`<i>${correctTree.family}</i>`], 
@@ -278,7 +331,100 @@ function generateMultiQuestion(trees, speciesData) {
     }
   ];
 
-  // **📸 Image-Based Questions**
+  if (correctTree.attributes){
+    if (correctTree.attributes.flower_season) {
+      questionTypes.push({
+        text: `<p class="question-text">${correctCommonName} blossoms in what season?</p>`,
+        answer: correctTree.attributes.flower_season,
+        options: ["Spring", "Summer", "Autumn", "Winter"]
+      });
+    }
+
+    if (correctTree.attributes.fruit_type) {
+      questionTypes.push({
+        text: `<p class="question-text">What type of fruit does ${correctCommonName} have?</p>`,
+        answer: correctTree.attributes.fruit_type,
+        options: ensureFourOptions([
+          correctTree.attributes.fruit_type], 
+          trees.map(t => t.attributes.fruit_type)
+      )
+      });
+    }
+
+    if (correctTree.attributes.bark_texture) {
+      questionTypes.push({
+        text: `<p class="question-text">What type of bark texture does ${correctCommonName} have?</p>`,
+        answer: correctTree.attributes.bark_texture,
+        options: ensureFourOptions([
+          correctTree.attributes.bark_texture], 
+          trees.map(t => t.attributes.bark_texture)
+      )
+      });
+    }
+
+    if (correctTree.attributes.fruit_season) {
+      questionTypes.push({
+        text: `<p class="question-text">What is the fruiting season of ${correctCommonName}?</p>`,
+        answer: correctTree.attributes.fruit_season,
+        options: ["Spring", "Summer", "Autumn", "Winter"]
+      });
+    }
+
+    if (correctTree.attributes.life_cycle) {
+      questionTypes.push({
+        text: `<p class="question-text">What's the life cycle of ${correctCommonName}?</p>`,
+        answer: correctTree.attributes.life_cycle,
+        options: ["Deciduous", "Evergreen"]
+      });
+    }
+
+    if (correctTree.attributes.leaf_type) {
+      const correctLeafType = correctTree.attributes.leaf_type;
+      
+      questionTypes.push({
+          text: `<p class="question-text">What type of leaves does <i>${correctTree.genus} ${correctTree.species}</i> have?</p>`,
+          answer: correctLeafType,
+          options: ensureFourOptions(
+              [correctLeafType], 
+              trees.map(t => t.attributes.leaf_type)
+          )
+      });
+
+      questionTypes.push({
+        text: `<p class="question-text">What type of leaves does ${correctCommonName} have?</p>`,
+        answer: correctLeafType,
+        options: ensureFourOptions(
+            [correctLeafType], 
+            trees.map(t => t.attributes.leaf_type)
+        )
+    });
+  }
+  if (correctTree.attributes.leaf_shape){
+    const correctLeafShape = correctTree.attributes.leaf_shape;
+    questionTypes.push({
+      text: `<p class="question-text">What leaf shape does <i>${correctTree.genus} ${correctTree.species}</i> have?</p>`,
+      answer: correctLeafShape,
+      options: ensureFourOptions(
+          [correctLeafShape], 
+          trees.map(t => t.attributes.leaf_shape)
+      )
+  });
+
+  questionTypes.push({
+    text: `<p class="question-text">What leaf shape does ${correctCommonName} have?</p>`,
+    answer: correctLeafShape,
+    options: ensureFourOptions(
+        [correctLeafShape], 
+        trees.map(t => t.attributes.leaf_shape)
+    )
+});
+  }
+
+
+}
+
+
+
   const specimensWithImages = trees.filter(specimen => specimen.images && specimen.images.length > 0);
 
   if (specimensWithImages.length > 0) {

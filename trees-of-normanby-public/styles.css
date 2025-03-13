@@ -63,12 +63,27 @@ t {
 }
 
 
+.attr-info, .desc-info  {
+    padding-left: 0.75rem;
+    max-width: fit-content;
+    line-height: 2;
+    margin-top: 0.5rem;
+}
+
+.desc-info {
+    line-height: 1.5;
+    padding-left: 0;
+
+}
+
+
+
 #leafSummary::after {
     content: '+';
     margin-left: 1rem;
     margin-right: 0;
     font-size: 1rem;
-    color:#e4e4e4
+    color:#e4e4e4;
 }
 
 [open] > #leafSummary::after {
@@ -99,7 +114,7 @@ t {
 
 .cards-grid {
     display: grid;
-    gap: 2rem;
+    gap: 1rem;
     max-width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
     margin-bottom: 2rem;
@@ -193,7 +208,7 @@ summary::after {
   .filter-group {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    max-width: 10rem;
   }
   
   label {
@@ -277,7 +292,7 @@ header {
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
-    padding: 0 1rem 1rem 1rem;
+    padding: 1rem;
   }
   
   .thumbnail {
@@ -415,9 +430,14 @@ header {
     background: #394ce1;
 }
 
-#specimen-wrapper {
-    padding: 0 1rem 0 1rem;
+.cards-grid, #filters {
+    padding: 0 0.75rem 0 0.75rem;
 }
+
+.menu-wrapper {
+    padding: 0 0.5rem 0 0.5rem;
+}
+
 
 .overlay {
     border-image: linear-gradient(hsla(267, 100%, 22%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;
