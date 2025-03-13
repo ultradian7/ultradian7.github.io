@@ -159,7 +159,7 @@ function displayFilteredSpecimen(specimenData) {
               <p><t class="attr-info">Latitude: </t>${specimen.latitude}
               <br><t class="attr-info">Longitude: </t>${specimen.longitude}
               <br><a class="attr-info" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}"> 
-              Show in Google Maps</a>
+              Open in Google Maps</a>
               </p>
           </details>`;
             
