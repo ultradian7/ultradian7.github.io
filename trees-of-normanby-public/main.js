@@ -276,22 +276,56 @@ function displayFilteredSpecimen(specimenData) {
   loadSpecimen();
 
   const startQuizButton = document.getElementById("quiz-btn");
-  const startQuizNav = document.getElementById("start-quiz-nav");
-  const quizView = document.getElementById("quiz-view");
-  const browseWrapper = document.getElementById("browse");
+  const startQuizNav = document.getElementById("quiz-nav");
+  const quizSection = document.getElementById("quiz");
+  const browseSection = document.getElementById("browse");
   const browseNav = document.getElementById("browse-nav");
   const dropdownToggle = document.getElementById("dropdown-toggle");
+  const homeSection = document.getElementById("home");
+  const knowBanner = document.getElementById("know-banner");
+  const homeNav = document.getElementById("home-nav");
+
+  
 
   function startQuizCallback(){
       dropdownToggle.checked = "";
+      quizSection.style.display = "flex";
+      homeSection.style.display = "none";
+      browseSection.style.display = "none";
       displayQuestion();
   }
+
+  function selectSection(event){
+    let id = event.target.id;
+    dropdownToggle.checked = "";
+    quizSection.style.display = "none";
+    homeSection.style.display = "none";
+    browseSection.style.display = "block";
+}
+
+  function selectBrowseView() {
+    dropdownToggle.checked = "";
+    quizSection.style.display = "none";
+    homeSection.style.display = "none";
+    browseSection.style.display = "block";
+  }
+
+  function selectHomeView() {
+    dropdownToggle.checked = "";
+    quizSection.style.display = "none";
+    homeSection.style.display = "block";
+    browseSection.style.display = "none";
+  }
+
+
 
 
   startQuizButton.addEventListener("click", startQuizCallback);
   startQuizNav.addEventListener("click", startQuizCallback);
-
-  browseNav.addEventListener("click", function(){dropdownToggle.checked = "";});
+  knowBanner.addEventListener("click", selectBrowseView);
+  browseNav.addEventListener("click", selectBrowseView);
+  homeNav.addEventListener("click", selectHomeView);
+  
 
 
 });
