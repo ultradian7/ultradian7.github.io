@@ -142,9 +142,26 @@ function displayFilteredSpecimen(specimenData) {
           ? Object.values(specimen.common_name) 
           : ["Unknown Name"];
 
-      let innerHTML = `
-          <div class="card-header">${commonNames.join(", ")}</div>`;
-      
+      let innerHTML = "";
+
+          innerHTML += `<div class="gallery">`;
+          if (imageFilenames.length > 0) {
+              innerHTML += `<div class="thumbnail-container">`;
+              imageFilenames.forEach((filename, index) => {
+                  const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+                  const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                  innerHTML += `
+                      <img src="${thumbnailUrl}" class="thumbnail" 
+                           onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
+                           alt="${imageDescriptions[index] || 'Specimen image'}">
+                  `;
+              });
+              innerHTML += `</div>`;
+          }
+    
+          innerHTML += `</div>`; // Close gallery div
+
+          innerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
       
       innerHTML += `
           <details>
@@ -237,22 +254,6 @@ function displayFilteredSpecimen(specimenData) {
 
       innerHTML += `</details></div>`; // Close info-wrapper
 
-      innerHTML += `<div class="gallery">`;
-      if (imageFilenames.length > 0) {
-          innerHTML += `<div class="thumbnail-container">`;
-          imageFilenames.forEach((filename, index) => {
-              const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-              const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
-              innerHTML += `
-                  <img src="${thumbnailUrl}" class="thumbnail" 
-                       onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
-                       alt="${imageDescriptions[index] || 'Specimen image'}">
-              `;
-          });
-          innerHTML += `</div>`;
-      }
-
-      innerHTML += `</div>`; // Close gallery div
 
       card.innerHTML = innerHTML;
       speciesContainer.appendChild(card);

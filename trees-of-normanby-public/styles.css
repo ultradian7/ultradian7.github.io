@@ -186,7 +186,7 @@ summary::after {
     border-radius: 50%;
     content: '+';
     margin-left: auto;
-    width: 3rem;
+    width: 2.25rem;
     margin-right: 1rem;
     font-size: 1rem;
     color:#e4e4e4
@@ -197,7 +197,7 @@ summary::after {
 }
 
 #speciesName::after {
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .info-wrapper {
