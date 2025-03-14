@@ -572,7 +572,7 @@ nav {
 }
 
 .overlay-a {
-    border-image: linear-gradient(hsla(267, 100%, 22%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;
+    border-image: linear-gradient(hsla(270, 50%, 2%, 0.629), hsla(95, 25%, 14%, 0.919)) fill 1;
 }
 
 .specimen-banner {
@@ -586,16 +586,23 @@ nav {
     cursor: pointer;
 }
 
-.overlay-a {
 
-}
 
 .giant-seq {
-    background-image: url("images/giant seq 1.jpg");
+    background-image: url("images/giant-seq-1.jpg");
     background-size: cover;
     background-position: center center;
     min-height: 18rem;
     max-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.pinus-bark {
+    background-image: url("images/pinus-nigra-bark.jpg");
+    background-size: cover;
+    background-position: center center;
+    min-height: 7rem;
     margin: 0;
     padding: 0;
 }
