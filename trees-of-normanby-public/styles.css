@@ -206,7 +206,7 @@ summary::after {
 }
 
 .nhcp-tree {
-    max-height: 2rem;
+    max-height: 1.75rem;
     margin-left: 0.75rem;
     margin-right: 0.25rem;
     margin-top: 0.25rem;
@@ -307,12 +307,16 @@ header {
 .header-text {
     margin-left: 0.5rem;
     font-family: "Cardo", serif;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 500;
     color:rgb(132, 192, 59);
     text-decoration: none;
     line-height: 1;
     text-wrap: balance;
+    > h {
+        font-size: 1.25rem;
+    }
+    
 }
 
 nav {
