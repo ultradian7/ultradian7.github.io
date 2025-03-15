@@ -152,6 +152,7 @@ t {
 .info-wrapper::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem;
+    display: none;
 }
 
 .thumbnail-container::-webkit-scrollbar,
