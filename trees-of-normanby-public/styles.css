@@ -526,6 +526,10 @@ nav {
     border-radius: 0.75rem;
 }
 
+.options button, .new-question{
+    background-color: #281b147e;
+}
+
 .options button:hover {
     background: #8922ab;
 }
@@ -540,7 +544,6 @@ nav {
 .new-question {
     margin-top: 2rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    background: #1c1c1c97;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -550,9 +553,6 @@ nav {
     background: #394ce1;
 }
 
-.options button, .new-question{
-    background-color: #281b147e;
-}
 
 
 .cards-grid, #filters {
