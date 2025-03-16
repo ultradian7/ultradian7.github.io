@@ -396,6 +396,7 @@ nav {
 }
 
 .thumbnail-container {
+    height: 120px;
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
@@ -582,13 +583,20 @@ nav {
 
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
-    min-height: 12rem;
+    min-height: 7rem;
     max-height: 100%;
     background-size: cover;
     background-position: top center;
     margin: 0;
     padding: 0;
     cursor: pointer;
+    place-content: top space-between;
+    > h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        max-width: 400px;
+        line-height: 1;
+    }
 }
 
 
@@ -596,11 +604,15 @@ nav {
 .giant-seq {
     background-image: url("images/giant-seq-1.jpg");
     background-size: cover;
-    background-position: center center;
-    min-height: 18rem;
-    max-height: 100%;
+    background-position: 25%;
+    min-height: 400px;
     margin: 0;
-    padding: 0;
+    padding-bottom: 1rem;
+    place-content: end space-between;
+    > h1 {
+        max-width: 400px;
+    }
+    cursor: pointer;
 }
 
 .pinus-bark {

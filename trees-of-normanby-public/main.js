@@ -145,7 +145,7 @@ function displayFilteredSpecimen(specimenData) {
       let innerHTML = "";
 
           innerHTML += `<div class="gallery">`;
-          if (imageFilenames.length > 0) {
+
               innerHTML += `<div class="thumbnail-container">`;
               imageFilenames.forEach((filename, index) => {
                   const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
@@ -157,7 +157,7 @@ function displayFilteredSpecimen(specimenData) {
                   `;
               });
               innerHTML += `</div>`;
-          }
+          
     
           innerHTML += `</div>`; // Close gallery div
 
@@ -283,7 +283,9 @@ function displayFilteredSpecimen(specimenData) {
   const dropdownToggle = document.getElementById("dropdown-toggle");
   const homeSection = document.getElementById("home");
   const knowBanner = document.getElementById("know-banner");
+  const giantSeq = document.getElementById("giant-seq");
   const homeNav = document.getElementById("home-nav");
+  
 
   
 
@@ -325,6 +327,7 @@ function displayFilteredSpecimen(specimenData) {
   knowBanner.addEventListener("click", selectBrowseView);
   browseNav.addEventListener("click", selectBrowseView);
   homeNav.addEventListener("click", selectHomeView);
+  giantSeq.addEventListener("click", selectBrowseView);
   
 
 
