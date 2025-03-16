@@ -598,13 +598,12 @@ nav {
     background-image: url("images/dpt-1.jpg");
     min-height: 7rem;
     max-height: 100%;
-    margin: auto;
     background-size: cover;
     background-position: top center;
     margin: 0;
     padding: 0;
     cursor: pointer;
-    place-content: end;
+    justify-content: end;
     text-align: right;
     display: flex;
     > h1 {
