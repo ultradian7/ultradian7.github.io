@@ -159,7 +159,7 @@ function displayFilteredSpecimen(specimenData) {
           });
       } else {
           innerHTML += `
-              <img src="images/placeholder.jpg" class="thumbnail" 
+              <img src="images/placeholder.jpg" class="thumbnail placeholder" 
                    alt="No image available">
           `;
       }

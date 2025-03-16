@@ -416,6 +416,10 @@ nav {
   .thumbnail:hover {
     transform: scale(1.111);
   }
+
+  .placeholder:hover {
+    transform:none;
+  }
   
   .image-modal {
     position: fixed;
@@ -452,7 +456,7 @@ nav {
     cursor: pointer;
   }
 
-.quiz-container, .question, .card, .options, button, .quiz-image{
+.quiz-container,  .card {
   box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
   0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
 }
