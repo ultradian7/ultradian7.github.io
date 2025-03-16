@@ -144,19 +144,27 @@ function displayFilteredSpecimen(specimenData) {
 
       let innerHTML = "";
 
-          innerHTML += `<div class="gallery">`;
+      innerHTML += `<div class="gallery">`;
 
-              innerHTML += `<div class="thumbnail-container">`;
-              imageFilenames.forEach((filename, index) => {
-                  const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-                  const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
-                  innerHTML += `
-                      <img src="${thumbnailUrl}" class="thumbnail" 
-                           onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
-                           alt="${imageDescriptions[index] || 'Specimen image'}">
-                  `;
-              });
-              innerHTML += `</div>`;
+      innerHTML += `<div class="thumbnail-container">`;
+      if (imageFilenames.length > 0) {
+          imageFilenames.forEach((filename, index) => {
+              const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+              const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+              innerHTML += `
+                  <img src="${thumbnailUrl}" class="thumbnail" 
+                       onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
+                       alt="${imageDescriptions[index] || 'Specimen image'}">
+              `;
+          });
+      } else {
+          innerHTML += `
+              <img src="images/placeholder.jpg" class="thumbnail" 
+                   alt="No image available">
+          `;
+      }
+      innerHTML += `</div>`;
+      
           
     
           innerHTML += `</div>`; // Close gallery div
@@ -275,7 +283,6 @@ function displayFilteredSpecimen(specimenData) {
 
   loadSpecimen();
 
-  const startQuizButton = document.getElementById("quiz-btn");
   const startQuizNav = document.getElementById("quiz-nav");
   const quizSection = document.getElementById("quiz");
   const browseSection = document.getElementById("browse");
@@ -321,10 +328,8 @@ function displayFilteredSpecimen(specimenData) {
 
 
 
-
-  startQuizButton.addEventListener("click", startQuizCallback);
   startQuizNav.addEventListener("click", startQuizCallback);
-  knowBanner.addEventListener("click", selectBrowseView);
+  knowBanner.addEventListener("click", startQuizCallback);
   browseNav.addEventListener("click", selectBrowseView);
   homeNav.addEventListener("click", selectHomeView);
   giantSeq.addEventListener("click", selectBrowseView);

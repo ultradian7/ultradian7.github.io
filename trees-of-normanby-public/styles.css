@@ -458,7 +458,8 @@ nav {
 }
   
   .quiz-container {
-    background-color: rgb(43, 42, 42);
+    background-image: url("images/pinus-nigra-bark.jpg");
+    background-position: left center;
     margin-top: 1rem;
     padding: 2rem 0.5rem 3rem 0.5rem;
     text-align: center;
@@ -471,13 +472,15 @@ nav {
     margin-bottom: 1.5rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
     margin: auto;
-    background-color: #006c93;
     border-radius: 0.5rem;
     place-content: center;
     max-width: 600px;
     width: fit-content;
 }
 
+.question, .options {
+    background-color: rgba(35, 35, 35, 0.515);
+}
 
 .question-text {
     color: rgb(255, 255, 240);
@@ -511,7 +514,6 @@ nav {
     flex-direction: column;
     min-width: 240px;
     max-width: fit-content;
-    background-color: #006c93;
     margin-top: 2rem;
     margin-right: auto;
     margin-left: auto;
@@ -590,7 +592,7 @@ nav {
     margin: 0;
     padding: 0;
     cursor: pointer;
-    place-content: top space-between;
+    place-content: end space-between;
     > h1 {
         font-size: 1.75rem;
         font-weight: 600;
