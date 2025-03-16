@@ -373,6 +373,7 @@ nav {
     position: absolute;
     right: 0;
     background-color: rgba(17, 17, 17, 0.862);
+    border-radius: 3rem;
     width: max-content;
     min-width: 7rem;
     border-radius: 0.2rem;
@@ -385,6 +386,7 @@ nav {
     text-decoration: none;
     display: block;
     font-size: 1rem;
+    border-radius: 3rem;
   }
   
   .dropdown-content a:hover {
@@ -605,8 +607,9 @@ nav {
     > h1 {
         font-size: 1.75rem;
         font-weight: 600;
-        max-width: 400px;
+        max-width: 240px;
         line-height: 1;
+        padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     }
 }
 
