@@ -306,7 +306,7 @@ header {
 }
 
 .header-text {
-    margin-left: 0.5rem;
+    margin-left: 0.75rem;
     font-family: "Cardo", serif;
     font-size: 1.75rem;
     font-weight: 500;
@@ -598,16 +598,20 @@ nav {
     background-image: url("images/dpt-1.jpg");
     min-height: 7rem;
     max-height: 100%;
+    margin: auto;
     background-size: cover;
     background-position: top center;
     margin: 0;
     padding: 0;
     cursor: pointer;
-    place-content: end space-between;
+    place-content: end;
+    text-align: right;
+    display: flex;
     > h1 {
-        font-size: 1.75rem;
+        margin-top: auto;
+        font-size: 1.25rem;
         font-weight: 600;
-        max-width: 240px;
+        max-width: 200px;
         line-height: 1;
         padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     }
