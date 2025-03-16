@@ -419,6 +419,7 @@ nav {
 
   .placeholder:hover {
     transform:none;
+    cursor: default;
   }
   
   .image-modal {
@@ -496,7 +497,6 @@ nav {
 }
 
 .options button {
-    background-color: #0b6282;
     display: block;
     min-width: 150px;
     width: fit-content;
@@ -536,9 +536,9 @@ nav {
     color: white;
 }
 .new-question {
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    background: #2837ab;
+    background: #1c1c1c97;
     color: white;
     border: none;
     border-radius: 0.5rem;
@@ -547,6 +547,11 @@ nav {
 .new-question:hover {
     background: #394ce1;
 }
+
+.options button, .new-question{
+    background-color: #281b147e;
+}
+
 
 .cards-grid, #filters {
     padding: 0 0.75rem 0 0.75rem;
@@ -596,7 +601,7 @@ nav {
     margin: 0;
     padding: 0;
     cursor: pointer;
-    place-content: end space-between;
+    place-content: center space-between;
     > h1 {
         font-size: 1.75rem;
         font-weight: 600;
@@ -614,7 +619,7 @@ nav {
     min-height: 400px;
     margin: 0;
     padding-bottom: 1rem;
-    place-content: end space-between;
+    place-content: center space-between;
     > h1 {
         max-width: 400px;
     }
