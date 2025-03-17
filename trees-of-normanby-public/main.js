@@ -292,6 +292,8 @@ function displayFilteredSpecimen(specimenData) {
   const knowBanner = document.getElementById("know-banner");
   const giantSeq = document.getElementById("giant-seq");
   const homeNav = document.getElementById("home-nav");
+  const resourcesNav = document.getElementById("resources-nav");
+  const resourcesSection = document.getElementById("resources");
   
 
   
@@ -310,6 +312,7 @@ function displayFilteredSpecimen(specimenData) {
     quizSection.style.display = "none";
     homeSection.style.display = "none";
     browseSection.style.display = "block";
+    resourcesSection.style.display = "none"
 }
 
   function selectBrowseView() {
@@ -317,6 +320,7 @@ function displayFilteredSpecimen(specimenData) {
     quizSection.style.display = "none";
     homeSection.style.display = "none";
     browseSection.style.display = "block";
+    resourcesSection.style.display = "none"
   }
 
   function selectHomeView() {
@@ -324,16 +328,23 @@ function displayFilteredSpecimen(specimenData) {
     quizSection.style.display = "none";
     homeSection.style.display = "block";
     browseSection.style.display = "none";
+    resourcesSection.style.display = "none"
   }
 
-
+  function selectResourcesView() {
+    dropdownToggle.checked = "";
+    quizSection.style.display = "none";
+    homeSection.style.display = "none";
+    browseSection.style.display = "none";
+    resourcesSection.style.display = "block"
+  }
 
   startQuizNav.addEventListener("click", startQuizCallback);
   knowBanner.addEventListener("click", startQuizCallback);
   browseNav.addEventListener("click", selectBrowseView);
   homeNav.addEventListener("click", selectHomeView);
   giantSeq.addEventListener("click", selectBrowseView);
-  
+  resourcesNav.addEventListener("click", selectResourcesView);
 
 
 });

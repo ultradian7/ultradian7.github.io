@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+
+:root {
+    --ton-green: rgb(132, 192, 59);
+    --ton-green-dark: rgb(37, 54, 17);
+    color-scheme: only light;
+  }
+
 * {
     scroll-behavior: smooth;
 }
+
 body {
     color: rgb(237, 232, 217);
     background-color: rgb(17, 17, 17);
@@ -15,6 +23,11 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(217, 217, 217);
 }
 
 .material-symbols-outlined {
@@ -31,7 +44,6 @@ h1 {
     font-weight: 700;
     color: rgb(255, 255, 255);
     line-height: 0.862;
-    padding: 0.5rem 4rem 0.5rem 1rem;
     margin: 0;
     text-wrap: balance;
 }
@@ -80,7 +92,6 @@ t {
 .desc-info {
     line-height: 1.5;
     padding-left: 0;
-
 }
 
 
@@ -117,6 +128,11 @@ t {
     font-weight: 400;
     padding-left: 1rem;
     padding-right: 1rem;
+}
+
+#resources {
+    display: none;
+
 }
 
 .italic {
@@ -274,35 +290,26 @@ summary::after {
     margin: 1rem 0 1rem 0;
 }
 
-.quiz-btn-wrapper {
-    display: flex;
-    margin-left: auto;
 
 
+footer {
+    background-color: var(--ton-green-dark);
+    min-height: 100%; 
+    padding: 1rem;
 }
-
-.quiz-label {
-    display: flex;
-    color :rgb(218, 218, 218);
-    font-size: 1.25rem;
-    margin-right: 0.5rem;
-    text-align: right;
-    align-content: center;
-}
-
-
 
 header {
+    min-height: 3rem;
     display: flex;
     max-width: 100%;
     align-items: center;
-    border-bottom: 0.5px solid rgb(132, 192, 59);
+    border-bottom: 0.5px solid var(--ton-green);
 
     > .material-symbols-outlined {
         margin-left:auto;
         margin-right: 0.5rem;
     }
-    /*border-bottom: 1px solid rgb(132, 192, 59);*/
+    /*border-bottom: 1px solid var(--ton-green);*/
 }
 
 .header-text {
@@ -310,7 +317,7 @@ header {
     font-family: "Cardo", serif;
     font-size: 1.75rem;
     font-weight: 500;
-    color:rgb(132, 192, 59);
+    color: var(--ton-green);
     text-decoration: none;
     line-height: 1;
     text-wrap: balance;
@@ -332,22 +339,22 @@ nav {
   }
   
   nav li{
-    
-    margin: 0;
-    padding: 0;
     display: inline-block;
     position: relative;
+
   }
   
   nav a, .dropbtn {
     cursor: pointer;
     text-decoration: none;
-    color:rgb(132, 192, 59);
+    color: var(--ton-green);
     transition: color 0.3s;
     font-size: 1.111rem;
     font-weight: 600;
     padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 0.5rem;
   }
+  
   
   nav a:hover, .dropbtn:hover{
     text-decoration: none;
@@ -373,20 +380,19 @@ nav {
     position: absolute;
     right: 0;
     background-color: rgba(17, 17, 17, 0.862);
-    border-radius: 3rem;
+    border-radius: 0.5rem;
     width: max-content;
     min-width: 7rem;
-    border-radius: 0.2rem;
     display: none;
 }
   
   .dropdown-content a {
-    color: white;
+    color: rgb(224, 224, 224);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     font-size: 1rem;
-    border-radius: 3rem;
+    font-weight: 400;
   }
   
   .dropdown-content a:hover {
@@ -526,6 +532,20 @@ nav {
     border-radius: 0.75rem;
 }
 
+.resources-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    background-color: var(--ton-green-dark);
+    padding: 1rem 2rem 1rem 1rem;
+    border-radius:0.5rem;
+    width: fit-content;
+    > h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+}
+
 .options button, .new-question{
     background-color: #281b147e;
 }
@@ -628,6 +648,7 @@ nav {
     place-content: center space-between;
     > h1 {
         max-width: 400px;
+        padding: 0.5rem 4rem 0.5rem 1rem;
     }
     cursor: pointer;
 }
@@ -653,9 +674,6 @@ nav {
 }
 
 @media (max-width: 480px) {
-    .quiz-label {
-      font-size: 1rem;
-    }
     button {
         font-size: 1rem;
     }
