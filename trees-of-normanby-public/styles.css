@@ -3,7 +3,7 @@
 
 :root {
     --ton-green: rgb(132, 192, 59);
-    --ton-green-dark: rgb(37, 54, 17);
+    --ton-green-dark: rgb(107, 150, 58);
     --ton-green-darker: rgb(26, 41, 10);
     --link-gray: rgb(206, 206, 206);
     --header-gray: rgb(236, 236, 236);
@@ -303,7 +303,6 @@ header {
     display: flex;
     max-width: 100%;
     align-items: center;
-    border-bottom: 0.5px solid var(--ton-green);
 
     > .material-symbols-outlined {
         margin-left:auto;
@@ -317,7 +316,7 @@ header {
     font-family: "Cardo", serif;
     font-size: 1.75rem;
     font-weight: 500;
-    color: var(--ton-green);
+    color: var(--ton-green-dark);
     text-decoration: none;
     line-height: 1;
     text-wrap: balance;
@@ -347,7 +346,7 @@ nav {
   nav a, .dropbtn {
     cursor: pointer;
     text-decoration: none;
-    color: var(--ton-green);
+    color: var(--ton-green-dark);
     transition: color 0.3s;
     font-size: 1.111rem;
     font-weight: 600;
@@ -474,7 +473,6 @@ nav {
   .quiz-container {
     background-image: url("images/pinus-nigra-bark.jpg");
     background-position: left center;
-    margin-top: 0.75rem;
     padding: 2rem 0.5rem 3rem 0.5rem;
     text-align: center;
     align-content: center;
