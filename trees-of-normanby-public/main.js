@@ -315,6 +315,7 @@ function displayFilteredSpecimen(specimenData) {
       } else {
         sections[section].style.display = "none";
       }
+      sections[section].scrollIntoView();
     });
 }
 
@@ -529,6 +530,7 @@ function displayQuestion() {
 
   optionsElement.style.display = "flex";
   newQuestionButton.textContent = "Next";
+  quizContainer.scrollIntoView();
 
   const newQuestion = generateMultiQuestion(trees, speciesData);
 
