@@ -4,10 +4,12 @@
 :root {
     --ton-green: rgb(132, 192, 59);
     --ton-green-dark: rgb(107, 150, 58);
+    --ton-green-dark-b: rgb(53, 77, 26);
     --ton-green-darker: rgb(26, 41, 10);
     --link-gray: rgb(206, 206, 206);
     --header-gray: rgb(236, 236, 236);
     --bg-gray: rgb(43, 42, 42);
+    --bg-gray-light: rgb(71, 70, 70);
     color-scheme: only light;
   }
 
@@ -173,8 +175,7 @@ section {
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
     padding: 0.5rem 0 0.5rem 0;
-    border-top: 2px solid rgb(118, 118, 118);
-    border-left: 1px solid rgb(118, 118, 118);
+
 
 }
 
@@ -247,9 +248,12 @@ summary::after {
     align-self: center; 
 }
 
-#filters-btn {
+.card, #filters-btn {
     color: var(--link-gray);
+    border-top: 2px solid var(--bg-gray-light);
+    border-left: 1px solid var(--bg-gray-light);
 }
+
 
 
 #filters {
@@ -555,8 +559,8 @@ nav {
 }
 
 .resources-wrapper, .about-wrapper {
-    border-top: 2px solid var(--ton-green-dark);
-    border-left: 1px solid var(--ton-green-dark);
+    border-top: 2px solid var(--ton-green-dark-b);
+    border-left: 1px solid var(--ton-green-dark-b);
     display: flex;
     flex-direction: column;
     margin: 1rem;
@@ -683,6 +687,10 @@ nav {
     border-radius: 05%;
     border-width: 1px
     
+}
+
+#filters-btn {
+    background-color: var(--bg-gray);
 }
 
 @media (max-width: 480px) {
