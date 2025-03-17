@@ -7,6 +7,7 @@ let trees = [];
 let speciesData = [];
 let plantFamilies = [];
 let optionsContainer;
+let headerHeight;
 
 document.addEventListener("DOMContentLoaded", async function () {
   const SUPABASE_URL = supabaseUrlPrefix;
@@ -22,6 +23,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     "resources",
     "quiz"
   ];
+
+  const headerElement = document.getElementById('header');
+  headerHeight = headerElement.getBoundingClientRect().height;
 
   const speciesContainer = document.getElementById('species-container');
   const filterButton = document.getElementById('filters-btn');
@@ -61,220 +65,220 @@ document.addEventListener("DOMContentLoaded", async function () {
       .from('botanical_species_view')
       .select();
 
-  if (error) {
-      console.error('Error fetching species:', error);
-      return null;
+    if (error) {
+        console.error('Error fetching species:', error);
+        return null;
+    }
+
+    return data;
   }
 
-  return data;
-}
+  async function loadSpecimen() {
+    const specimenData = await fetchSpecimen();
 
-async function loadSpecimen() {
-  const specimenData = await fetchSpecimen();
+    if (!specimenData) {
+        console.error("No specimen data received.");
+        return;
+    }
 
-  if (!specimenData) {
-      console.error("No specimen data received.");
-      return;
+    const familySet = new Set();
+    const genusSet = new Set();
+    const speciesSet = new Set();
+    const commonNameSet = new Set();
+
+    trees = specimenData;
+
+    specimenData.forEach(specimen => {
+        familySet.add(specimen.family);
+        genusSet.add(specimen.genus);
+        speciesSet.add(specimen.species);
+
+        // Extract names from common_name object and add to the filter
+        if (specimen.common_name && typeof specimen.common_name === "object") {
+            Object.values(specimen.common_name).forEach(name => commonNameSet.add(name));
+        }
+    });
+
+    specimenData.sort((a, b) => a.common_name[0].localeCompare(b.common_name[0], undefined, { sensitivity: 'base' }));
+
+    plantFamilies = Array.from(familySet);
+
+    populateFilterOptions(document.getElementById('family-filter'), familySet);
+    populateFilterOptions(document.getElementById('genus-filter'), genusSet);
+    populateFilterOptions(document.getElementById('species-filter'), speciesSet);
+    populateFilterOptions(document.getElementById('common-name-filter'), commonNameSet);
+
+    displayFilteredSpecimen(specimenData);  
+
+    document.querySelectorAll('#filters select').forEach(filter => {
+        filter.addEventListener('change', () => displayFilteredSpecimen(specimenData));
+    });
   }
 
-  const familySet = new Set();
-  const genusSet = new Set();
-  const speciesSet = new Set();
-  const commonNameSet = new Set();
+  function displayFilteredSpecimen(specimenData) {
+    const familyFilter = document.getElementById('family-filter').value;
+    const genusFilter = document.getElementById('genus-filter').value;
+    const speciesFilter = document.getElementById('species-filter').value;
+    const commonNameFilter = document.getElementById('common-name-filter').value;
 
-  trees = specimenData;
+    const filteredData = specimenData.filter(specimen => {
+        const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
+            ? Object.values(specimen.common_name) 
+            : [];
 
-  specimenData.forEach(specimen => {
-      familySet.add(specimen.family);
-      genusSet.add(specimen.genus);
-      speciesSet.add(specimen.species);
+        return (!familyFilter || specimen.family === familyFilter) &&
+              (!genusFilter || specimen.genus === genusFilter) &&
+              (!speciesFilter || specimen.species === speciesFilter) &&
+              (!commonNameFilter || commonNames.includes(commonNameFilter));
+    });
 
-      // Extract names from common_name object and add to the filter
-      if (specimen.common_name && typeof specimen.common_name === "object") {
-          Object.values(specimen.common_name).forEach(name => commonNameSet.add(name));
-      }
-  });
+    speciesContainer.innerHTML = '';
 
-  specimenData.sort((a, b) => a.common_name[0].localeCompare(b.common_name[0], undefined, { sensitivity: 'base' }));
+    filteredData.forEach(specimen => {
+        const card = document.createElement('div');
+        card.classList.add('card');
 
-  plantFamilies = Array.from(familySet);
+        let imageFilenames = [];
+        let imageDescriptions = [];
 
-  populateFilterOptions(document.getElementById('family-filter'), familySet);
-  populateFilterOptions(document.getElementById('genus-filter'), genusSet);
-  populateFilterOptions(document.getElementById('species-filter'), speciesSet);
-  populateFilterOptions(document.getElementById('common-name-filter'), commonNameSet);
+        if (specimen.images) {
+            imageFilenames = JSON.parse(specimen.images);
+            imageDescriptions = JSON.parse(specimen.image_info || "[]");
 
-  displayFilteredSpecimen(specimenData);  
+            while (imageDescriptions.length < imageFilenames.length) {
+                imageDescriptions.push(""); // Ensure descriptions array matches images array length
+            }
+        }
 
-  document.querySelectorAll('#filters select').forEach(filter => {
-      filter.addEventListener('change', () => displayFilteredSpecimen(specimenData));
-  });
-}
+        const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
+            ? Object.values(specimen.common_name) 
+            : ["Unknown Name"];
 
-function displayFilteredSpecimen(specimenData) {
-  const familyFilter = document.getElementById('family-filter').value;
-  const genusFilter = document.getElementById('genus-filter').value;
-  const speciesFilter = document.getElementById('species-filter').value;
-  const commonNameFilter = document.getElementById('common-name-filter').value;
+        let innerHTML = "";
 
-  const filteredData = specimenData.filter(specimen => {
-      const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
-          ? Object.values(specimen.common_name) 
-          : [];
+        innerHTML += `<div class="gallery">`;
 
-      return (!familyFilter || specimen.family === familyFilter) &&
-             (!genusFilter || specimen.genus === genusFilter) &&
-             (!speciesFilter || specimen.species === speciesFilter) &&
-             (!commonNameFilter || commonNames.includes(commonNameFilter));
-  });
-
-  speciesContainer.innerHTML = '';
-
-  filteredData.forEach(specimen => {
-      const card = document.createElement('div');
-      card.classList.add('card');
-
-      let imageFilenames = [];
-      let imageDescriptions = [];
-
-      if (specimen.images) {
-          imageFilenames = JSON.parse(specimen.images);
-          imageDescriptions = JSON.parse(specimen.image_info || "[]");
-
-          while (imageDescriptions.length < imageFilenames.length) {
-              imageDescriptions.push(""); // Ensure descriptions array matches images array length
-          }
-      }
-
-      const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
-          ? Object.values(specimen.common_name) 
-          : ["Unknown Name"];
-
-      let innerHTML = "";
-
-      innerHTML += `<div class="gallery">`;
-
-      innerHTML += `<div class="thumbnail-container">`;
-      if (imageFilenames.length > 0) {
-          imageFilenames.forEach((filename, index) => {
-              const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-              const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
-              innerHTML += `
-                  <img src="${thumbnailUrl}" class="thumbnail" 
-                       onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
-                       alt="${imageDescriptions[index] || 'Specimen image'}">
-              `;
-          });
-      } else {
-          innerHTML += `
-              <img src="images/placeholder.jpg" class="thumbnail placeholder" 
-                   alt="No image available">
-          `;
-      }
-      innerHTML += `</div>`;
-      
-          
-    
-          innerHTML += `</div>`; // Close gallery div
-
-          innerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
-      
-      innerHTML += `
-          <details>
-            <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
-            <div class="info-wrapper">
-            <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
-
-            innerHTML += `<details class="info location-details">
-            <summary id="leafSummary">
-              <t>Location: </t>
-            </summary>
-              <p><t class="attr-info">Latitude: </t>${specimen.latitude}
-              <br><t class="attr-info">Longitude: </t>${specimen.longitude}
-              <br><a class="attr-info" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}"> 
-              Open in Google Maps</a>
-              </p>
-          </details>`;
+        innerHTML += `<div class="thumbnail-container">`;
+        if (imageFilenames.length > 0) {
+            imageFilenames.forEach((filename, index) => {
+                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                innerHTML += `
+                    <img src="${thumbnailUrl}" class="thumbnail" 
+                        onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
+                        alt="${imageDescriptions[index] || 'Specimen image'}">
+                `;
+            });
+        } else {
+            innerHTML += `
+                <img src="images/placeholder.jpg" class="thumbnail placeholder" 
+                    alt="No image available">
+            `;
+        }
+        innerHTML += `</div>`;
+        
             
-                  
-    
       
-      if (specimen.native_range) {
-          innerHTML += `<details  class="info" id="nativeHabitatDetails">
-            <summary id="leafSummary">
-              <t>Native Habitat: </t>
-            </summary>
-               <p class="desc-info">${specimen.native_range}</p>
-              </details>
-               `;
-      }
-      if (specimen.species_info) {
-          innerHTML += `<details  class="info" id="descDetails">
-            <summary id="leafSummary">
-              <t>Description: </t>
-            </summary>
-               <p class="desc-info">${specimen.species_info}</p>
-              </details>`;
-      }
-      if (specimen.specimen_info) {
-          innerHTML += `<details  class="info" id="descDetails">
-            <summary id="leafSummary">
-              <t>Specimen: </t>
-            </summary>
-               <p class="desc-info">${specimen.specimen_info}</p>
-              </details> `;          
-      }
+            innerHTML += `</div>`; // Close gallery div
 
-      if (specimen.attributes) {
+            innerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
+        
         innerHTML += `
-        <details class="info" id="leafDetails">
-        <summary id="leafSummary">
-          <t>Attributes: </t>
-        </summary>
-<details class="attr-info" id="leafDetails">
-  <summary id="attr-summary">
-    <t>Leaves:</t>
-  </summary>
-    <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
-    <br><t class="attr-info">Shape: </t>${specimen.attributes.leaf_shape}
-    <br><t class="attr-info">Margin: </t>${specimen.attributes.leaf_margin}
-    <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}
-    <br><t class="attr-info">Venation: </t>${specimen.attributes.leaf_venation}
-    <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}</p>
-</details>
+            <details>
+              <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
+              <div class="info-wrapper">
+              <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
 
-<details class="attr-info" id="barkWoodDetails">
-  <summary id="attr-summary">
-    <t>Bark & Wood:</t>
-  </summary>
-    <p><t class="attr-info">Bark Texture: </t>${specimen.attributes.bark_texture}
-    <br><t class="attr-info">Bark Colour: </t>${specimen.attributes.bark_colour}
-    <br><t class="attr-info">Wood Type: </t>${specimen.attributes.wood_type}
-    <br><t class="attr-info">Wood Colour: </t>${specimen.attributes.wood_colour}</p>
-</details>
+              innerHTML += `<details class="info location-details">
+              <summary id="leafSummary">
+                <t>Location: </t>
+              </summary>
+                <p><t class="attr-info">Latitude: </t>${specimen.latitude}
+                <br><t class="attr-info">Longitude: </t>${specimen.longitude}
+                <br><a class="attr-info" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}"> 
+                Open in Google Maps</a>
+                </p>
+            </details>`;
+              
+                    
+      
+        
+        if (specimen.native_range) {
+            innerHTML += `<details  class="info" id="nativeHabitatDetails">
+              <summary id="leafSummary">
+                <t>Native Habitat: </t>
+              </summary>
+                <p class="desc-info">${specimen.native_range}</p>
+                </details>
+                `;
+        }
+        if (specimen.species_info) {
+            innerHTML += `<details  class="info" id="descDetails">
+              <summary id="leafSummary">
+                <t>Description: </t>
+              </summary>
+                <p class="desc-info">${specimen.species_info}</p>
+                </details>`;
+        }
+        if (specimen.specimen_info) {
+            innerHTML += `<details  class="info" id="descDetails">
+              <summary id="leafSummary">
+                <t>Specimen: </t>
+              </summary>
+                <p class="desc-info">${specimen.specimen_info}</p>
+                </details> `;          
+        }
 
-<details class="attr-info" id="fruitFlowerDetails">
-  <summary id="attr-summary">
-    <t>Fruit & Flowers:</t>
-  </summary>
-    <p><t class="attr-info">Fruit Type: </t>${specimen.attributes.fruit_type}
-    <br><t class="attr-info">Fruit Colour: </t>${specimen.attributes.fruit_colour}
-    <br><t class="attr-info">Fruit Season: </t>${specimen.attributes.fruit_season}
-    <br><t class="attr-info">Flower Type: </t>${specimen.attributes.flower_type}
-    <br><t class="attr-info">Flower Colour: </t>${specimen.attributes.flower_colour}
-    <br><t class="attr-info">Flower Season: </t>${specimen.attributes.flower_season}</p>
-</details>
-</details>
+        if (specimen.attributes) {
+          innerHTML += `
+          <details class="info" id="leafDetails">
+          <summary id="leafSummary">
+            <t>Attributes: </t>
+          </summary>
+  <details class="attr-info" id="leafDetails">
+    <summary id="attr-summary">
+      <t>Leaves:</t>
+    </summary>
+      <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
+      <br><t class="attr-info">Shape: </t>${specimen.attributes.leaf_shape}
+      <br><t class="attr-info">Margin: </t>${specimen.attributes.leaf_margin}
+      <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}
+      <br><t class="attr-info">Venation: </t>${specimen.attributes.leaf_venation}
+      <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}</p>
+  </details>
 
-`;}
+  <details class="attr-info" id="barkWoodDetails">
+    <summary id="attr-summary">
+      <t>Bark & Wood:</t>
+    </summary>
+      <p><t class="attr-info">Bark Texture: </t>${specimen.attributes.bark_texture}
+      <br><t class="attr-info">Bark Colour: </t>${specimen.attributes.bark_colour}
+      <br><t class="attr-info">Wood Type: </t>${specimen.attributes.wood_type}
+      <br><t class="attr-info">Wood Colour: </t>${specimen.attributes.wood_colour}</p>
+  </details>
 
-      innerHTML += `</details></div>`; // Close info-wrapper
+  <details class="attr-info" id="fruitFlowerDetails">
+    <summary id="attr-summary">
+      <t>Fruit & Flowers:</t>
+    </summary>
+      <p><t class="attr-info">Fruit Type: </t>${specimen.attributes.fruit_type}
+      <br><t class="attr-info">Fruit Colour: </t>${specimen.attributes.fruit_colour}
+      <br><t class="attr-info">Fruit Season: </t>${specimen.attributes.fruit_season}
+      <br><t class="attr-info">Flower Type: </t>${specimen.attributes.flower_type}
+      <br><t class="attr-info">Flower Colour: </t>${specimen.attributes.flower_colour}
+      <br><t class="attr-info">Flower Season: </t>${specimen.attributes.flower_season}</p>
+  </details>
+  </details>
+
+  `;}
+
+        innerHTML += `</details></div>`; // Close info-wrapper
 
 
-      card.innerHTML = innerHTML;
-      speciesContainer.appendChild(card);
-  });
-}
+        card.innerHTML = innerHTML;
+        speciesContainer.appendChild(card);
+    });
+  }
 
   
 
@@ -292,7 +296,7 @@ function displayFilteredSpecimen(specimenData) {
   loadSpecimen();
   const browseNav = document.getElementById("browse-nav");
   const dropdownToggle = document.getElementById("dropdown-toggle");
-  const knowBanner = document.getElementById("quiz-know-banner");
+  const knowBanner = document.getElementById("quiz-test-your");
   const giantSeq = document.getElementById("browse-giant-seq");
   const resourcesNav = document.getElementById("resources-nav");
   const aboutNav = document.getElementById("about-nav");
@@ -315,16 +319,15 @@ function displayFilteredSpecimen(specimenData) {
       } else {
         sections[section].style.display = "none";
       }
-      sections[section].scrollIntoView();
     });
-}
+  }
 
   knowBanner.addEventListener("click",  (event) => selectSection(event, "flex"));
+  quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
   browseNav.addEventListener("click", (event) => selectSection(event, "block"));
   giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
   resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
-  aboutNav.addEventListener("click",  (event) => selectSection(event, "block"), );
-  quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
+  aboutNav.addEventListener("click",  (event) => selectSection(event, "block"));
 });
 
 
@@ -431,31 +434,31 @@ function generateMultiQuestion(trees, speciesData) {
             [correctLeafType], 
             trees.map(t => t.attributes.leaf_type)
         )
-    });
+      });
+    }
+    if (correctTree.attributes.leaf_shape){
+      const correctLeafShape = correctTree.attributes.leaf_shape;
+      questionTypes.push({
+        text: `<p class="question-text">What leaf shape does <i>${correctTree.genus} ${correctTree.species}</i> have?</p>`,
+        answer: correctLeafShape,
+        options: ensureFourOptions(
+            [correctLeafShape], 
+            trees.map(t => t.attributes.leaf_shape)
+        )
+      });
+
+      questionTypes.push({
+        text: `<p class="question-text">What leaf shape does ${correctCommonName} have?</p>`,
+        answer: correctLeafShape,
+        options: ensureFourOptions(
+            [correctLeafShape], 
+            trees.map(t => t.attributes.leaf_shape)
+        )
+      });
+    }
+  
+
   }
-  if (correctTree.attributes.leaf_shape){
-    const correctLeafShape = correctTree.attributes.leaf_shape;
-    questionTypes.push({
-      text: `<p class="question-text">What leaf shape does <i>${correctTree.genus} ${correctTree.species}</i> have?</p>`,
-      answer: correctLeafShape,
-      options: ensureFourOptions(
-          [correctLeafShape], 
-          trees.map(t => t.attributes.leaf_shape)
-      )
-  });
-
-  questionTypes.push({
-    text: `<p class="question-text">What leaf shape does ${correctCommonName} have?</p>`,
-    answer: correctLeafShape,
-    options: ensureFourOptions(
-        [correctLeafShape], 
-        trees.map(t => t.attributes.leaf_shape)
-    )
-});
-  }
-
-
-}
 
 
 
@@ -530,7 +533,8 @@ function displayQuestion() {
 
   optionsElement.style.display = "flex";
   newQuestionButton.textContent = "Next";
-  quizContainer.scrollIntoView();
+  window.scrollTo({ top: headerHeight, behavior: 'smooth' });
+  
 
   const newQuestion = generateMultiQuestion(trees, speciesData);
 

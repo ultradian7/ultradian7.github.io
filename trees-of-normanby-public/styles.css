@@ -99,9 +99,20 @@ t {
 }
 
 
-#about {
+section {
     display: none;
 }
+
+#home {
+    display: block;
+}
+
+#quiz {
+    padding: 0 1rem 24rem 1rem;
+    place-content: center;
+    height: 100%;
+}
+
 
 
 #leafSummary::after, #attr-summary::after {
@@ -136,11 +147,6 @@ t {
     font-weight: 400;
     padding-left: 1rem;
     padding-right: 1rem;
-}
-
-#resources {
-    display: none;
-
 }
 
 .italic {
@@ -375,11 +381,9 @@ nav {
   }
   
   .dropdown-content {
-    margin-top: 0.5px;
     position: absolute;
     right: 0;
     background-color: rgb(17, 17, 17);
-
     border-bottom-left-radius: 0.5rem;
     width: max-content;
     min-width: 7rem;
@@ -465,7 +469,7 @@ nav {
     cursor: pointer;
   }
 
-.quiz-container,  .card {
+.quiz-container, .card {
   box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
   0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
 }
@@ -478,6 +482,7 @@ nav {
     align-content: center;
     width: 800px;
     border-radius: 0.5rem;
+    height: fit-content;
 }
 
 .question {
@@ -585,28 +590,6 @@ nav {
     padding: 0 0.5rem 0 0.5rem;
 }
 
-#home {
-    display: block;
-}
-
-
-#browse {
-    display: none;
-    &:target {
-        display: block;
-    }
-}
-
-#quiz {
-    display: none;
-    padding: 0 1rem 16rem 1rem;
-    place-content: center;
-    &:target {
-        display: flex;
-    }
-}
-
-
 
 .overlay {
     border-image: linear-gradient(hsla(267, 100%, 22%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;
@@ -628,11 +611,11 @@ nav {
     background-position: top center;
     margin: 0;
     padding: 0;
-    cursor: pointer;
     justify-content: end;
     text-align: right;
     display: flex;
     > h1 {
+        cursor: pointer;
         margin-top: auto;
         font-size: 1.25rem;
         font-weight: 600;
@@ -653,10 +636,10 @@ nav {
     padding-bottom: 1rem;
     place-content: center space-between;
     > h1 {
+        cursor: pointer;
         max-width: 400px;
         padding: 0.5rem 4rem 0.5rem 1rem;
     }
-    cursor: pointer;
 }
 
 .pinus-bark {
