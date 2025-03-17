@@ -4,6 +4,10 @@
 :root {
     --ton-green: rgb(132, 192, 59);
     --ton-green-dark: rgb(37, 54, 17);
+    --ton-green-darker: rgb(26, 41, 10);
+    --link-gray: rgb(206, 206, 206);
+    --header-gray: rgb(236, 236, 236);
+    --bg-gray: rgb(43, 42, 42);
     color-scheme: only light;
   }
 
@@ -27,7 +31,7 @@ body {
 
 a {
     text-decoration: none;
-    color: rgb(217, 217, 217);
+    color: var(--link-gray);
 }
 
 .material-symbols-outlined {
@@ -42,7 +46,7 @@ a {
 h1 {
     font-size: 4rem;
     font-weight: 700;
-    color: rgb(255, 255, 255);
+    color: var(--header-gray);
     line-height: 0.862;
     margin: 0;
     text-wrap: balance;
@@ -54,7 +58,7 @@ h1 {
 }
 
 p {
-    color: rgb(237, 232, 217);
+    color: var(--header-gray);
     font-size: 1rem;
     margin: 0;
     max-width: fit-content;
@@ -94,6 +98,10 @@ t {
     padding-left: 0;
 }
 
+
+#about {
+    display: none;
+}
 
 
 #leafSummary::after, #attr-summary::after {
@@ -154,7 +162,7 @@ t {
 .card {
     display: flex;
     flex-direction: column;
-    background-color: rgb(43, 42, 42);
+    background-color: var(--bg-gray);
     box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
@@ -231,17 +239,9 @@ summary::after {
     align-self: center; 
 }
 
-#filters-btn, #quiz-btn {
-    color: rgb(255, 255, 255);
-
-    > a {
-        color :rgb(218, 218, 218);
-        text-decoration: none;
-    }
+#filters-btn {
+    color: var(--link-gray);
 }
-
-
-
 
 
 #filters {
@@ -277,7 +277,7 @@ summary::after {
   select {
     padding: 0.5rem;
     font-size: 1rem;
-    background-color: rgb(43, 42, 42);
+    background-color: var(--bg-gray);
     color: rgb(208, 208, 208);
     border-radius: 0.5rem;
     font-family: "Work Sans", sans-serif;
@@ -293,7 +293,7 @@ summary::after {
 
 
 footer {
-    background-color: var(--ton-green-dark);
+    background-color: var(--ton-green-darker);
     min-height: 100%; 
     padding: 1rem;
 }
@@ -379,20 +379,21 @@ nav {
     margin-top: 0.5px;
     position: absolute;
     right: 0;
-    background-color: rgba(17, 17, 17, 0.862);
-    border-radius: 0.5rem;
+    background-color: rgb(17, 17, 17);
+
+    border-bottom-left-radius: 0.5rem;
     width: max-content;
     min-width: 7rem;
     display: none;
 }
   
   .dropdown-content a {
-    color: rgb(224, 224, 224);
-    padding: 12px 16px;
+    padding: 0.5rem 2rem 0.5rem 1rem;
     text-decoration: none;
     display: block;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
+    color: var(--link-gray);
   }
   
   .dropdown-content a:hover {
@@ -522,7 +523,7 @@ nav {
 .options {
     align-items: center;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    display: flex;
+    display: none;
     flex-direction: column;
     min-width: 240px;
     max-width: fit-content;
@@ -532,17 +533,20 @@ nav {
     border-radius: 0.75rem;
 }
 
-.resources-wrapper {
+.resources-wrapper, .about-wrapper {
     display: flex;
     flex-direction: column;
     margin: 1rem;
-    background-color: var(--ton-green-dark);
+    background-color: var(--ton-green-darker);
     padding: 1rem 2rem 1rem 1rem;
     border-radius:0.5rem;
     width: fit-content;
     > h1 {
         font-size: 2rem;
         margin-bottom: 1rem;
+    }
+    > a {
+        color: var(--link-gray);
     }
 }
 
@@ -611,7 +615,11 @@ nav {
 }
 
 .overlay-a {
-    border-image: linear-gradient(hsla(270, 50%, 2%, 0.629), hsla(95, 25%, 14%, 0.919)) fill 1;
+    border-image: linear-gradient(hsla(273, 43%, 17%, 0.629), hsla(96, 38%, 10%, 0.777)) fill 1;
+}
+
+.overlay-b{
+    border-image: linear-gradient(hsla(282, 100%, 19%, 0.689), hsla(96, 85%, 16%, 0.596)) fill 1;
 }
 
 .specimen-banner {
@@ -631,7 +639,7 @@ nav {
         font-size: 1.25rem;
         font-weight: 600;
         max-width: 200px;
-        line-height: 1;
+        line-height: 1.25;
         padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     }
 }

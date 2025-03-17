@@ -15,6 +15,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  const sectionNames = [
+    "home",
+    "about",
+    "browse",
+    "resources",
+    "quiz"
+  ];
+
   const speciesContainer = document.getElementById('species-container');
   const filterButton = document.getElementById('filters-btn');
   const filters = document.getElementById('filters');
@@ -282,71 +290,40 @@ function displayFilteredSpecimen(specimenData) {
   speciesData = await fetchSpecies();
 
   loadSpecimen();
-
-  const startQuizNav = document.getElementById("quiz-nav");
-  const quizSection = document.getElementById("quiz");
-  const browseSection = document.getElementById("browse");
   const browseNav = document.getElementById("browse-nav");
   const dropdownToggle = document.getElementById("dropdown-toggle");
-  const homeSection = document.getElementById("home");
-  const knowBanner = document.getElementById("know-banner");
-  const giantSeq = document.getElementById("giant-seq");
-  const homeNav = document.getElementById("home-nav");
+  const knowBanner = document.getElementById("quiz-know-banner");
+  const giantSeq = document.getElementById("browse-giant-seq");
   const resourcesNav = document.getElementById("resources-nav");
-  const resourcesSection = document.getElementById("resources");
-  
-
-  
-
-  function startQuizCallback(){
-      dropdownToggle.checked = "";
-      quizSection.style.display = "flex";
-      homeSection.style.display = "none";
-      browseSection.style.display = "none";
-      displayQuestion();
+  const aboutNav = document.getElementById("about-nav");
+  const quizNav = document.getElementById("quiz-nav");
+  const sections = {
+    "about": document.getElementById("about"),
+    "home": document.getElementById("home"),
+    "browse": document.getElementById("browse"),
+    "resources": document.getElementById("resources"),
+    "quiz": document.getElementById("quiz")
   }
 
-  function selectSection(event){
+  function selectSection(event, displayValue){
     let id = event.target.id;
+    id = id.replace(/-.*/, "");
     dropdownToggle.checked = "";
-    quizSection.style.display = "none";
-    homeSection.style.display = "none";
-    browseSection.style.display = "block";
-    resourcesSection.style.display = "none"
+    sectionNames.forEach((section) => {
+      if (section === id) {
+        sections[section].style.display = displayValue;
+      } else {
+        sections[section].style.display = "none";
+      }
+    });
 }
 
-  function selectBrowseView() {
-    dropdownToggle.checked = "";
-    quizSection.style.display = "none";
-    homeSection.style.display = "none";
-    browseSection.style.display = "block";
-    resourcesSection.style.display = "none"
-  }
-
-  function selectHomeView() {
-    dropdownToggle.checked = "";
-    quizSection.style.display = "none";
-    homeSection.style.display = "block";
-    browseSection.style.display = "none";
-    resourcesSection.style.display = "none"
-  }
-
-  function selectResourcesView() {
-    dropdownToggle.checked = "";
-    quizSection.style.display = "none";
-    homeSection.style.display = "none";
-    browseSection.style.display = "none";
-    resourcesSection.style.display = "block"
-  }
-
-  startQuizNav.addEventListener("click", startQuizCallback);
-  knowBanner.addEventListener("click", startQuizCallback);
-  browseNav.addEventListener("click", selectBrowseView);
-  homeNav.addEventListener("click", selectHomeView);
-  giantSeq.addEventListener("click", selectBrowseView);
-  resourcesNav.addEventListener("click", selectResourcesView);
-
-
+  knowBanner.addEventListener("click",  (event) => selectSection(event, "flex"));
+  browseNav.addEventListener("click", (event) => selectSection(event, "block"));
+  giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
+  resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
+  aboutNav.addEventListener("click",  (event) => selectSection(event, "block"), );
+  quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
 });
 
 
@@ -547,6 +524,11 @@ function shuffleArray(array) {
 function displayQuestion() {
   const quizContainer = document.querySelector(".quiz-container");
   const questionElement = document.querySelector(".question");
+  const newQuestionButton = document.querySelector(".new-question");
+  const optionsElement = document.querySelector(".options");
+
+  optionsElement.style.display = "flex";
+  newQuestionButton.textContent = "Next";
 
   const newQuestion = generateMultiQuestion(trees, speciesData);
 
@@ -582,3 +564,4 @@ window.openFullImage = function(imageUrl, description) {
   `;
   document.body.appendChild(modal);
 };
+
