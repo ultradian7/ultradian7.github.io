@@ -173,6 +173,7 @@ section {
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
     padding: 0.5rem 0 0.5rem 0;
+    border-top: 1px solid rgb(62, 8, 92);
 
 }
 
@@ -309,6 +310,7 @@ header {
     display: flex;
     max-width: 100%;
     align-items: center;
+    border-bottom: 1px solid var(--ton-green-darker);
 
     > .material-symbols-outlined {
         margin-left:auto;
@@ -449,7 +451,7 @@ nav {
   
   .modal-content {
     position: relative;
-    background: white;
+    color: var(--header-gray);
     padding: 10px;
     border-radius: 8px;
     text-align: center;
@@ -475,6 +477,7 @@ nav {
 }
   
   .quiz-container {
+    margin: 1rem;
     background-image: url("images/pinus-nigra-bark.jpg");
     background-position: left center;
     padding: 2rem 0.5rem 3rem 0.5rem;
@@ -537,16 +540,19 @@ nav {
 }
 
 .resources-wrapper, .about-wrapper {
+    border-top: 1px solid var(--ton-green-dark);
     display: flex;
     flex-direction: column;
     margin: 1rem;
     background-color: var(--ton-green-darker);
     padding: 1rem 2rem 1rem 1rem;
     border-radius:0.5rem;
+   
     width: fit-content;
     > h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
     }
     > a {
         color: var(--link-gray);
@@ -555,29 +561,30 @@ nav {
 
 .options button, .new-question{
     background-color: #281b147e;
+    color: var(--header-gray);
 }
 
 .options button:hover {
-    background: #8922ab;
+    background: #8922aba7;
 }
 .correct {
-    background: #4CAF50 !important;
-    color: white;
+    background: #26902ab2 !important;
+    color: var(--header-gray);
 }
 .incorrect {
-    background: #FF4C4C !important;
-    color: white;
+    background: #c10c0cab !important;
+    color: var(--header-gray);
 }
 .new-question {
     margin-top: 2rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
-    color: white;
+    color: var(--header-gray);
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
 }
 .new-question:hover {
-    background: #394ce1;
+    background: #1b2ba1a2;
 }
 
 
@@ -600,12 +607,12 @@ nav {
 }
 
 .overlay-b{
-    border-image: linear-gradient(hsla(282, 100%, 19%, 0.689), hsla(96, 85%, 16%, 0.596)) fill 1;
+    border-image: linear-gradient(hsla(282, 100%, 19%, 0.574), hsla(96, 97%, 12%, 0.437)) fill 1;
 }
 
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
-    min-height: 7rem;
+    min-height: 8rem;
     max-height: 100%;
     background-size: cover;
     background-position: top center;
