@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const sectionNames = [
     "home",
     "about",
-    "browse",
+    "trees",
     "resources",
     "quiz"
   ];
@@ -294,17 +294,17 @@ document.addEventListener("DOMContentLoaded", async function () {
   speciesData = await fetchSpecies();
 
   loadSpecimen();
-  const browseNav = document.getElementById("browse-nav");
+  const treesNav = document.getElementById("trees-nav");
   const dropdownToggle = document.getElementById("dropdown-toggle");
   const knowBanner = document.getElementById("quiz-test-your");
-  const giantSeq = document.getElementById("browse-giant-seq");
+  const giantSeq = document.getElementById("trees-giant-seq");
   const resourcesNav = document.getElementById("resources-nav");
   const aboutNav = document.getElementById("about-nav");
   const quizNav = document.getElementById("quiz-nav");
   const sections = {
     "about": document.getElementById("about"),
     "home": document.getElementById("home"),
-    "browse": document.getElementById("browse"),
+    "trees": document.getElementById("trees"),
     "resources": document.getElementById("resources"),
     "quiz": document.getElementById("quiz")
   }
@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   knowBanner.addEventListener("click",  (event) => selectSection(event, "flex"));
   quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
-  browseNav.addEventListener("click", (event) => selectSection(event, "block"));
+  treesNav.addEventListener("click", (event) => selectSection(event, "block"));
   giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
   resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
   aboutNav.addEventListener("click",  (event) => selectSection(event, "block"));
@@ -524,38 +524,126 @@ function shuffleArray(array) {
   return array.sort(() => 0.5 - Math.random());
 }
 
+let timer;
+let timeLeft = 15; // Timer duration in seconds
 
-function displayQuestion() {
-  const quizContainer = document.querySelector(".quiz-container");
-  const questionElement = document.querySelector(".question");
-  const newQuestionButton = document.querySelector(".new-question");
-  const optionsElement = document.querySelector(".options");
+function startTimer(correctAnswer) {
+    const timerElement = document.querySelector(".timer");
+    timeLeft = 15; // Reset timer
+    timerElement.innerHTML = `${timeLeft}s`;
 
-  optionsElement.style.display = "flex";
-  newQuestionButton.textContent = "Next";
-  window.scrollTo({ top: headerHeight, behavior: 'smooth' });
-  
+    timer = setInterval(() => {
+        timeLeft--;
+        timerElement.innerHTML = `${timeLeft}s`;
 
-  const newQuestion = generateMultiQuestion(trees, speciesData);
-
-  questionElement.innerHTML = newQuestion.question;
-  optionsContainer.innerHTML = ""; // Clear previous options
-
-  const labels = ["A", "B", "C", "D"]; // Labels for options
-  newQuestion.options.forEach((option, index) => {
-      const button = document.createElement("button");
-      button.innerHTML = `${labels[index]}: ${option}`;
-      button.onclick = () => {
-          if (option === newQuestion.correctAnswer) {
-              button.classList.add("correct");
-          } else {
-              button.classList.add("incorrect");
-          }
-      };
-      optionsContainer.appendChild(button);
-  });
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            handleTimeout(correctAnswer);
+        }
+    }, 1000);
 }
 
+function handleTimeout(correctAnswer) {
+    const timerElement = document.querySelector(".timer");
+    const optionsButtons = document.querySelectorAll(".options button");
+
+    // Disable all options
+    optionsButtons.forEach(button => {
+        button.disabled = true;
+        if (button.innerHTML.includes(correctAnswer)) {
+            button.classList.add("correct"); // Highlight correct answer
+        }
+    });
+
+    // Display timeout message
+    timerElement.innerHTML = `Time's up! The correct answer is ${correctAnswer}.`;
+
+    // Show the "Next" button
+    document.querySelector(".new-question").style.display = "block";
+}
+
+function handleIncorrectAnswer(selectedButton, correctAnswer) {
+    clearInterval(timer); // Stop the timer
+
+    // Disable all options
+    document.querySelectorAll(".options button").forEach(button => {
+        button.disabled = true;
+        if (button.innerHTML.includes(correctAnswer)) {
+            button.classList.add("correct"); // Highlight correct answer
+        }
+    });
+
+    selectedButton.classList.add("incorrect"); // Mark wrong answer
+
+    // Show message
+    document.querySelector(".timer").innerHTML = `Incorrect! The correct answer is ${correctAnswer}.`;
+
+    // Show the "Next" button
+    document.querySelector(".new-question").style.display = "block";
+}
+
+function handleCorrectAnswer(selectedButton) {
+    clearInterval(timer); // Stop the timer
+
+    // Disable all options
+    document.querySelectorAll(".options button").forEach(button => {
+        button.disabled = true;
+    });
+
+    selectedButton.classList.add("correct"); // Mark as correct
+
+    // Show message
+    document.querySelector(".timer").innerHTML = "Correct! Well done!";
+
+    // Show the "Next" button
+    document.querySelector(".new-question").style.display = "block";
+}
+
+function displayQuestion() {
+    const quizContainer = document.querySelector(".quiz-container");
+    const questionElement = document.querySelector(".question");
+    const newQuestionButton = document.querySelector(".new-question");
+    const optionsElement = document.querySelector(".options");
+    const timerElement = document.querySelector(".timer");
+
+    timerElement.style.display = "block";
+    optionsElement.style.display = "flex";
+    newQuestionButton.style.display = "none"; // Hide "Next" button initially
+    newQuestionButton.textContent = "Next";
+    window.scrollTo({ top: headerHeight, behavior: 'smooth' });
+
+    clearInterval(timer); // Clear any existing timer
+    timerElement.textContent = ""; // Clear previous messages
+
+    const newQuestion = generateMultiQuestion(trees, speciesData);
+
+    questionElement.innerHTML = newQuestion.question;
+    optionsElement.innerHTML = ""; // Clear previous options
+
+    const labels = ["A", "B", "C", "D"];
+    newQuestion.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.innerHTML = `${labels[index]}: ${option}`;
+        button.onclick = () => {
+            clearInterval(timer); // Stop timer when an option is selected
+            disableOptions();
+            if (option === newQuestion.correctAnswer) {
+                handleCorrectAnswer(button);
+            } else {
+                handleIncorrectAnswer(button, newQuestion.correctAnswer);
+            }
+        };
+        optionsElement.appendChild(button);
+    });
+
+    startTimer(newQuestion.correctAnswer); // Start the timer
+}
+
+function disableOptions() {
+    document.querySelectorAll(".options button").forEach(button => {
+        button.disabled = true;
+    });
+}
 
 
 window.openFullImage = function(imageUrl, description) {
