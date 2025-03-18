@@ -195,8 +195,11 @@ document.addEventListener("DOMContentLoaded", async function () {
               </summary>
                 <p><t class="attr-info">Latitude: </t>${specimen.latitude}
                 <br><t class="attr-info">Longitude: </t>${specimen.longitude}
-                <br><a class="attr-info" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}"> 
-                Open in Google Maps</a>
+                <br><a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
+                  <img src="images/gmaps-icon.png" class="gmaps-icon">
+                  Open in Google Maps
+                  
+                </a>
                 </p>
             </details>`;
               
@@ -242,9 +245,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
       <br><t class="attr-info">Shape: </t>${specimen.attributes.leaf_shape}
       <br><t class="attr-info">Margin: </t>${specimen.attributes.leaf_margin}
-      <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}
       <br><t class="attr-info">Venation: </t>${specimen.attributes.leaf_venation}
-      <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}</p>
+      <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}
+      <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}</p>      
   </details>
 
   <details class="attr-info" id="barkWoodDetails">

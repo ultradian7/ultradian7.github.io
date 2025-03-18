@@ -127,6 +127,9 @@ section {
     width: 1.5rem;
     height: 1.5rem;
     background-color: rgb(106, 106, 106) ;
+    border-top: 2px solid var(--bg-gray-light);
+    border-left: 1px solid var(--bg-gray-light);
+
 }
 
 #attr-summary::after {
@@ -231,6 +234,8 @@ summary::after {
 }
 
 #speciesName::after {
+    border-top: 2px solid var(--bg-gray-light);
+    border-left: 1px solid var(--bg-gray-light);
     font-size: 1.5rem;
 }
 
@@ -428,6 +433,10 @@ nav {
     display: none;
 }
 
+.gmaps-icon {
+    height: 1.25rem;
+    align-self: center;
+}
 .thumbnail-container {
     height: 120px;
     display: flex;
@@ -571,6 +580,8 @@ nav {
     display: none;
 }
 
+
+
 .resources-wrapper, .about-wrapper {
     border-top: 2px solid var(--ton-green-dark-b);
     border-left: 1px solid var(--ton-green-dark-b);
@@ -580,22 +591,17 @@ nav {
     background-color: var(--ton-green-darker);
     padding: 1rem 2rem 1rem 1rem;
     border-radius:0.5rem;
-   
+    max-width: 500px;
     width: fit-content;
-    > h1 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        font-weight: 500;
-    }
+
     > a {
         color: var(--link-gray);
         margin-top: 0.5rem;
         margin-bottom: 0.5rem;
     }
-    > p {
-        margin-top: 0.75rem;
-    }
 }
+
+
 
 .options button, .new-question{
     background-color: #281b147e;
@@ -709,13 +715,47 @@ nav {
     
 }
 
+.gmaps-open-in {
+    align-content: center;
+}
+
 #filters-btn {
     background-color: var(--bg-gray);
 }
 
+.about-header {
+    background-image: url("images/seq-2.jpg");
+    min-height: 16rem;
+    max-height: 100%;
+    background-size: cover;
+    background-position: top top;
+    margin: 0;
+    padding: 1rem;
+    place-content: end;
+
+}
+
+.about-header h1 {
+    font-weight: 600;
+    max-width: 260px;
+    font-size: 4rem;
+}
+
+.resources-header {
+    background-image: url("images/stump.jpg");
+    min-height: 16rem;
+    max-height: 100%;
+    background-size: cover;
+    background-position: left bottom;
+    margin: 0;
+    padding: 1rem;
+    place-content: end;
+
+}
+
 @media (max-width: 480px) {
     button {
-        font-size: 1rem;
+        /*font-size: 1rem;*/
     }
 
 }
