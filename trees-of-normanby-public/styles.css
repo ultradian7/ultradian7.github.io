@@ -594,10 +594,11 @@ nav {
     max-width: 500px;
     width: fit-content;
 
-    > a {
-        color: var(--link-gray);
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
+    > p {
+        > a {
+            font-weight: 550;
+            color: var(--link-gray);
+        }
     }
 }
 
@@ -659,7 +660,7 @@ nav {
 .specimen-banner {
     background-image: url("images/dpt-1.jpg");
     min-height: 8rem;
-    max-height: 100%;
+    max-height: 12rem;
     background-size: cover;
     background-position: top center;
     margin: 0;
@@ -725,8 +726,8 @@ nav {
 
 .about-header {
     background-image: url("images/seq-2.jpg");
-    min-height: 16rem;
-    max-height: 100%;
+    min-height: 8rem;
+    max-height: 12rem;
     background-size: cover;
     background-position: top top;
     margin: 0;
@@ -735,16 +736,16 @@ nav {
 
 }
 
-.about-header h1 {
+.about-header h1, .resources-header h1 {
     font-weight: 600;
     max-width: 260px;
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 .resources-header {
     background-image: url("images/stump.jpg");
-    min-height: 16rem;
-    max-height: 100%;
+    min-height: 8rem;
+    max-height: 12rem;
     background-size: cover;
     background-position: left bottom;
     margin: 0;
