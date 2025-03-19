@@ -372,11 +372,12 @@ nav {
   nav li{
     display: inline-block;
     position: relative;
+    cursor: pointer;
 
   }
   
   nav a, .dropbtn {
-    cursor: pointer;
+    
     text-decoration: none;
     color: var(--ton-green-dark);
     transition: color 0.3s;
@@ -582,7 +583,7 @@ nav {
 
 
 
-.resources-wrapper, .about-wrapper {
+.resources-wrapper, .about-wrapper, .contact-wrapper {
     border-top: 2px solid var(--ton-green-dark-b);
     border-left: 1px solid var(--ton-green-dark-b);
     display: flex;

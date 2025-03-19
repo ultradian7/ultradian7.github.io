@@ -297,19 +297,27 @@ document.addEventListener("DOMContentLoaded", async function () {
   speciesData = await fetchSpecies();
 
   loadSpecimen();
-  const treesNav = document.getElementById("trees-nav");
+  const treesNav = document.getElementById("trees-nav-li");
   const dropdownToggle = document.getElementById("dropdown-toggle");
   const knowBanner = document.getElementById("quiz-test-your");
   const giantSeq = document.getElementById("trees-giant-seq");
-  const resourcesNav = document.getElementById("resources-nav");
-  const aboutNav = document.getElementById("about-nav");
-  const quizNav = document.getElementById("quiz-nav");
+  const resourcesNav = document.getElementById("resources-nav-li");
+  const aboutNav = document.getElementById("about-nav-li");
+  const quizNav = document.getElementById("quiz-nav-li");
+  const resourcesFooterNav = document.getElementById("resources-footer-nav-li");
+  const aboutFooterNav = document.getElementById("about-footer-nav-li");
+  const treesFooterNav = document.getElementById("trees-footer-nav-li");
+  const contactFooterNav = document.getElementById("contact-footer-nav-li");
+
+
+
   const sections = {
     "about": document.getElementById("about"),
     "home": document.getElementById("home"),
     "trees": document.getElementById("trees"),
     "resources": document.getElementById("resources"),
-    "quiz": document.getElementById("quiz")
+    "quiz": document.getElementById("quiz"),
+    "contact": document.getElementById("contact")
   }
 
   function selectSection(event, displayValue){
@@ -331,6 +339,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
   resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
   aboutNav.addEventListener("click",  (event) => selectSection(event, "block"));
+  aboutFooterNav.addEventListener("click",  (event) => selectSection(event, "block"));
+  resourcesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
+  treesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
+  contactFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
 });
 
 
