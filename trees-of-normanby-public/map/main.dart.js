@@ -105713,7 +105713,7 @@ aq(){var s,r,q,p,o,n=this
 n.aJ()
 s=t.P
 A.aNG(n.ry).aU(new A.aFS(n),s)
-n.wy("https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/sign/tiles/tiles.zip?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ0aWxlcy90aWxlcy56aXAiLCJpYXQiOjE3MjUzNjQwNjMsImV4cCI6MTczMzkxNzY2M30.FPeXygJGlr3Z4tVzLpa0r0GuO33gEmeJjGo0QfaRVkk&t=2024-09-03T11%3A47%3A42.376Z")
+n.wy("https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/tiles//tiles.zip")
 n.Ej()
 for(r=n.Q,q=n.RG,p=0;o=$.ha(),p<6;++p){r.i1(0,q[p])
 o[p].zA(new A.Oh(q[p],null))
@@ -106212,7 +106212,7 @@ if(d==null)d=0
 s=f.h(a,"longitude")
 if(s==null)s=0
 r=f.h(a,"id")
-q=f.h(a,"common_name")
+q=f.h(a,"common_name_string")
 if(q==null)q="Unnamed"
 p=f.h(a,"species_info")
 if(p==null)p=""
