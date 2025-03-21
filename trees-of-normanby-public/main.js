@@ -193,18 +193,15 @@ document.addEventListener("DOMContentLoaded", async function () {
               innerHTML += `<details class="info location-details">
               <summary id="leafSummary">
                 <t>Location: </t>
-              </summary>
-                <p><t class="attr-info">Latitude: </t>${specimen.latitude}
-                <br><t class="attr-info">Longitude: </t>${specimen.longitude}
-                <br>
+              </summary>  
                   <a class="attr-info" href="https://ultradian7.github.io/trees-of-normanby-public/map/index.html?specimenId=${specimen.id}">
                   <span class="material-symbols-outlined">
                       pin_drop
-                      </span>Open in Trees of Normanby Map
+                      </span>Trees of Normanby Map
                 </a>
-                <br><a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
+                <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
                   <img src="images/gmaps-icon.png" class="gmaps-icon">
-                  Open in Google Maps
+                  Google Maps
                 </a>
                 </p>
             </details>`;

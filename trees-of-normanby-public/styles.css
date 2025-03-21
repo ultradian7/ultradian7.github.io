@@ -411,9 +411,8 @@ nav {
     display: block;
   }
 
-  .location-details a{
-    margin: 0;
-    margin-left: 1rem;
+  .location-details a {
+    margin: 0.5rem;
     display: flex;
     padding: 0;
   }
@@ -421,6 +420,7 @@ nav {
   .location-details .material-symbols-outlined{
     padding-top: 0.25rem;
     margin: 0;
+    margin-right: 0.25rem;
   }
 
   
@@ -454,6 +454,7 @@ nav {
 .gmaps-icon {
     height: 1.25rem;
     align-self: center;
+    margin-right: 0.5rem;
 }
 .thumbnail-container {
     height: 120px;
