@@ -9,6 +9,7 @@ let plantFamilies = [];
 let optionsContainer;
 let headerHeight;
 
+
 document.addEventListener("DOMContentLoaded", async function () {
   const SUPABASE_URL = supabaseUrlPrefix;
   const SUPABASE_ANON_KEY =
@@ -200,6 +201,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                   Open in Google Maps
                   
                 </a>
+                <br><a class="attr-info" href="https://ultradian7.github.io/trees-of-normanby-public/map/index.html?specimenId=${specimen.id}">
+                  Open in Trees of Normanby Map
+                  </a>
                 </p>
             </details>`;
               

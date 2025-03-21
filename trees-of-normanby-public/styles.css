@@ -351,11 +351,13 @@ footer {
 
 }
 
-footer .header-text, footer nav{
+footer .header-text, footer nav {
     margin-right: auto;
     margin-left: auto;
     color: var(--link-gray);
+
 }
+
 
 
 nav {
@@ -377,7 +379,6 @@ nav {
   }
   
   nav a, .dropbtn {
-    
     text-decoration: none;
     color: var(--ton-green-dark);
     transition: color 0.3s;
@@ -392,6 +393,13 @@ nav {
     text-decoration: none;
     background-color: var(--my-light-gray);
   }
+
+  footer nav a{
+    color: var(--link-gray);
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 0;
+}
 
   #dropdown-toggle {
     position: absolute;
