@@ -412,8 +412,17 @@ nav {
   }
 
   .location-details a{
-    margin-left: 1%;
+    margin: 0;
+    margin-left: 1rem;
+    display: flex;
+    padding: 0;
   }
+
+  .location-details .material-symbols-outlined{
+    padding-top: 0.25rem;
+    margin: 0;
+  }
+
   
   .dropdown-content {
     position: absolute;
