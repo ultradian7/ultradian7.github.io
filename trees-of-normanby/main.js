@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       const key = "key";
       const token = generateJWT(header, payload, key);
-      const url = `https://ultradian7.github.io/trees-of-normanby/web/index.html?token=${encodeURIComponent(token)}`;
+      const url = `https://ultradian7.github.io/trees-of-normanby-public/map/index.html?token=${encodeURIComponent(token)}`;
       window.open(url, "_blank");
     });
   }
