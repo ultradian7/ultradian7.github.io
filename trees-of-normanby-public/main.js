@@ -9,6 +9,51 @@ let plantFamilies = [];
 let optionsContainer;
 let headerHeight;
 
+function latLongToOSGrid(lat, lon) {
+  const a = 6377563.396, b = 6356256.909; // Airy 1830 major & minor semi-axes
+  const F0 = 0.9996012717; // National Grid scale factor on central meridian
+  const lat0 = 49 * Math.PI / 180, lon0 = -2 * Math.PI / 180; // True origin
+  const N0 = -100000, E0 = 400000; // True origin northing & easting
+  const e2 = 1 - (b * b) / (a * a); // Eccentricity squared
+  const n = (a - b) / (a + b), n2 = n * n, n3 = n * n * n;
+
+  lat = lat * Math.PI / 180;
+  lon = lon * Math.PI / 180;
+
+  const cosLat = Math.cos(lat), sinLat = Math.sin(lat);
+  const nu = a * F0 / Math.sqrt(1 - e2 * sinLat * sinLat);
+  const rho = a * F0 * (1 - e2) / Math.pow(1 - e2 * sinLat * sinLat, 1.5);
+  const eta2 = nu / rho - 1;
+
+  let M = b * F0 * (
+      (1 + n + (5/4) * (n2 + n3)) * (lat - lat0)
+      - (3 * (n + n2 + (7/8) * n3)) * Math.sin(lat - lat0) * Math.cos(lat + lat0)
+      + ((15/8) * (n2 + n3)) * Math.sin(2 * (lat - lat0)) * Math.cos(2 * (lat + lat0))
+      - (35/24) * n3 * Math.sin(3 * (lat - lat0)) * Math.cos(3 * (lat + lat0))
+  );
+
+  const dLon = lon - lon0;
+  const tanLat = Math.tan(lat);
+  const secLat = 1 / cosLat;
+
+  const I = M + N0;
+  const II = (nu / 2) * sinLat * cosLat;
+  const III = (nu / 24) * sinLat * cosLat * cosLat * cosLat * (5 - tanLat * tanLat + 9 * eta2);
+  const IIIA = (nu / 720) * sinLat * cosLat * cosLat * cosLat * cosLat * cosLat * (61 - 58 * tanLat * tanLat + tanLat * tanLat * tanLat * tanLat);
+  const IV = nu * cosLat;
+  const V = (nu / 6) * cosLat * cosLat * cosLat * (nu / rho - tanLat * tanLat);
+  const VI = (nu / 120) * cosLat * cosLat * cosLat * cosLat * cosLat * (5 - 18 * tanLat * tanLat + tanLat * tanLat * tanLat * tanLat);
+
+  const northing = I + II * dLon * dLon + III * Math.pow(dLon, 4) + IIIA * Math.pow(dLon, 6);
+  const easting = E0 + IV * dLon + V * Math.pow(dLon, 3) + VI * Math.pow(dLon, 5);
+
+  return { easting: Math.round(easting), northing: Math.round(northing) };
+}
+
+// Example usage:
+console.log(latLongToOSGrid(51.5074, -0.1278)); // Example: London
+
+
 
 document.addEventListener("DOMContentLoaded", async function () {
   const SUPABASE_URL = supabaseUrlPrefix;
@@ -203,7 +248,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                   <img src="images/gmaps-icon.png" class="gmaps-icon">
                   Google Maps
                 </a>
-                </p>
+                `;
+
+
+                innerHTML += `</p>
             </details>`;
               
                     
@@ -223,19 +271,26 @@ document.addEventListener("DOMContentLoaded", async function () {
               <summary id="leafSummary">
                 <t>Description: </t>
               </summary>
-                <p class="desc-info">${specimen.species_info}</p>
-                </details>`;
+                <p class="desc-info">${specimen.species_info}</p>`;
+                if (specimen.specimen_info) {
+                  innerHTML +=`<p class="desc-info">${specimen.specimen_info}</p>`;
+                }
+                innerHTML +=  `</details>`;
         }
-        if (specimen.specimen_info) {
-            innerHTML += `<details  class="info" id="descDetails">
-              <summary id="leafSummary">
-                <t>Specimen: </t>
-              </summary>
-                <p class="desc-info">${specimen.specimen_info}</p>
-                </details> `;          
+        
+        if (specimen.resources && specimen.resources.ati) {
+          
+          innerHTML +=  `<details  class="info" id="descDetails">
+          <summary id="leafSummary">
+            <t>Links: </t>
+          </summary>
+          <a class="attr-info gmaps-open-in" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+            This tree appears in the Woodland Trust Ancient Tree Inventory
+          </a>
+           </details> `; 
         }
 
-        if (specimen.attributes) {
+        /*if (specimen.attributes) {
           innerHTML += `
           <details class="info" id="leafDetails">
           <summary id="leafSummary">
@@ -276,7 +331,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   </details>
   </details>
 
-  `;}
+  `;}*/
 
         innerHTML += `</details></div>`; // Close info-wrapper
 
