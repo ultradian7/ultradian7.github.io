@@ -8,50 +8,33 @@ let speciesData = [];
 let plantFamilies = [];
 let optionsContainer;
 let headerHeight;
+let selectedMarker;
 
-function latLongToOSGrid(lat, lon) {
-  const a = 6377563.396, b = 6356256.909; // Airy 1830 major & minor semi-axes
-  const F0 = 0.9996012717; // National Grid scale factor on central meridian
-  const lat0 = 49 * Math.PI / 180, lon0 = -2 * Math.PI / 180; // True origin
-  const N0 = -100000, E0 = 400000; // True origin northing & easting
-  const e2 = 1 - (b * b) / (a * a); // Eccentricity squared
-  const n = (a - b) / (a + b), n2 = n * n, n3 = n * n * n;
 
-  lat = lat * Math.PI / 180;
-  lon = lon * Math.PI / 180;
 
-  const cosLat = Math.cos(lat), sinLat = Math.sin(lat);
-  const nu = a * F0 / Math.sqrt(1 - e2 * sinLat * sinLat);
-  const rho = a * F0 * (1 - e2) / Math.pow(1 - e2 * sinLat * sinLat, 1.5);
-  const eta2 = nu / rho - 1;
-
-  let M = b * F0 * (
-      (1 + n + (5/4) * (n2 + n3)) * (lat - lat0)
-      - (3 * (n + n2 + (7/8) * n3)) * Math.sin(lat - lat0) * Math.cos(lat + lat0)
-      + ((15/8) * (n2 + n3)) * Math.sin(2 * (lat - lat0)) * Math.cos(2 * (lat + lat0))
-      - (35/24) * n3 * Math.sin(3 * (lat - lat0)) * Math.cos(3 * (lat + lat0))
+  // Initialize the map and set its view to your chosen geographical coordinates and zoom level
+  const map = L.map('map', { attributionControl: false }).setView([53.635908, -0.657139], 16); // Adjust coordinates and zoom to your region
+  const mapBounds = L.latLngBounds(
+      L.latLng(53.65347, -0.70682), // Southwest corner
+      L.latLng(53.61198, -0.60913)  // Northeast corner
   );
+  map.setMaxBounds(mapBounds);
+  map.fitBounds(mapBounds);
 
-  const dLon = lon - lon0;
-  const tanLat = Math.tan(lat);
-  const secLat = 1 / cosLat;
+  L.control.attribution({ prefix: false }).addTo(map);
 
-  const I = M + N0;
-  const II = (nu / 2) * sinLat * cosLat;
-  const III = (nu / 24) * sinLat * cosLat * cosLat * cosLat * (5 - tanLat * tanLat + 9 * eta2);
-  const IIIA = (nu / 720) * sinLat * cosLat * cosLat * cosLat * cosLat * cosLat * (61 - 58 * tanLat * tanLat + tanLat * tanLat * tanLat * tanLat);
-  const IV = nu * cosLat;
-  const V = (nu / 6) * cosLat * cosLat * cosLat * (nu / rho - tanLat * tanLat);
-  const VI = (nu / 120) * cosLat * cosLat * cosLat * cosLat * cosLat * (5 - 18 * tanLat * tanLat + tanLat * tanLat * tanLat * tanLat);
+  const customTileLayer = L.tileLayer('https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/tiles/15-19-jpg/{z}/{x}/{y}.jpg', {
+      noWrap: true,
+      maxZoom: 19,
+      minZoom: 15,
+      bounds: mapBounds, 
+      tms: true,
+      attribution: '© Ultradian7',
+      errorTileUrl: 'images/placeholder-tile.jpg',
+  }).addTo(map);
 
-  const northing = I + II * dLon * dLon + III * Math.pow(dLon, 4) + IIIA * Math.pow(dLon, 6);
-  const easting = E0 + IV * dLon + V * Math.pow(dLon, 3) + VI * Math.pow(dLon, 5);
+  var treeMarkers = new L.LayerGroup().addTo(map);
 
-  return { easting: Math.round(easting), northing: Math.round(northing) };
-}
-
-// Example usage:
-console.log(latLongToOSGrid(51.5074, -0.1278)); // Example: London
 
 
 
@@ -178,11 +161,14 @@ document.addEventListener("DOMContentLoaded", async function () {
               (!commonNameFilter || commonNames.includes(commonNameFilter));
     });
 
+    const sheetSection = document.getElementById(`sheet-section`);
+
     speciesContainer.innerHTML = '';
 
     filteredData.forEach(specimen => {
         const card = document.createElement('div');
         card.classList.add('card');
+        card.id = `specimen-card-${specimen.id}`;
 
         let imageFilenames = [];
         let imageDescriptions = [];
@@ -239,14 +225,14 @@ document.addEventListener("DOMContentLoaded", async function () {
               <summary id="leafSummary">
                 <t>Location: </t>
               </summary>  
-                  <a class="attr-info" href="https://ultradian7.github.io/trees-of-normanby-public/map/index.html?specimenId=${specimen.id}">
+                  <a class="attr-info" id="specimen-map-link-${specimen.id}">
                   <span class="material-symbols-outlined">
                       pin_drop
-                      </span>Trees of Normanby Map
+                      </span>Open In Map
                 </a>
                 <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
                   <img src="images/gmaps-icon.png" class="gmaps-icon">
-                  Google Maps
+                  Open In Google Maps
                 </a>
                 `;
 
@@ -335,14 +321,248 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         innerHTML += `</details></div>`; // Close info-wrapper
 
-
+        
         card.innerHTML = innerHTML;
         speciesContainer.appendChild(card);
+
+
+
+/////////////////////////////
+
+
+          let popupInnerHTML = `<div class="map-card">`;
+
+        popupInnerHTML += `<div class="gallery">`;
+
+        popupInnerHTML += `<div class="thumbnail-container">`;
+        if (imageFilenames.length > 0) {
+            imageFilenames.forEach((filename, index) => {
+                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                popupInnerHTML += `
+                    <img src="${thumbnailUrl}" class="thumbnail" 
+                        onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
+                        alt="${imageDescriptions[index] || 'Specimen image'}">
+                `;
+            });
+        } else {
+          popupInnerHTML += `
+                <img src="images/placeholder.jpg" class="thumbnail placeholder" 
+                    alt="No image available">
+            `;
+        }
+        popupInnerHTML += `</div>`;
+        
+            
+      
+        popupInnerHTML += `</div>`; // Close gallery div
+
+        popupInnerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
+        
+        popupInnerHTML += `
+              <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+            `;
+
+            popupInnerHTML += `</div>`;
+
+
+            ///////////////////////
+
+            const sheet = document.createElement('div');
+
+            sheet.classList.add('card');
+            sheet.classList.add('sheet');
+            sheet.id = `specimen-sheet-${specimen.id}`;
+
+            let sheetInnerHTML = "";
+
+            sheetInnerHTML += `<div class="gallery">`;
+    
+            sheetInnerHTML += `<div class="thumbnail-container">`;
+            if (imageFilenames.length > 0) {
+                imageFilenames.forEach((filename, index) => {
+                    const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
+                    const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                    sheetInnerHTML += `
+                        <img src="${thumbnailUrl}" class="thumbnail" 
+                            onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
+                            alt="${imageDescriptions[index] || 'Specimen image'}">
+                    `;
+                });
+            } else {
+              sheetInnerHTML += `
+                    <img src="images/placeholder.jpg" class="thumbnail placeholder" 
+                        alt="No image available">
+                `;
+            }
+            sheetInnerHTML += `</div>`;
+            
+                
+          
+            sheetInnerHTML += `</div>`; // Close gallery div
+    
+            sheetInnerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
+            
+            sheetInnerHTML += `
+                <div>
+                  <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+                  <div class="info-wrapper">
+                  <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
+    
+                  sheetInnerHTML += `<div class="info location-details">
+                    <t>Location: </t>
+                      <a class="attr-info" id="specimen-map-link-${specimen.id}">
+                      <span class="material-symbols-outlined">
+                          pin_drop
+                          </span>Open In Map
+                    </a>
+                    <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
+                      <img src="images/gmaps-icon.png" class="gmaps-icon">
+                      Open In Google Maps
+                    </a>
+                    `;
+    
+    
+                    sheetInnerHTML += `</p>
+                </div>`;
+                  
+                        
+          
+            
+            if (specimen.native_range) {
+              sheetInnerHTML += `<div  class="info" id="nativeHabitatDetails">
+                    <t>Native Habitat: </t>
+                    <p class="desc-info"> ${specimen.native_range}</p>
+                    </div>
+                    `;
+            }
+            if (specimen.species_info) {
+              sheetInnerHTML += `<div  class="info" id="descDetails">
+                    <t>Description: </t>
+                    <p class="desc-info"> ${specimen.species_info}`;
+                    if (specimen.specimen_info) {
+                      sheetInnerHTML +=`\n${specimen.specimen_info}`;
+                    }
+                    sheetInnerHTML +=  `</p></div>`;
+            }
+            
+            if (specimen.resources && specimen.resources.ati) {
+              
+              sheetInnerHTML +=  `<div class="info" id="descDetails">
+                <t>Links: </t>
+              <a class="attr-info gmaps-open-in" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+                This tree appears in the Woodland Trust Ancient Tree Inventory
+              </a>
+               </div> `; 
+            }
+    
+            /*if (specimen.attributes) {
+              innerHTML += `
+              <details class="info" id="leafDetails">
+              <summary id="leafSummary">
+                <t>Attributes: </t>
+              </summary>
+      <details class="attr-info" id="leafDetails">
+        <summary id="attr-summary">
+          <t>Leaves:</t>
+        </summary>
+          <p><t class="attr-info">Leaf Type: </t>${specimen.attributes.leaf_type}
+          <br><t class="attr-info">Shape: </t>${specimen.attributes.leaf_shape}
+          <br><t class="attr-info">Margin: </t>${specimen.attributes.leaf_margin}
+          <br><t class="attr-info">Venation: </t>${specimen.attributes.leaf_venation}
+          <br><t class="attr-info">Arrangement: </t>${specimen.attributes.leaf_arrangement}
+          <br><t class="attr-info">Duration: </t>${specimen.attributes.leaf_duration}</p>      
+      </details>
+    
+      <details class="attr-info" id="barkWoodDetails">
+        <summary id="attr-summary">
+          <t>Bark & Wood:</t>
+        </summary>
+          <p><t class="attr-info">Bark Texture: </t>${specimen.attributes.bark_texture}
+          <br><t class="attr-info">Bark Colour: </t>${specimen.attributes.bark_colour}
+          <br><t class="attr-info">Wood Type: </t>${specimen.attributes.wood_type}
+          <br><t class="attr-info">Wood Colour: </t>${specimen.attributes.wood_colour}</p>
+      </details>
+    
+      <details class="attr-info" id="fruitFlowerDetails">
+        <summary id="attr-summary">
+          <t>Fruit & Flowers:</t>
+        </summary>
+          <p><t class="attr-info">Fruit Type: </t>${specimen.attributes.fruit_type}
+          <br><t class="attr-info">Fruit Colour: </t>${specimen.attributes.fruit_colour}
+          <br><t class="attr-info">Fruit Season: </t>${specimen.attributes.fruit_season}
+          <br><t class="attr-info">Flower Type: </t>${specimen.attributes.flower_type}
+          <br><t class="attr-info">Flower Colour: </t>${specimen.attributes.flower_colour}
+          <br><t class="attr-info">Flower Season: </t>${specimen.attributes.flower_season}</p>
+      </details>
+      </details>
+    
+      `;}*/
+    
+      sheetInnerHTML += `</div></div>`; // Close info-wrapper
+    
+            
+            sheet.innerHTML = sheetInnerHTML;
+
+
+        const popup = L.popup({ 
+          offset: new L.Point(0,0), 
+          className: 'map-card' 
+      }).setContent(popupInnerHTML);
+      
+      const marker = L.marker([specimen.latitude, specimen.longitude])
+          .addTo(map)
+          .bindPopup(popup);
+      
+      // Bind click event to popup after it opens
+      marker.on('popupopen', function(e) {
+          const popupElement = e.popup._container;
+          if (popupElement) {
+              popupElement.addEventListener('click', function handleClick() {
+                for (const section in sections) {
+                  sections[section].style.display = "none";
+                }
+                sections["sheet"].style.display = "flex";
+              });
+              sheetSection.innerHTML = "";
+              sheetSection.appendChild(sheet);
+
+   
+
+
+          }
+      });
+      
+
+             // can access popup._container or popup.contentNode
+              //$(popup._closeButton).one('click', function(e){
+                //do something
+            //});
+
+        marker.addTo(treeMarkers);
+        const element = document.getElementById(`specimen-map-link-${specimen.id}`);
+
+        element.addEventListener("click", () => {
+          for (const section in sections) {
+            sections[section].style.display = "none";
+          }
+          sections["map"].style.display = "block";
+
+          map.invalidateSize();
+          //selectedMarker = L.marker([`${specimen.latitude}`, `${specimen.longitude}`]).addTo(map).bindPopup(`${commonNames[0]}`);
+          //selectedMarker.openPopup();
+          marker.openPopup();
+
+          map.setView([specimen.latitude, specimen.longitude], 18);
+        });
+
     });
   }
 
   
+  function generateCard(cardClass, ) {
 
+  }
 
   
   document.querySelector(".new-question").addEventListener("click", displayQuestion);
@@ -356,6 +576,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   loadSpecimen();
   const treesNav = document.getElementById("trees-nav-li");
+  const mapNav = document.getElementById("map-nav-li");
   const dropdownToggle = document.getElementById("dropdown-toggle");
   const knowBanner = document.getElementById("quiz-test-your");
   const giantSeq = document.getElementById("trees-giant-seq");
@@ -366,6 +587,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const aboutFooterNav = document.getElementById("about-footer-nav-li");
   const treesFooterNav = document.getElementById("trees-footer-nav-li");
   const contactFooterNav = document.getElementById("contact-footer-nav-li");
+  const mapFooterNav = document.getElementById("map-footer-nav-li");
 
 
 
@@ -375,33 +597,42 @@ document.addEventListener("DOMContentLoaded", async function () {
     "trees": document.getElementById("trees"),
     "resources": document.getElementById("resources"),
     "quiz": document.getElementById("quiz"),
-    "contact": document.getElementById("contact")
+    "contact": document.getElementById("contact"),
+    "map": document.getElementById("map-section"),
+    "sheet": document.getElementById("sheet-section")
   }
 
-  function selectSection(event, displayValue){
+  function selectSection(event, displayValue) {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
     dropdownToggle.checked = "";
-    sectionNames.forEach((section) => {
-      if (section === id) {
-        sections[section].style.display = displayValue;
-      } else {
+    for (const section in sections) {
         sections[section].style.display = "none";
-      }
-    });
-  }
+    }
+    sections[id].style.display = displayValue;
+    if (id === "map"){
+      map.invalidateSize();
+
+      map.setView([53.635908, -0.657139], 16);
+    }
+}
+
 
   knowBanner.addEventListener("click",  (event) => selectSection(event, "flex"));
   quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
   treesNav.addEventListener("click", (event) => selectSection(event, "block"));
+  treesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
   resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
+  resourcesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   aboutNav.addEventListener("click",  (event) => selectSection(event, "block"));
   aboutFooterNav.addEventListener("click",  (event) => selectSection(event, "block"));
-  resourcesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
-  treesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   contactFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
+  mapNav.addEventListener("click", (event) => selectSection(event, "block"));
+  mapFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
+
 });
+
 
 
 

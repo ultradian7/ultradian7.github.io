@@ -52,7 +52,11 @@ h1 {
     line-height: 0.862;
     margin: 0;
     text-wrap: balance;
+    user-select: none;
 }
+
+
+
 
 .family {
     font-weight: 500;
@@ -76,29 +80,42 @@ t {
     font-weight: 500;
 }
 
-.info {
+.info    {
     background-color: rgb(54, 55, 54);
     padding: 0.75rem 1.25rem 0.75rem 0.75rem;
     border-radius: 1rem;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     max-width: fit-content;
+    font-size: 1rem;
 
 }
 
 
-.attr-info, .desc-info  {
+.attr-info, .desc-info {
     padding-left: 0.75rem;
     max-width: fit-content;
     line-height: 2;
     margin-top: 0.5rem;
     text-wrap: pretty;
+
+
 }
 
 .desc-info {
     line-height: 1.5;
     padding-left: 0;
+    text-indent: 0.5rem;
 }
+
+#map-section {
+}
+
+#map{
+    width: 100%;
+    height: 77vh;
+}
+
 
 
 section {
@@ -117,7 +134,7 @@ section {
 
 
 
-#leafSummary::after, #attr-summary::after {
+#leafSummary::after, #attr-summary::after, .map-card #leafSummary::after, .map-card #attr-summary::after{
     content: '+';
     margin-left: 1rem;
     margin-right: 0;
@@ -147,7 +164,8 @@ section {
     padding: 0 1rem 0 1rem;
 }
 
-.species-name {
+.species-name, .map-card .species-name {
+    margin: 0;
     font-size: 1.25rem;
     font-weight: 400;
     padding-left: 1rem;
@@ -168,9 +186,10 @@ section {
     max-width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
     margin-bottom: 2rem;
+    align-items: start;
 }
 
-.card {
+.card, .map-card {
     display: flex;
     flex-direction: column;
     background-color: var(--bg-gray);
@@ -178,8 +197,7 @@ section {
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
     padding: 0.5rem 0 0.5rem 0;
-
-
+    height: auto;
 }
 
 
@@ -209,7 +227,7 @@ section {
     background-color: rgb(58, 57, 57);
 }
 
-summary {
+summary{
     display: flex;
     align-items: center;
     list-style: none;
@@ -289,6 +307,7 @@ summary::after {
     border-radius: 0.5rem;
     border-width: 0.11rem;
     border-color: rgb(37, 37, 37);
+    user-select: none;
   }
   
   select {
@@ -331,6 +350,7 @@ header {
     text-decoration: none;
     line-height: 1;
     text-wrap: balance;
+    user-select: none;
     > h {
         font-size: 1.25rem;
     }
@@ -340,6 +360,7 @@ header {
 
 
 footer {
+    user-select: none;
     align-self: flex-end;
     display: flex;
     flex-direction: column;
@@ -363,6 +384,7 @@ footer .header-text, footer nav {
 nav {
     margin-left: auto;
     margin-top: auto;
+    user-select: none;
   }
   
   nav ul {
@@ -415,6 +437,8 @@ nav {
     margin: 0.5rem;
     display: flex;
     padding: 0;
+    cursor: pointer;
+    user-select: none;;
   }
 
   .location-details .material-symbols-outlined{
@@ -432,6 +456,7 @@ nav {
     width: max-content;
     min-width: 7rem;
     display: none;
+    z-index: 1000;;
 }
   
   .dropdown-content a {
@@ -461,7 +486,7 @@ nav {
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
-    padding: 1rem;
+    margin: 1rem;
   }
   
   .thumbnail {
@@ -548,6 +573,7 @@ nav {
 
 .question, .options, .timer {
     background-color: rgba(35, 35, 35, 0.515);
+    user-select: none;
 }
 
 .question-text {
@@ -773,9 +799,42 @@ nav {
 
 }
 
-@media (max-width: 480px) {
-    button {
-        /*font-size: 1rem;*/
-    }
+.leaflet-popup{
+    min-width: 340px;
+    padding: 0;
+}
 
+.map-card {
+    min-width: 340px;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-content-wrapper a {
+    color: rgb(255, 225, 134);
+    background-color: var(--bg-gray);
+    padding: 0;
+}
+
+.leaflet-popup-content {
+    font-family: "Work Sans", sans-serif;
+    margin: 0;
+    user-select: none;
+    width: 100%;
+    > div {
+        font-family: "Work Sans", sans-serif;
+    }
+}
+
+
+.leaflet-popup-tip {
+    background-color: var(--bg-gray);
+}
+
+#sheet-section {
+    padding: 1rem;
+}
+
+.sheet {
+    margin: auto;
+    min-width: 300px;   
+    max-width: 800px;
 }
