@@ -482,11 +482,18 @@ nav {
     margin-right: 0.5rem;
 }
 .thumbnail-container {
-    height: 120px;
+    height: 140px;
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
-    margin: 1rem;
+    margin: 1rem;   
+    justify-content: flex-start; /* Ensures the scroll starts from the left */
+    scroll-snap-type: x mandatory; /* Helps keep images aligned when scrolling */
+    white-space: nowrap; 
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: rgb(54, 55, 54);
+    padding: 0.25rem;
   }
   
   .thumbnail {
@@ -498,9 +505,23 @@ nav {
     transform-origin: center top; 
     transition: transform 0.295295295s ease-in-out;
   }
+
+  .sheet .thumbnail-container {
+
+    height: 320px;
+  }
+
+  .sheet .thumbnail {
+    height: 300px;
+    width: 300px;
+  }
   
   .thumbnail:hover {
     transform: scale(1.111);
+  }
+
+  .sheet .thumbnail {
+    transform: none;
   }
 
   .placeholder:hover {
@@ -805,7 +826,7 @@ nav {
 }
 
 .map-card {
-    min-width: 340px;
+    min-width: fit-content;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-content-wrapper a {

@@ -522,10 +522,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 for (const section in sections) {
                   sections[section].style.display = "none";
                 }
+
+                sheetSection.innerHTML = "";
+                sheetSection.appendChild(sheet);
+                marker.closePopup();
+
                 sections["sheet"].style.display = "flex";
               });
-              sheetSection.innerHTML = "";
-              sheetSection.appendChild(sheet);
+
 
    
 
