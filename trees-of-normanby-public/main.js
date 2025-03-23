@@ -596,6 +596,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const treesFooterNav = document.getElementById("trees-footer-nav-li");
   const contactFooterNav = document.getElementById("contact-footer-nav-li");
   const mapFooterNav = document.getElementById("map-footer-nav-li");
+  const mapStraightTo = document.getElementById("map-straight-to");
+  const aboutTrees = document.getElementById("about-trees");
 
 
 
@@ -639,6 +641,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   mapNav.addEventListener("click", (event) => selectSection(event, "block"));
   mapFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
+  mapStraightTo.addEventListener("click", (event) => selectSection(event, "block"));
+  aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
 
 });
 
