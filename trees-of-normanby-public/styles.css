@@ -130,12 +130,6 @@ section {
     display: block;
 }
 
-#quiz {
-    padding: 0 1rem 24rem 1rem;
-    place-content: center;
-    height: 100%;
-}
-
 
 
 #leafSummary::after, #attr-summary::after, .map-card #leafSummary::after, .map-card #attr-summary::after{
@@ -628,6 +622,31 @@ nav {
     min-height: 600px;
     border-radius: 0.5rem;
     height: fit-content;
+    margin-top: 1rem;
+}
+
+.quiz-wrapper { 
+    display: flex;
+    padding: 0 1rem 24rem 1rem;
+    place-content: center;
+    height: 100%;
+}
+
+.quiz-banner{
+    background-image: url("images/seq-3.jpg");
+    min-height: 8rem;
+    max-height: 12rem;
+    background-size: cover;
+    background-position: 30% 40%;
+    margin: 0;
+    padding: 1rem;
+    place-content: end;
+
+    > h1 {
+        font-size: 2rem;
+        margin-left: auto;
+        text-align: right;
+    }
 }
 
 .question {
@@ -913,9 +932,10 @@ nav {
 }
 
 .about-header h1, .resources-header h1 {
-    font-weight: 600;
-    max-width: 260px;
-    font-size: 3rem;
+    font-weight: 700;
+    max-width: 8ch;
+    font-size: 2.5rem;
+    color: var(--header-gray-op);
 }
 
 .resources-header {
@@ -929,6 +949,8 @@ nav {
     place-content: end;
 
 }
+
+
 
 .leaflet-popup{
     max-width: 340px;

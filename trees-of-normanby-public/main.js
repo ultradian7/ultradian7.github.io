@@ -628,8 +628,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 }
 
 
-  knowBanner.addEventListener("click",  (event) => selectSection(event, "flex"));
-  quizNav.addEventListener("click",  (event) => selectSection(event, "flex"));
+  knowBanner.addEventListener("click",  (event) => selectSection(event, "block"));
+  quizNav.addEventListener("click",  (event) => selectSection(event, "block"));
   treesNav.addEventListener("click", (event) => selectSection(event, "block"));
   treesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
