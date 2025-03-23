@@ -210,13 +210,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (imageFilenames.length > 0) {
                 //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
                 const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-                innerHTML += `
-                    <img src="${fullImageUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
+                innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
         } else {
-            innerHTML += `
-                <img src="images/placeholder.jpg" class="thumbnail placeholder" 
-                    alt="No image available">
-            `;
+            innerHTML += `<div class="thumbnail image-overlay" style="background-image: url('images/placeholder.jpg'  );">`;
         }
         innerHTML += `</div>`;
         
