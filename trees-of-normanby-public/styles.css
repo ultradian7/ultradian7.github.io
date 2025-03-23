@@ -493,7 +493,7 @@ nav {
     align-items: center;
     border-radius: 0.5rem;
     background-color: rgb(54, 55, 54);
-    padding: 0.25rem 1rem 0.25rem 1rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
 
     width: fit-content;
     max-width: calc(100% - 4rem);
