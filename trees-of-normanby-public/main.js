@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     "quiz"
   ];
 
-  const headerElement = document.getElementById('header');
-  headerHeight = headerElement.getBoundingClientRect().height;
+  //const headerElement = document.getElementById('header');
+  //headerHeight = headerElement.getBoundingClientRect().height;
 
   const speciesContainer = document.getElementById('species-container');
   const filterButton = document.getElementById('filters-btn');
@@ -927,7 +927,7 @@ function displayQuestion() {
     optionsElement.style.display = "flex";
     newQuestionButton.style.display = "none"; // Hide "Next" button initially
     newQuestionButton.textContent = "Next";
-    window.scrollTo({ top: headerHeight, behavior: 'smooth' });
+    //window.scrollTo({ top: headerHeight, behavior: 'smooth' });
 
     clearInterval(timer); // Clear any existing timer
     timerElement.textContent = ""; // Clear previous messages
