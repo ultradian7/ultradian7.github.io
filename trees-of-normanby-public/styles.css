@@ -113,7 +113,7 @@ t {
 
 #map{
     width: 100%;
-    height: 77vh;
+    height: 78vh;
 }
 
 
@@ -493,7 +493,10 @@ nav {
     align-items: center;
     border-radius: 0.5rem;
     background-color: rgb(54, 55, 54);
-    padding: 0.25rem;
+    padding: 0.25rem 1rem 0.25rem 1rem;
+
+    width: fit-content;
+    max-width: calc(100% - 4rem);
   }
   
   .thumbnail {
@@ -504,6 +507,11 @@ nav {
     border-radius: 5px;
     transform-origin: center top; 
     transition: transform 0.295295295s ease-in-out;
+  }
+
+  .map-location-pin {
+    text-align: center;
+    filter: invert(50%) sepia(100%) saturate(250%) hue-rotate(0deg) drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.6182));
   }
 
   .sheet .thumbnail-container {
@@ -570,7 +578,6 @@ nav {
 }
   
   .quiz-container {
-    margin: 1rem;
     background-image: url("images/pinus-nigra-bark.jpg");
     background-position: left center;
     padding: 2rem 0.5rem 3rem 0.5rem;
@@ -667,7 +674,6 @@ nav {
         }
     }
 }
-
 
 
 .options button, .new-question{
@@ -821,12 +827,12 @@ nav {
 }
 
 .leaflet-popup{
-    min-width: 340px;
+    max-width: 340px;
     padding: 0;
 }
 
 .map-card {
-    min-width: fit-content;
+    max-width: 340px;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-content-wrapper a {
@@ -840,6 +846,7 @@ nav {
     margin: 0;
     user-select: none;
     width: 100%;
+    
     > div {
         font-family: "Work Sans", sans-serif;
     }
@@ -858,4 +865,8 @@ nav {
     margin: auto;
     min-width: 300px;   
     max-width: 800px;
+}
+
+footer .copyright {
+    font-size: 0.75rem;
 }
