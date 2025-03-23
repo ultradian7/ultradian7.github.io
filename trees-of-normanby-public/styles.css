@@ -7,6 +7,7 @@
     --ton-green-dark-b: rgb(53, 77, 26);
     --ton-green-darker: rgb(26, 41, 10);
     --link-gray: rgb(206, 206, 206);
+    --header-gray-op: rgba(236, 236, 236, 0.8612);
     --header-gray: rgb(236, 236, 236);
     --bg-gray: rgb(43, 42, 42);
     --bg-gray-light: rgb(71, 70, 70);
@@ -806,6 +807,8 @@ nav {
     font-size: 2rem;
     max-width: 260px;
     line-height: 0.8162;
+    color: var(--header-gray-op);
+    font-weight: 700;
 }
 
 
@@ -846,6 +849,7 @@ nav {
         font-size: 2rem;
         text-align: right;
         margin-left: auto;
+        color: var(--header-gray-op);
     }
 }
 
@@ -860,10 +864,11 @@ nav {
     place-content: flex-start space-between;
     > h1 {
         cursor: pointer;
-        max-width: 300px;
+        max-width: 8ch;
         padding: 1rem 0.5rem 0.5rem 0.5rem;
         font-size: 2.5rem;
         text-wrap: pretty;
+        color: var(--header-gray-op);
     }
 }
 
