@@ -189,7 +189,7 @@ section {
     display: grid;
     gap: 1rem;
     max-width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
     margin-bottom: 2rem;
     align-items: start;
 }
@@ -823,6 +823,44 @@ nav {
         cursor: pointer;
         max-width: 400px;
         padding: 0.5rem 4rem 0.5rem 1rem;
+    }
+}
+
+.landing-page-split-banner {
+    display:flex;
+}
+
+.mont-banner {
+    background-image: url("images/seq-3.jpg");
+    background-position: center top;
+    background-size: cover;
+    min-height: 200px;
+    width: 38.2%;
+    margin: 0;
+    padding-bottom: 1rem;
+    place-content: flex-start space-between;
+    > h1 {
+        cursor: pointer;
+        max-width: 200px;
+        padding: 1rem 4rem 0.5rem 0.5rem;
+        font-size: 2rem;
+    }
+}
+
+.fir-banner {
+    background-image: url("images/fir.jpg");
+    background-size: cover;
+    background-position: 25%;
+    min-height: 200px;
+    width: 61.8%;
+    margin: 0;
+    padding-bottom: 1rem;
+    place-content: flex-start space-between;
+    > h1 {
+        cursor: pointer;
+        max-width: 300px;
+        padding: 1rem 4rem 0.5rem 1rem;
+        font-size: 3rem;
     }
 }
 

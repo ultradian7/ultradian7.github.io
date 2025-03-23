@@ -379,10 +379,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             sheetInnerHTML += `<div class="thumbnail-container">`;
             if (imageFilenames.length > 0) {
                 imageFilenames.forEach((filename, index) => {
-                    const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-                    const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                  const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
                     sheetInnerHTML += `
-                        <img src="${thumbnailUrl}" class="thumbnail" 
+                        <img src="${fullImageUrl}" class="thumbnail" 
                             onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
                             alt="${imageDescriptions[index] || 'Specimen image'}">
                     `;
