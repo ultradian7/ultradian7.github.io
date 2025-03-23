@@ -344,9 +344,9 @@ document.addEventListener("DOMContentLoaded", async function () {
        
         if (imageFilenames.length > 0) {
           popupInnerHTML += `<div class="thumbnail-container">`;
-                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
+                const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 popupInnerHTML += `
-                    <img src="${thumbnailUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
+                    <img src="${imageUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
         }
         popupInnerHTML += `</div>`;
         
