@@ -342,12 +342,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         popupInnerHTML += `<div class="gallery">`;
 
        
+
         if (imageFilenames.length > 0) {
           popupInnerHTML += `<div class="thumbnail-container">`;
-                const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-                popupInnerHTML += `
-                    <img src="${imageUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
-        }
+                //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
+                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
+                popupInnerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
+        } 
         popupInnerHTML += `</div>`;
         
             
