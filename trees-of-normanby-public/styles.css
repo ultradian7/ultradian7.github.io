@@ -867,8 +867,6 @@ nav {
         max-width: 200px;
         padding: 1rem 1rem 0.5rem 0.5rem;
         font-size: 2rem;
-        text-align: right;
-        margin-left: auto;
         color: var(--header-gray-op);
     }
 }
