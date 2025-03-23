@@ -835,7 +835,7 @@ nav {
     background-position: center top;
     background-size: cover;
     min-height: 200px;
-    width: 38.2%;
+    width: 40%;
     margin: 0;
     padding-bottom: 1rem;
     place-content: flex-start space-between;
@@ -852,7 +852,7 @@ nav {
     background-size: cover;
     background-position: 25%;
     min-height: 200px;
-    width: 61.8%;
+    width: 60%;
     margin: 0;
     padding-bottom: 1rem;
     place-content: flex-start space-between;
