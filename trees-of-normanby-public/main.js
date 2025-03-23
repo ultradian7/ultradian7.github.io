@@ -208,15 +208,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         innerHTML += `<div class="thumbnail-container">`;
         if (imageFilenames.length > 0) {
-            imageFilenames.forEach((filename, index) => {
-                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
+                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 innerHTML += `
-                    <img src="${thumbnailUrl}" class="thumbnail" 
-                        onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
-                        alt="${imageDescriptions[index] || 'Specimen image'}">
-                `;
-            });
+                    <img src="${thumbnailUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
         } else {
             innerHTML += `
                 <img src="images/placeholder.jpg" class="thumbnail placeholder" 
@@ -229,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       
             innerHTML += `</div>`; // Close gallery div
 
-            innerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
+            innerHTML += `<div class="card-header">${commonNames[0]}</div>`
         
         innerHTML += `
             <details>
@@ -350,22 +345,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         popupInnerHTML += `<div class="gallery">`;
 
-        popupInnerHTML += `<div class="thumbnail-container">`;
+       
         if (imageFilenames.length > 0) {
-            imageFilenames.forEach((filename, index) => {
-                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${filename}`;
-                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+          popupInnerHTML += `<div class="thumbnail-container">`;
+                const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
+                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 popupInnerHTML += `
-                    <img src="${thumbnailUrl}" class="thumbnail" 
-                        onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index]}')" 
-                        alt="${imageDescriptions[index] || 'Specimen image'}">
-                `;
-            });
-        } else {
-          popupInnerHTML += `
-                <img src="images/placeholder.jpg" class="thumbnail placeholder" 
-                    alt="No image available">
-            `;
+                    <img src="${thumbnailUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
         }
         popupInnerHTML += `</div>`;
         
@@ -373,7 +359,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       
         popupInnerHTML += `</div>`; // Close gallery div
 
-        popupInnerHTML += `<div class="card-header">${commonNames.join(", ")}</div>`
+        popupInnerHTML += `<div class="card-header">${commonNames[0]}</div>`
         
         popupInnerHTML += `
               <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>

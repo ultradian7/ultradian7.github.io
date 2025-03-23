@@ -162,6 +162,7 @@ section {
     font-size: 1.55rem;
     font-weight: 500;
     padding: 0 1rem 0 1rem;
+    margin-top: 0.5rem;
 }
 
 .species-name, .map-card .species-name {
@@ -171,6 +172,7 @@ section {
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
 
 .italic {
     font-style: italic;
@@ -184,7 +186,7 @@ section {
     display: grid;
     gap: 1rem;
     max-width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
     margin-bottom: 2rem;
     align-items: start;
 }
@@ -196,7 +198,7 @@ section {
     box-shadow: 0.111rem 0.111rem 0.5rem rgba(65, 65, 65, 0.15), 
                 0.111rem 0.111rem 0.5rem rgba(101, 101, 101, 0.5);
     border-radius: 0.75rem;
-    padding: 0.5rem 0 0.5rem 0;
+    padding: 0 0 0.5rem 0;
     height: auto;
 }
 
@@ -481,7 +483,7 @@ nav {
     margin-right: 0.5rem;
 }
 .thumbnail-container {
-    height: 140px;
+    height: 200px;
     display: flex;
     gap: 0.75rem;
     overflow-x: auto;
@@ -493,9 +495,8 @@ nav {
     border-radius: 0.5rem;
     background-color: rgb(54, 55, 54);
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-
     width: fit-content;
-    max-width: calc(100% - 4rem);
+   
   }
   
   .thumbnail {
@@ -513,24 +514,42 @@ nav {
     filter: invert(50%) sepia(100%) saturate(250%) hue-rotate(0deg) drop-shadow(0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.6182));
   }
 
-  .sheet .thumbnail-container {
 
+  .map-card .thumbnail-container, .card .thumbnail-container{  
+    min-width: 100%;
+    padding: 0;
+    margin: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+  }
+
+  .map-card .thumbnail, .card .thumbnail {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .card .thumbnail {
+  }
+
+  .sheet .thumbnail-container {
+    min-width: 300px;
+    max-width: calc(100% - 2rem);
     height: 320px;
+    margin: 0.5rem;
+    border-radius: 5px;
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   }
 
   .sheet .thumbnail {
     height: 300px;
     width: 300px;
+    border-radius: 5px;
+    
   }
-  
-  .thumbnail:hover {
-    transform: scale(1.111);
-  }
-
-  .sheet .thumbnail {
-    transform: none;
-  }
-
   .placeholder:hover {
     transform:none;
     cursor: default;
@@ -847,6 +866,9 @@ nav {
 
 .map-card {
     max-width: 340px;
+    min-width: 280px;
+    padding: 0;
+    cursor: pointer;
 }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-content-wrapper a {
@@ -867,8 +889,12 @@ nav {
 }
 
 
+.leaflet-popup-close-button {
+    display: none;
+}
+
 .leaflet-popup-tip {
-    background-color: var(--bg-gray);
+    display: none; 
 }
 
 #sheet-section {
@@ -886,7 +912,6 @@ footer .copyright {
 }
 .map-card .tap-for-more{
     margin: 0.5rem 1rem 0.5rem 1rem;
-    cursor: pointer;
     color: rgb(228, 139, 240);
     font-weight: 550;
 }
