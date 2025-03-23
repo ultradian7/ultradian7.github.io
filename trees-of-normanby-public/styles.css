@@ -521,7 +521,7 @@ nav {
     margin: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-
+    overflow: hidden;
   }
 
   .map-card .thumbnail, .card .thumbnail {
@@ -532,8 +532,14 @@ nav {
     border-bottom-right-radius: 0;
   }
 
-  .card .thumbnail {
+  .card .thumbnail-container {
+    height: 300px;
   }
+
+  .card .thumbnail {
+    height: 300px;
+  }
+
 
   .sheet .thumbnail-container {
     min-width: 300px;
