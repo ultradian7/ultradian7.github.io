@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", async function () {
               <summary id="leafSummary">
                 <t>Location: </t>
               </summary>  
-                  <a class="attr-info" id="specimen-map-link-${specimen.id}">
+                  <a class="attr-info" id="specimen-card-map-link-${specimen.id}">
                   <span class="material-symbols-outlined">
                       pin_drop
                       </span>Open In Map
@@ -349,7 +349,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (imageFilenames.length > 0) {
           popupInnerHTML += `<div class="thumbnail-container">`;
                 const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
-                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 popupInnerHTML += `
                     <img src="${thumbnailUrl}" class="thumbnail" alt="${imageDescriptions[0] || 'Specimen image'}">`;
         }
@@ -414,11 +413,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     
                   sheetInnerHTML += `<div class="info location-details">
                     <t>Location: </t>
-                      <a class="attr-info" id="specimen-map-link-${specimen.id}">
+                      <a class="attr-info" id="specimen-sheet-map-link-${specimen.id}">
                       <span class="material-symbols-outlined">
                           pin_drop
                           </span>Open In Map
-                    </a>
+                      </a>
                     <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
                       <img src="images/gmaps-icon.png" class="gmaps-icon">
                       Open In Google Maps
@@ -505,7 +504,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       sheetInnerHTML += `</div></div>`; // Close info-wrapper
     
             
-            sheet.innerHTML = sheetInnerHTML;
+      sheet.innerHTML = sheetInnerHTML;
 
 
         const popup = L.popup({ 
@@ -528,9 +527,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 sheetSection.innerHTML = "";
                 sheetSection.appendChild(sheet);
+                const sheetMapLinkElement = document.getElementById(`specimen-sheet-map-link-${specimen.id}`);
+                sheetMapLinkElement.addEventListener("click", addMapLinkListener);
+
+
                 marker.closePopup();
 
                 sections["sheet"].style.display = "flex";
+
               });   
 
 
@@ -544,21 +548,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             //});
 
         marker.addTo(treeMarkers);
-        const element = document.getElementById(`specimen-map-link-${specimen.id}`);
 
-        element.addEventListener("click", () => {
-          for (const section in sections) {
-            sections[section].style.display = "none";
-          }
-          sections["map"].style.display = "block";
+        const cardMapLinkElement = document.getElementById(`specimen-card-map-link-${specimen.id}`);
 
-          map.invalidateSize();
-          //selectedMarker = L.marker([`${specimen.latitude}`, `${specimen.longitude}`]).addTo(map).bindPopup(`${commonNames[0]}`);
-          //selectedMarker.openPopup();
-          marker.openPopup();
+      function addMapLinkListener(){
+        for (const section in sections) {
+          sections[section].style.display = "none";
+        }
+        sections["map"].style.display = "block";
 
-          map.setView([specimen.latitude, specimen.longitude], 18);
-        });
+        map.invalidateSize();
+        //selectedMarker = L.marker([`${specimen.latitude}`, `${specimen.longitude}`]).addTo(map).bindPopup(`${commonNames[0]}`);
+        //selectedMarker.openPopup();
+        marker.openPopup();
+
+        map.setView([specimen.latitude, specimen.longitude], 18);
+      }
+
+        cardMapLinkElement.addEventListener("click", addMapLinkListener);
+        
 
     });
   }
