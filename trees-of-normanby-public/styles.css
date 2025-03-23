@@ -262,12 +262,11 @@ summary::after {
     padding-right: 1rem;
 }
 
-.nhcp-tree {
-    max-height: 1.75rem;
+.trees-of-normanby-icon {
+    max-height: 2rem;
     margin-left: 0.75rem;
-    margin-right: 0.25rem;
     margin-top: 0.25rem;
-    filter: invert(50%) sepia(100%) saturate(250%) hue-rotate(45deg);
+    filter: invert(50%) sepia(70%) saturate(250%) hue-rotate(40deg);
     align-self: center; 
 }
 
@@ -730,27 +729,40 @@ nav {
 }
 
 .specimen-banner {
+    display: flex;
     background-image: url("images/dpt-1.jpg");
     min-height: 8rem;
     max-height: 12rem;
+    min-width: 100%;
     background-size: cover;
     background-position: top center;
     margin: 0;
     padding: 0;
-    justify-content: end;
-    text-align: right;
-    display: flex;
+    justify-content: space-between;
+    align-items:center;  
+    text-align: left;
+
+    flex-direction: column;
     > h1 {
+        line-height: 1;
         cursor: pointer;
         margin-top: auto;
         font-size: 1.25rem;
         font-weight: 600;
         max-width: 200px;
-        line-height: 1.25;
         padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     }
+
 }
 
+#quiz-test-your {
+    text-align: right;
+    margin-left: auto;
+}
+
+#map-view-on {
+    align-self: self-start;
+}
 
 
 .giant-seq {

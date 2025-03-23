@@ -596,6 +596,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const mapNav = document.getElementById("map-nav-li");
   const dropdownToggle = document.getElementById("dropdown-toggle");
   const knowBanner = document.getElementById("quiz-test-your");
+  const mapViewOn = document.getElementById("map-view-on");
   const giantSeq = document.getElementById("trees-giant-seq");
   const resourcesNav = document.getElementById("resources-nav-li");
   const aboutNav = document.getElementById("about-nav-li");
@@ -647,6 +648,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   contactFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   mapNav.addEventListener("click", (event) => selectSection(event, "block"));
   mapFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
+  mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
 
 });
 
