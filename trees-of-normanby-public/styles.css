@@ -765,6 +765,8 @@ nav {
 }
 
 
+
+
 .giant-seq {
     background-image: url("images/giant-seq-1.jpg");
     background-size: cover;
@@ -881,4 +883,10 @@ nav {
 
 footer .copyright {
     font-size: 0.75rem;
+}
+.map-card .tap-for-more{
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    cursor: pointer;
+    color: rgb(228, 139, 240);
+    font-weight: 550;
 }

@@ -377,6 +377,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         
         popupInnerHTML += `
               <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+              <p class="tap-for-more">Tap for more...</p>
             `;
 
             popupInnerHTML += `</div>`;
