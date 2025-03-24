@@ -617,7 +617,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   function selectSection(event, displayValue) {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
-    dropdownToggle.checked = "";
+    dropdownToggle.checked = false;
     menuIcon.textContent = "menu";
     for (const section in sections) {
         sections[section].style.display = "none";
@@ -648,7 +648,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
 
   dropdownToggle.addEventListener("click", (event) => {
-    if (dropdownToggle.checked !== ""){
+    if (dropdownToggle.checked !== false){
       menuIcon.textContent = "menu_open";
     } else {
       menuIcon.textContent = "menu";
