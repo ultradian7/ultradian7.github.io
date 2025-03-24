@@ -773,9 +773,12 @@ nav {
     padding: 0 0.5rem 0 0.5rem;
 }
 
+.overlay-p {
+    border-image: radial-gradient(hsla(264, 100%, 15%, 0.532), hsla(99, 92%, 5%, 0.743)) fill 1;
+}
 
 .overlay {
-    border-image: linear-gradient(hsla(267, 100%, 22%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;
+    border-image: linear-gradient(hsla(267, 100%, 36%, 0.505), hsla(96, 89%, 22%, 0.416)) fill 1;
 }
 
 .overlay-a {
@@ -868,14 +871,15 @@ nav {
 }
 
 .fir-banner {
-    background-image: url("images/fir.jpg");
+    display: flex;
+    flex-direction: column;
+    background-image: url("images/peacock-1-low.jpg");
     background-size: cover;
     background-position: 25%;
     min-height: 150px;
     width: 100%;
     margin: 0;
     padding-bottom: 1rem;
-    place-content: flex-start space-between;
     > h1 {
         cursor: pointer;
         max-width: 8ch;
@@ -887,7 +891,23 @@ nav {
     > p {
         margin: 1rem;
         text-wrap: pretty;
-        max-width: 400px;
+        max-width: 464px;
+        align-self: left;
+    }
+
+
+    > p:first-of-type {
+        margin-top: 2rem;
+    }
+
+        
+    > p:nth-of-type(2) {
+        
+    }
+
+    
+    > p:nth-of-type(3) {
+        margin-left: 3rem;
     }
 }
 
