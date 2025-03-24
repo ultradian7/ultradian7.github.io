@@ -641,9 +641,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   mapFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
   mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
   mapStraightTo.addEventListener("click", (event) => selectSection(event, "block"));
-  aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
+  //aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
 
-  dropdownToggle.addEventListener("click", (event) => {
+  dropdownToggle.addEventListener("click", () => {
     if (dropdownToggle.checked !== false){
       menuIcon.textContent = "menu_open";
     } else {
