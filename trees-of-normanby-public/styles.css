@@ -451,20 +451,21 @@ nav {
     position: absolute;
     right: 0;
     background-color: rgb(17, 17, 17);
-    border-bottom-left-radius: 0.5rem;
+    border-bottom-left-radius: 1rem;
     width: max-content;
     min-width: 7rem;
     display: none;
-    z-index: 1000;;
+    z-index: 1000;
+    padding: 0.5rem;
 }
   
   .dropdown-content a {
-    padding: 0.5rem 2rem 0.5rem 1rem;
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
     text-decoration: none;
     display: block;
     font-size: 1rem;
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: var(--ton-green-dark);
   }
   
@@ -852,7 +853,7 @@ nav {
     background-image: url("images/seq-3.jpg");
     background-position: center top;
     background-size: cover;
-    min-height: 200px;
+    min-height: 150px;
     width: 50%;
     margin: 0;
     padding-bottom: 1rem;
@@ -870,7 +871,7 @@ nav {
     background-image: url("images/fir.jpg");
     background-size: cover;
     background-position: 25%;
-    min-height: 200px;
+    min-height: 150px;
     width: 50%;
     margin: 0;
     padding-bottom: 1rem;

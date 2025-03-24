@@ -586,6 +586,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const treesNav = document.getElementById("trees-nav-li");
   const mapNav = document.getElementById("map-nav-li");
   const dropdownToggle = document.getElementById("dropdown-toggle");
+  const menuIcon = document.getElementById("menu-icon");
   const knowBanner = document.getElementById("quiz-test-your");
   const mapViewOn = document.getElementById("map-view-on");
   const giantSeq = document.getElementById("trees-giant-seq");
@@ -617,6 +618,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
     dropdownToggle.checked = "";
+    menuIcon.textContent = "menu";
     for (const section in sections) {
         sections[section].style.display = "none";
     }
@@ -644,6 +646,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
   mapStraightTo.addEventListener("click", (event) => selectSection(event, "block"));
   aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
+
+  dropdownToggle.addEventListener("click", (event) => {
+    if (dropdownToggle.checked !== ""){
+      menuIcon.textContent = "menu_open";
+    } else {
+      menuIcon.textContent = "menu";
+    }
+  });
 
 });
 
