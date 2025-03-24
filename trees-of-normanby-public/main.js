@@ -377,8 +377,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             sheetInnerHTML += `<div class="gallery">`;
     
-            sheetInnerHTML += `<div class="thumbnail-container">`;
+            
             if (imageFilenames.length > 0) {
+              sheetInnerHTML += `<div class="thumbnail-container">`;
                 imageFilenames.forEach((filename, index) => {
                   const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
                     sheetInnerHTML += `
@@ -387,12 +388,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             alt="${imageDescriptions[index] || 'Specimen image'}">
                     `;
                 });
-            } else {
-              sheetInnerHTML += `
-                    <img src="images/placeholder.jpg" class="thumbnail placeholder" 
-                        alt="No image available">
-                `;
-            }
+            } 
             sheetInnerHTML += `</div>`;
             
                 
