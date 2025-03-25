@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
         } else {
-            innerHTML += `<div class="thumbnail image-overlay" style="background-image: url('images/placeholder.jpg'  );">`;
+            innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('images/placeholder.jpg');">`;
         }
         innerHTML += `</div>`;
         
