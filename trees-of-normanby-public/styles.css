@@ -878,7 +878,7 @@ nav {
     background-image: url("images/peacock-1-low.jpg");
     background-size: cover;
     background-position: 25%;
-    width: 100%;
+    min-width: 100%;
     margin: 0;
     filter: blur(0.111px);
     > h1 {
@@ -902,7 +902,7 @@ nav {
     }
 
     > p:nth-of-type(2) {
-        max-width: 280px;
+        max-width: 320px;
 
     }
 
