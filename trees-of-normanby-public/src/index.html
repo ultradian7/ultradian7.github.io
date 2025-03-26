@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/trees-of-normanby-icon.png" />
+    <link rel="stylesheet" href="node_modules/ol/ol.css" />
+    <link rel="stylesheet" href="styles.css" />
+    
+    <title>Trees of Normanby</title>
+    </head>
+
+    <body>
+      <header id="header">
+        <a href="index.html" class="header-text">T<h>REES of</h> N<h>ORMANBY</h></a>
+        <nav>
+          <ul>
+            <li><span class="material-symbols-outlined menu-icon" id="back-btn">arrow_back</span></li>
+            <li id="dropdown">
+              <input type="checkbox" id="dropdown-toggle" />
+              <label for="dropdown-toggle" class="dropbtn"> <span class="material-symbols-outlined" id="menu-icon">
+                menu
+                </span></label>
+              <div class="dropdown-content" id="dropdown-content">
+                <a id="about-nav-li">About</a>
+                <a id="map-nav-li">Map</a>
+                <a id="trees-nav-li">Trees</a>
+                <a id="quiz-nav-li">Quiz</a>
+                <a id="resources-nav-li">Resources</a>
+
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </header>
+
+      <section id="home">
+        <div class="giant-seq overlay">
+          <h1 id="trees-giant-seq">Get to know the trees...</h1>
+        </div>
+
+        <div class="landing-page-split-banner">
+          <div class="peacock-banner overlay-p">
+            <p>Hey early bird! You're viewing an early version of the site...
+            </p>
+            <p>
+              We're still busy putting content together and improving some features, so you might
+              notice something missing or not working right.
+            <p>Thanks for stopping by and pop back soon!
+            </p>
+            <h1 id="map-straight-to"></h1>
+          </div>
+        </div>
+
+
+      </section>
+
+      <section id="trees">
+        
+        <div class="specimen-banner overlay-b">
+          <h1 id="map-view-on">View trees on the map...</h1>
+          <h1 id="quiz-test-your">test your knowledge by taking the quiz!</h1>
+        </div>
+          <div class="menu-wrapper">
+            <button id="filters-btn">Filters</button>
+          </div>
+          <div id="filters">
+            <div class="filter-group">
+              <label for="common-name-filter">Common Name</label>
+              <select id="common-name-filter">
+                <option value="">Filter by Common Name</option>
+              </select>
+            </div>
+        
+            <div class="filter-group">
+              <label for="species-filter">Species</label>
+              <select id="species-filter">
+                <option value="">Filter by Species</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="genus-filter">Genus</label>
+              <select id="genus-filter">
+                <option value="">Filter by Genus</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="family-filter">Family</label>
+              <select id="family-filter">
+                <option value="">Filter by Family</option>
+              </select>
+            </div>
+          
+          </div>
+        
+          <div class="cards-grid" id="species-container">
+          </div>
+      </section>
+
+      <section id="quiz">
+
+        <div class="quiz-banner overlay-b"></div>
+        <div class="quiz-wrapper">
+          <div class="quiz-container overlay-a">
+            <div class="timer"></div>
+
+
+          <div class="question">Welcome to the Trees of Normanby quiz!
+            <br><br> We'll test your knowledge on Normanby's trees with some multiple choice questions, you have fifteen seconds to answer each question!
+            <br><br> Click Start to begin.</div>
+            <div class="quiz- options-wrapper">
+              <div class="options"></div>
+            </div>
+
+            <button class="new-question">Start</button>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="resources">
+        <div class="resources-header overlay-b"><h1>Resources</h1></div>
+        <div class="resources-wrapper">
+          
+          <a href="https://www.normanbyhall.co.uk">
+            Normanby Hall Country Park
+          </a>
+          <a href="https://www.woodlandtrust.org.uk/">
+            Woodland Trust
+          </a>
+          <a href="https://www.ancienttreeforum.org.uk/">
+            Ancient Tree Forum
+          </a>
+          <a href="https://www.forestresearch.gov.uk/">
+            Forest Research
+          </a>  
+        </div>
+      </section>
+
+        <section id="about">
+          <div class="about-header overlay-b"> <h1>About Trees of Normanby</h1></div>
+          
+          <div class="about-wrapper">
+            
+            <p>Trees of Normanby is an independent project showcasing notable trees around <a href="https://www.google.co.uk/maps/place/Normanby,+Scunthorpe/@53.6379661,-0.6725514,4002m/data=!3m1!1e3!4m6!3m5!1s0x4878e5cfd60c7f8f:0x46ecec3e801467a6!8m2!3d53.6397594!4d-0.6645928!16s%2Fg%2F12vsj3lw8?entry=ttu&g_ep=EgoyMDI1MDMxOC4wIKXMDSoASAFQAw%3D%3D">Normanby, North Lincolnshire</a>.
+            <br><br>The project began as an interactive map of <a href="https://www.normanbyhall.co.uk">Normanby Park</a> in the form of a mobile app before steering focus onto showcasing the trees.
+                <br><br>A simplified version of the map focusing on the trees has been integrated into this website along with pages to browse the catalogue of trees.
+              Contributions to the content have been made by park staff, significantly improving the quality of the content.
+              <br><br>Currently Trees of Normanby is not offically supported by Normanby Hall Country Park or North Lincolnshire Council.
+            </p>
+            
+          </div>
+      </section>
+
+      <section id="contact">
+        
+        <div class="contact-wrapper">
+          
+          <p>
+            Contact the project creator, website and app author via email at <a href="mailto:ultradian7@gmail.com">ultradian7@gmail.com</a>
+          </p>
+          
+        </div>
+      </section>
+
+      <section id="map-section">
+        <div id="map">
+        </div>
+      </section>
+
+      <section id="sheet-section">
+      </section>
+
+      <footer>
+        <a href="index.html" class="header-text">T<h>REES of</h> N<h>ORMANBY</h></a>
+        <nav class="footer-nav">
+          <ul>
+            <li id="about-footer-nav-li">About</li> |
+            <li id="map-footer-nav-li">Map</li> |
+            <li id="trees-footer-nav-li">Trees</li> | 
+            <li id="resources-footer-nav-li">Resources</li> |
+            <li id="contact-footer-nav-li">Contact</li>
+          </ul>
+        </nav>
+      <div class="copyright">Copyright © Ultradian7 2025</div>
+      </footer>
+
+      <script type="module" src="main.js" defer></script>
+    </body>
+    
+    
+
+</html>
