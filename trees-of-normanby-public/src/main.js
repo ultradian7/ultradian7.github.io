@@ -9,6 +9,8 @@ import { transformExtent, fromLonLat } from 'ol/proj';
 import { getCenter, containsCoordinate } from 'ol/extent';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { defaults as defaultConrols } from "ol/control";
+import Rotate from "ol/control/Rotate.js";
 //import Select from 'ol/interaction/Select';
 //import { Point } from 'ol/geom';
 //import Feature from 'ol/Feature';
@@ -42,6 +44,9 @@ let selectedMarker;
 let previousSection = "home";
 let currentSection = "home"
 
+const compassIconSpan = document.createElement("div");
+compassIconSpan.innerHTML =
+  `<img src=${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/compass-icon.png>`;
 
 const mapBounds = transformExtent(
   [-0.70682, 53.61198, -0.60913, 53.65347],
@@ -77,7 +82,10 @@ const map = new Map({
   layers: [layer, vectorLayer],
   view: view,
   extent: mapBounds,
-  constrainOnlyCenter: true
+  constrainOnlyCenter: true,
+  controls: defaultConrols({
+    rotateOptions: { autoHide: false, label: compassIconSpan }
+  }),
 });
 
 map.on('moveend', () => {
@@ -706,6 +714,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
     dropdownToggle.checked = false;
+    backButton.style.display = "block";
     menuIcon.textContent = "menu";
     for (const section in sections) {
         sections[section].style.display = "none";
