@@ -985,8 +985,8 @@ nav {
 }
 
 .custom-marker {
-    width: 2rem;
-    height: 2rem;
+    width: 32px;
+    height: 32px;
     color: orange;
     display: flex;
     align-items: center;
@@ -1006,7 +1006,7 @@ nav {
   .custom-marker:hover,
   .custom-marker.active {
     transform: scale(1.25);
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)) brightness(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)) brightness(1.3);
   }
 
   

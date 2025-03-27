@@ -9,10 +9,10 @@ import { transformExtent, fromLonLat } from 'ol/proj';
 import { getCenter, containsCoordinate } from 'ol/extent';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
-import Select from 'ol/interaction/Select';
-import { Point } from 'ol/geom';
-import Feature from 'ol/Feature';
-import { Style, Icon, Circle, Fill, Stroke } from 'ol/style';
+//import Select from 'ol/interaction/Select';
+//import { Point } from 'ol/geom';
+//import Feature from 'ol/Feature';
+//import { Style, Icon, Circle, Fill, Stroke } from 'ol/style';
 
 
 
@@ -134,7 +134,8 @@ function createMarker(specimen) {
 
   const overlay = new Overlay({
     position: fromLonLat([specimen.longitude, specimen.latitude]),
-    positioning: 'bottom-center',
+    positioning: 'bottom-center', 
+    offset: [-16, -32],
     element: el,
     stopEvent: false
   });
@@ -274,7 +275,7 @@ function createSpecimenSheet(specimen) {
             <span class="material-symbols-outlined">pin_drop</span>Open In Map
           </a>
           <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
-            <img src="images/gmaps-icon.png" class="gmaps-icon">Open In Google Maps
+            <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">Open In Google Maps
           </a>
         </div>`;
 
@@ -301,7 +302,7 @@ function createSpecimenSheet(specimen) {
     sheetInnerHTML += `
       <div class="info">
         <t>Links: </t>
-        <a class="attr-info gmaps-open-in" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+        <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
           This tree appears in the Woodland Trust Ancient Tree Inventory
         </a>
       </div>`;
@@ -485,7 +486,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
                 innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
         } else {
-            innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('images/placeholder.jpg');">`;
+            innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg');">`;
         }
         innerHTML += `</div>`;
         
@@ -511,7 +512,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                       </span>Open In Map
                 </a>
                 <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
-                  <img src="images/gmaps-icon.png" class="gmaps-icon">
+                  <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">
                   Open In Google Maps
                 </a>
                 `;
@@ -550,7 +551,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <summary id="leafSummary">
             <t>Links: </t>
           </summary>
-          <a class="attr-info gmaps-open-in" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+          <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
             This tree appears in the Woodland Trust Ancient Tree Inventory
           </a>
            </details> `; 
