@@ -692,6 +692,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const treesNav = document.getElementById("trees-nav-li");
   const mapNav = document.getElementById("map-nav-li");
   const dropdownToggle = document.getElementById("dropdown-toggle");
+  const dropdownContent = document.getElementById("dropdown-content");
   const menuIcon = document.getElementById("menu-icon");
   const knowBanner = document.getElementById("quiz-test-your");
   const mapViewOn = document.getElementById("map-view-on");
@@ -713,8 +714,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   function selectSection(event, displayValue) {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
-    dropdownToggle.checked = false;
-    backButton.style.display = "block";
+    dropdownContent.style.display = "none";
+    backButton.style.opacity = 1;
+    backButton.style["pointer-events"] = "auto";
     menuIcon.textContent = "menu";
     for (const section in sections) {
         sections[section].style.display = "none";
@@ -737,11 +739,19 @@ function handleBackNav(){
   sections[newCurrentSection].style.display = "block";
   previousSection = newPreviousSection;
   currentSection = newCurrentSection;
-  dropdownToggle.checked = false;
+  dropdownContent.style.display = "none";
   menuIcon.textContent = "menu";
 }
 
   backButton.addEventListener("click", handleBackNav);
+  dropdownToggle.addEventListener("click", function() {
+    if (dropdownContent.style.display === "block") {
+      dropdownContent.style.display = "none";
+    } else {
+      dropdownContent.style.display = "block";
+    }
+    
+  })
 
 
   knowBanner.addEventListener("click",  (event) => selectSection(event, "block"));
