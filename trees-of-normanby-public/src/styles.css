@@ -1038,3 +1038,14 @@ footer .copyright {
     font-weight: 550;
 }
 
+
+@media (max-height: 600px) {
+    .map-card .thumbnail-container{ 
+        height: 160px;
+      }
+    
+      .map-card .thumbnail {
+        height: 160px;
+      }
+    
+  }
