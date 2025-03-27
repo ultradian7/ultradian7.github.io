@@ -30,6 +30,7 @@ html, body {
     font-style: normal;
     line-height: 1.5;
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 .page-content {
@@ -127,7 +128,7 @@ t {
 
 #map{
     width: 100%;
-    height: 78vh;
+    height: calc(100vh - 3rem);
     filter: blur(0.3px);
 }
 
@@ -341,7 +342,6 @@ header {
     position: relative;
     z-index: 9999;
     min-height: 3rem;
-    max-height: fit-content;
     display: flex;  
     place-content: flex-start space-between;
     border-bottom: 2px solid var(--ton-green-darker);
@@ -1046,6 +1046,11 @@ footer .copyright {
 
 
 @media (max-height: 600px) {
+
+    html, body {
+        font-size: 12px;
+    }
+    
     .map-card .thumbnail-container{ 
         height: 140px;
       }
