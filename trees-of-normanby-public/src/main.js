@@ -103,7 +103,7 @@ document.body.appendChild(popupContainer);
 const popupOverlay = new Overlay({
   element: popupContainer,
   positioning: 'bottom-center',
-  offset: [0, -20],
+  offset: [0, -55],
 });
 
 map.addOverlay(popupOverlay);
