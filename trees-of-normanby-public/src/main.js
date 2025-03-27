@@ -213,16 +213,21 @@ function createMarker(specimen) {
 
 
 
-
 function animateMapToPopup(coordinates) {
   const popupEl = document.getElementById('popup-content');
   const popupHeightPx = popupEl?.offsetHeight || 200;
   const resolution = view.getResolution();
+  const rotation = view.getRotation();
+
   const adjustedOffset = popupHeightPx * 0.5 * resolution;
 
+  // Correctly rotate offset vector based on current rotation
+  const offsetX = adjustedOffset * Math.sin(rotation);
+  const offsetY = adjustedOffset * Math.cos(rotation);
+
   const adjustedCenter = [
-    coordinates[0],
-    coordinates[1] + adjustedOffset
+    coordinates[0] - offsetX,
+    coordinates[1] + offsetY
   ];
 
   view.animate({
@@ -230,6 +235,7 @@ function animateMapToPopup(coordinates) {
     duration: 500
   });
 }
+
 
 
 function createSpecimenSheet(specimen) {
