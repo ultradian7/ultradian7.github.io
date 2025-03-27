@@ -714,10 +714,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   function selectSection(event, displayValue) {
     let id = event.target.id;
     id = id.replace(/-.*/, "");
-    dropdownContent.style.display = "none";
     backButton.style.opacity = 1;
     backButton.style["pointer-events"] = "auto";
-    menuIcon.textContent = "menu";
     for (const section in sections) {
         sections[section].style.display = "none";
     }
@@ -728,30 +726,31 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       map.setView([53.635908, -0.657139], 16);*/  
     }
+    dropdownContent.style.display = "none";
+    menuIcon.textContent = "menu";
 }
 
 function handleBackNav(){
   const newPreviousSection = currentSection;
   const newCurrentSection = previousSection;
+  dropdownContent.style.display = "none";
+  menuIcon.textContent = "menu";
   for (const section in sections) {
     sections[section].style.display = "none";
   }
   sections[newCurrentSection].style.display = "block";
   previousSection = newPreviousSection;
   currentSection = newCurrentSection;
-  dropdownContent.style.display = "none";
-  menuIcon.textContent = "menu";
 }
 
   backButton.addEventListener("click", handleBackNav);
-  dropdownToggle.addEventListener("click", function() {
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-    
-  })
+
+  dropdownToggle.addEventListener("click", () => {
+    const isHidden = dropdownContent.style.display === "none" || !dropdownContent.style.display;
+    dropdownContent.style.display = isHidden ? "block" : "none";
+    menuIcon.textContent = isHidden ? "menu_open" : "menu";
+  });
+  
 
 
   knowBanner.addEventListener("click",  (event) => selectSection(event, "block"));
@@ -769,25 +768,6 @@ function handleBackNav(){
   mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
   mapStraightTo.addEventListener("click", (event) => selectSection(event, "block"));
   //aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
-
-  dropdownToggle.addEventListener("click", () => {
-    if (dropdownToggle.checked !== false){
-      menuIcon.textContent = "menu_open";
-    } else {
-      menuIcon.textContent = "menu";
-    }
-  });
-
-  dropdownToggle.addEventListener("click", () => {
-    if (dropdownToggle.checked !== false){
-      menuIcon.textContent = "menu_open";
-    } else {
-      menuIcon.textContent = "menu";
-    }
-  });
-
-
-
 });
 
 

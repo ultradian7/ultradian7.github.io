@@ -344,7 +344,7 @@ header {
     max-height: fit-content;
     display: flex;  
     place-content: flex-start space-between;
-    border-bottom: 1px solid var(--ton-green-darker);
+    border-bottom: 2px solid var(--ton-green-darker);
     text-align: center;
 }
 
@@ -413,21 +413,16 @@ nav {
 
   }
   
-  nav a, .dropbtn {
+  nav a,  #dropdown-toggle {
     text-decoration: none;
     color: var(--ton-green-dark);
     transition: color 0.3s;
     font-size: 1.111rem;
-    font-weight: 550;
-    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-weight: 500;
     border-radius: 0.5rem;
   }
   
   
-  nav a:hover, .dropbtn:hover{
-    text-decoration: none;
-    background-color: var(--my-light-gray);
-  }
 
   footer nav a{
     color: var(--link-gray);
@@ -436,15 +431,6 @@ nav {
     padding: 0;
 }
 
-  #dropdown-toggle {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  #dropdown-toggle:checked + .dropbtn + .dropdown-content {
-    display: block;
-  }
 
   .location-details a {
     margin: 0.5rem;
@@ -473,14 +459,18 @@ nav {
   }
   
   .dropdown-content {
-    position: absolute;
-    right: 0;
+    position: sticky;
+    left: 100%;    
     background-color: rgb(17, 17, 17);
     border-bottom-left-radius: 1rem;
-    width: max-content;
+    max-width: fit-content;
     min-width: 7rem;
     display: none;
     z-index: 9999;
+    border-bottom: 2px solid var(--ton-green-darker);
+    border-left: 2px solid var(--ton-green-darker);
+    cursor: pointer;
+    user-select: none;
 }
   
   .dropdown-content a {
@@ -488,19 +478,15 @@ nav {
     text-decoration: none;
     display: block;
     font-size: 1rem;
-    font-weight: 600;
-    font-size: 1.25rem;
+    font-weight: 500;
+    font-size: 1.2rem;
     color: var(--ton-green-dark);
-    border-bottom: 1px solid var(--ton-green-darker);
+    border-radius: 1rem;
   }
   
   .dropdown-content a:hover {
-    background-color: var(--my-light-gray);
+    background-color: var(--bg-gray);
   }
-
-  .dropdown-content:focus-within {
-    display: none;
-}
 
 .gmaps-icon {
     height: 1.25rem;
