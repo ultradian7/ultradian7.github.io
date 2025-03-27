@@ -426,6 +426,13 @@ nav {
   }
   
   
+  .ol-layers {
+    filter: grayscale(0%) blur(1px);
+    transition: filter 740.74074074074ms ease;
+  }
+
+.ol-overlaycontainer {
+}
 
   footer nav a{
     color: var(--link-gray);
@@ -891,7 +898,7 @@ nav {
     place-content: center space-between;
     filter: blur(0.111px);
     animation: giant-seq-anim 47407.407407407ms ease infinite,
-    float-up-down 23703.703703704ms ease-in-out infinite alternate;
+    float-up-down 11851.851851852ms ease-in-out infinite alternate;
 
     > h1 {
         cursor: pointer;
@@ -916,10 +923,10 @@ nav {
         filter: blur(0.111px) saturate(110%) hue-rotate(10deg);
     }
     40% {
-        filter: blur(0.2px) saturate(115%) hue-rotate(20deg);
+        filter: blur(0.54px) saturate(115%) hue-rotate(20deg);
     }
     60% {
-        filter: blur(0.3px) saturate(100%) hue-rotate(30deg);
+        filter: blur(0.34px) saturate(100%) hue-rotate(30deg);
     }
 }
 
@@ -1071,9 +1078,9 @@ nav {
   }
 
   .custom-marker.active {
-    /* 1s duration, 'ease' timing, repeat infinitely */
     animation: marker-bounce 1.4814814814815s ease infinite;
   }
+
   
   /* Keyframes for a repeating bounce */
   @keyframes marker-bounce {
@@ -1105,7 +1112,24 @@ footer .copyright {
     font-size: 0.75rem;
 }
 
-
+/* Example: fades in/out with opacity + transform or max-height */
+.popup {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(4px);
+    transition: transform 1481.4814814815ms ease, 
+        opacity  740.74074074074ms ease,
+        filter  740.74074074074ms ease;
+    pointer-events: none;
+  }
+  
+  .popup.open {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+    filter: blur(0px);
+    pointer-events: auto;
+  }
+  
 
 @media (max-height: 600px) {
 
