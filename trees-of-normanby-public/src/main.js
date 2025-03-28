@@ -41,8 +41,13 @@ let optionsContainer;
 let headerHeight;
 let selectedMarker;
 
+let isMapLayerBlurred = false;
+let isNonActiveMarkersBlurred = false;
+
 let previousSection = "home";
 let currentSection = "home"
+
+
 
 const compassIconSpan = document.createElement("div");
 compassIconSpan.innerHTML =
@@ -130,8 +135,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     "quiz"
   ];
 
-  //const headerElement = document.getElementById('header');
-  //headerHeight = headerElement.getBoundingClientRect().height;
 
   const speciesContainer = document.getElementById('species-container');
   const filterButton = document.getElementById('filters-btn');
@@ -604,21 +607,40 @@ function showPopup(html, coords) {
 
 
 function createMarker(specimen) {
+  // Create marker element
   const el = document.createElement('div');
   el.className = 'custom-marker';
-  el.innerHTML = `<svg stroke="#000000" stroke-width="5" fill="currentColor" viewBox="0 0 425.963 425.963"><path d="M213.285,0h-0.608C139.114,0,79.268,59.826,79.268,133.361c0,48.202,21.952,111.817,65.246,189.081c32.098,57.281,64.646,101.152,64.972,101.588c0.906,1.217,2.334,1.934,3.847,1.934c0.043,0,0.087,0,0.13-0.002c1.561-0.043,3.002-0.842,3.868-2.143c0.321-0.486,32.637-49.287,64.517-108.976c43.03-80.563,64.848-141.624,64.848-181.482C346.693,59.825,286.846,0,213.285,0z M274.865,136.62c0,34.124-27.761,61.884-61.885,61.884c-34.123,0-61.884-27.761-61.884-61.884s27.761-61.884,61.884-61.884C247.104,74.736,274.865,102.497,274.865,136.62z"/></svg>`;
-
+  el.innerHTML = `<svg stroke="#000000" stroke-width="5" fill="currentColor" viewBox="0 0 425.963 425.963">
+    <path d="M213.285,0h-0.608C139.114,0,79.268,59.826,79.268,133.361c0,48.202,21.952,111.817,65.246,189.081
+      c32.098,57.281,64.646,101.152,64.972,101.588c0.906,1.217,2.334,1.934,3.847,1.934c0.043,0,0.087,0,0.13-0.002
+      c1.561-0.043,3.002-0.842,3.868-2.143c0.321-0.486,32.637-49.287,64.517-108.976c43.03-80.563,64.848-141.624,
+      64.848-181.482C346.693,59.825,286.846,0,213.285,0z M274.865,136.62c0,34.124-27.761,61.884-61.885,61.884
+      c-34.123,0-61.884-27.761-61.884-61.884s27.761-61.884,61.884-61.884C247.104,74.736,274.865,102.497,274.865,136.62z"/>
+  </svg>`;
   el.title = specimen.common_name[0];
 
-  const overlay = new Overlay({
+  // Create marker overlay
+  const markerOverlay = new Overlay({
     position: fromLonLat([specimen.longitude, specimen.latitude]),
     positioning: 'bottom-center', 
     offset: [-16, -32],
     element: el,
     stopEvent: false
   });
+  map.addOverlay(markerOverlay);
 
-  map.addOverlay(overlay);
+  const labelEl = document.createElement('div');
+  labelEl.className = 'marker-label';
+  labelEl.innerText = specimen.common_name[0];
+  
+  const labelOverlay = new Overlay({
+    position: fromLonLat([specimen.longitude, specimen.latitude]),
+    positioning: 'top-center',
+    offset: [0, -64],
+    element: labelEl,
+    stopEvent: false
+  });
+  //map.addOverlay(labelOverlay);
 
   el.addEventListener('mouseenter', (e) => {    
     const hoveredMarker = e.currentTarget;
@@ -646,15 +668,23 @@ function createMarker(specimen) {
       el.parentElement.style.zIndex = '0';
     }
 
-    // Check if clicked marker is already active
+    // Toggle active state
     const isAlreadyActive = clickedMarker.classList.contains('active');
-
     if (isAlreadyActive) {
-      styleElement.innerHTML = `
+      if (isMapLayerBlurred) {
+        isMapLayerBlurred = false;
+        styleElement.innerHTML += `
         .ol-layers {
           filter: blur(0);  
-        }
-      `;
+        }`;
+      }
+      if (isNonActiveMarkersBlurred) {
+        isNonActiveMarkersBlurred = false;
+        styleElement.innerHTML += `
+        .custom-marker {
+          filter: blur(0);  
+        }`;
+      }
       document.head.appendChild(styleElement);
       forceClosePopup();
       clickedMarker.classList.remove('active');
@@ -671,35 +701,40 @@ function createMarker(specimen) {
     let popupInnerHTML = `
       <div class="map-card" data-specimen-id="${specimen.id}">
         <div class="gallery">`;
-
     if (specimen.images) {
       const imageFilenames = JSON.parse(specimen.images);
       const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
       popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
     }
-
     popupInnerHTML += `
         </div>
         <div class="card-header">${specimen.common_name[0]}</div>
         <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
         <p class="tap-for-more">Tap for more...</p>
       </div>`;
-
+    
     popupOverlay.setPosition(coordinates);
-
     showPopup(popupInnerHTML, coordinates);
 
-    styleElement.innerHTML = `
-    .ol-layers {
-      filter: blur(3px);
+    if (!isMapLayerBlurred) {
+      styleElement.innerHTML += `
+      .ol-layers {
+        filter: blur(3px);
+      }`;
+      isMapLayerBlurred = true;
     }
-  `;
-  document.head.appendChild(styleElement);
-
+    if (!isNonActiveMarkersBlurred) {
+      isNonActiveMarkersBlurred = true;
+      styleElement.innerHTML += `
+      .custom-marker {
+        filter: blur(0.75px);  
+      }`;
+    }
+    document.head.appendChild(styleElement);
     animateMapToPopup(coordinates);
   });
-  
 }
+
 
 
 
