@@ -10,11 +10,12 @@ import { getCenter, containsCoordinate } from 'ol/extent';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { defaults as defaultConrols } from "ol/control";
-import Rotate from "ol/control/Rotate.js";
-//import Select from 'ol/interaction/Select';
-//import { Point } from 'ol/geom';
-//import Feature from 'ol/Feature';
-//import { Style, Icon, Circle, Fill, Stroke } from 'ol/style';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import Style from 'ol/style/Style';
+import Text from 'ol/style/Text';
+import Fill from 'ol/style/Fill';
+import Stroke from 'ol/style/Stroke';
 
 
 
@@ -38,8 +39,6 @@ let trees = [];
 let speciesData = [];
 let plantFamilies = [];
 let optionsContainer;
-let headerHeight;
-let selectedMarker;
 
 let isMapLayerBlurred = false;
 let isNonActiveMarkersBlurred = false;
@@ -61,18 +60,15 @@ const mapBounds = transformExtent(
 
 const mapCenter = fromLonLat([-0.657139, 53.635908]);
 
-const vectorSource = new VectorSource();
-
-const vectorLayer = new VectorLayer({
-  source: vectorSource,
-});
 
 const layer = new TileLayer({
   source: new XYZ({
     url: 'https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/tiles/15-19-jpg/{z}/{x}/{-y}.jpg',
-    crossOrigin: 'anonymous'
+    crossOrigin: 'anonymous',
+    transition: 740.74074074074
   }),
-  background: '#5e5447'
+  background: '#5e5447',
+  className: 'tile-layer'
 });
 
 const view = new View({
@@ -84,7 +80,7 @@ const view = new View({
 
 const map = new Map({
   target: 'map',
-  layers: [layer, vectorLayer],
+  layers: [layer],
   view: view,
   extent: mapBounds,
   className: "map-layer",
@@ -117,9 +113,6 @@ map.addOverlay(popupOverlay);
 
 
 
-
-
-
 document.addEventListener("DOMContentLoaded", async function () {
   const SUPABASE_URL = supabaseUrlPrefix;
   const SUPABASE_ANON_KEY =
@@ -140,6 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const filterButton = document.getElementById('filters-btn');
   const filters = document.getElementById('filters');
   optionsContainer = document.querySelector(".options");
+  
   
   function populateFilterOptions(selectElement, dataSet) {
     selectElement.innerHTML = '<option value="">All</option>';
@@ -202,7 +196,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         genusSet.add(specimen.genus);
         speciesSet.add(specimen.species);
 
-        // Extract names from common_name object and add to the filter
         if (specimen.common_name && typeof specimen.common_name === "object") {
             Object.values(specimen.common_name).forEach(name => commonNameSet.add(name));
         }
@@ -244,113 +237,111 @@ document.addEventListener("DOMContentLoaded", async function () {
     speciesContainer.innerHTML = '';
 
     filteredData.forEach(specimen => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.id = `specimen-card-${specimen.id}`;
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.id = `specimen-card-${specimen.id}`;
 
-        let imageFilenames = [];
-        let imageDescriptions = [];
+      let imageFilenames = [];
+      let imageDescriptions = [];
 
-        if (specimen.images) {
-            imageFilenames = JSON.parse(specimen.images);
-            imageDescriptions = JSON.parse(specimen.image_info || "[]");
+      if (specimen.images) {
+          imageFilenames = JSON.parse(specimen.images);
+          imageDescriptions = JSON.parse(specimen.image_info || "[]");
 
-            while (imageDescriptions.length < imageFilenames.length) {
-                imageDescriptions.push(""); // Ensure descriptions array matches images array length
-            }
-        }
+          while (imageDescriptions.length < imageFilenames.length) {
+              imageDescriptions.push(""); // Ensure descriptions array matches images array length
+          }
+      }
 
-        const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
-            ? Object.values(specimen.common_name) 
-            : ["Unknown Name"];
+      const commonNames = (specimen.common_name && typeof specimen.common_name === "object") 
+          ? Object.values(specimen.common_name) 
+          : ["Unknown Name"];
 
-        let innerHTML = "";
+      let innerHTML = "";
 
-        innerHTML += `<div class="gallery">`;
+      innerHTML += `<div class="gallery">`;
 
-        innerHTML += `<div class="thumbnail-container">`;
-        if (imageFilenames.length > 0) {
-                //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
-                const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-                innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
-        } else {
-            innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg');">`;
-        }
-        innerHTML += `</div>`;
-        
+      innerHTML += `<div class="thumbnail-container">`;
+      if (imageFilenames.length > 0) {
+              //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
+              const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
+              innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
+      } else {
+          innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg');">`;
+      }
+      innerHTML += `</div>`;
+
+      innerHTML += `</div>`; // Close gallery div
+
+      innerHTML += `<div class="card-header">${commonNames[0]}</div>`
+      
+      innerHTML += `
+          <details>
+            <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
+            <div class="info-wrapper">
+            <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
+
+            innerHTML += `<details class="info location-details">
+            <summary id="leafSummary">
+              <t>Location: </t>
+            </summary>  
+                <a class="attr-info" id="specimen-card-map-link-${specimen.id}">
+                <span class="material-symbols-outlined">
+                    pin_drop
+                    </span>Open In Map
+              </a>
+              <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
+                <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">
+                Open In Google Maps
+              </a>
+              `;
+
+
+              innerHTML += `</p>
+          </details>`;
             
+                  
+    
       
-            innerHTML += `</div>`; // Close gallery div
-
-            innerHTML += `<div class="card-header">${commonNames[0]}</div>`
-        
-        innerHTML += `
-            <details>
-              <summary id="speciesName"><p class="species-name title italic">${specimen.genus} ${specimen.species}</p></summary>
-              <div class="info-wrapper">
-              <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>`; 
-
-              innerHTML += `<details class="info location-details">
-              <summary id="leafSummary">
-                <t>Location: </t>
-              </summary>  
-                  <a class="attr-info" id="specimen-card-map-link-${specimen.id}">
-                  <span class="material-symbols-outlined">
-                      pin_drop
-                      </span>Open In Map
-                </a>
-                <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
-                  <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">
-                  Open In Google Maps
-                </a>
-                `;
-
-
-                innerHTML += `</p>
-            </details>`;
-              
-                    
+      if (specimen.native_range) {
+          innerHTML += `<details  class="info" id="nativeHabitatDetails">
+            <summary id="leafSummary">
+              <t>Native Habitat: </t>
+            </summary>
+              <p class="desc-info">${specimen.native_range}</p>
+              </details>
+              `;
+      }
+      if (specimen.species_info) {
+          innerHTML += `<details  class="info" id="descDetails">
+            <summary id="leafSummary">
+              <t>Description: </t>
+            </summary>
+              <p class="desc-info">${specimen.species_info}</p>`;
+              if (specimen.specimen_info) {
+                innerHTML +=`<p class="desc-info">${specimen.specimen_info}</p>`;
+              }
+              innerHTML +=  `</details>`;
+      }
       
+      if (specimen.resources && specimen.resources.ati) {
         
-        if (specimen.native_range) {
-            innerHTML += `<details  class="info" id="nativeHabitatDetails">
-              <summary id="leafSummary">
-                <t>Native Habitat: </t>
-              </summary>
-                <p class="desc-info">${specimen.native_range}</p>
-                </details>
-                `;
-        }
-        if (specimen.species_info) {
-            innerHTML += `<details  class="info" id="descDetails">
-              <summary id="leafSummary">
-                <t>Description: </t>
-              </summary>
-                <p class="desc-info">${specimen.species_info}</p>`;
-                if (specimen.specimen_info) {
-                  innerHTML +=`<p class="desc-info">${specimen.specimen_info}</p>`;
-                }
-                innerHTML +=  `</details>`;
-        }
-        
-        if (specimen.resources && specimen.resources.ati) {
-          
-          innerHTML +=  `<details  class="info" id="descDetails">
-          <summary id="leafSummary">
-            <t>Links: </t>
-          </summary>
-          <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
-            This tree appears in the Woodland Trust Ancient Tree Inventory
-          </a>
-           </details> `; 
-        }
+        innerHTML +=  `<details  class="info" id="descDetails">
+        <summary id="leafSummary">
+          <t>Links: </t>
+        </summary>
+        <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+          This tree appears in the Woodland Trust Ancient Tree Inventory
+        </a>
+          </details> `; 
+      }
 
-        /*if (specimen.attributes) {
-          innerHTML += `
-          <details class="info" id="leafDetails">
-          <summary id="leafSummary">
-            <t>Attributes: </t>
-          </summary>
+  /*if (specimen.attributes) {
+    innerHTML += `
+    <details class="info" id="leafDetails">
+    <summary id="leafSummary">
+      <t>Attributes: </t>
+    </summary>
   <details class="attr-info" id="leafDetails">
     <summary id="attr-summary">
       <t>Leaves:</t>
@@ -388,71 +379,63 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   `;}*/
 
-        innerHTML += `</details></div>`; // Close info-wrapper
+  innerHTML += `</details></div>`; // Close info-wrapper
 
-        
-        card.innerHTML = innerHTML;
+  
+  card.innerHTML = innerHTML;
 
-        speciesContainer.appendChild(card);
+  speciesContainer.appendChild(card);
 
-        const cardMapLink = document.getElementById(`specimen-card-map-link-${specimen.id}`);
-        if (cardMapLink) {
-          cardMapLink.addEventListener('click', () => {
-            for (const section in sections) {
-              sections[section].style.display = "none";
-            }
-            sections["map"].style.display = "block";
-            previousSection = "card";
-            currentSection = "map";
-            const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
-        
-            // Rebuild popup HTML (same logic as in createMarker)
-            let popupInnerHTML = `
-              <div class="map-card" data-specimen-id="${specimen.id}">
-                <span class="close-btn">✖</span>
-                <div class="gallery">`;
-        
-            if (specimen.images) {
-              const imageFilenames = JSON.parse(specimen.images);
-              const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-              popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
-            }
-        
-            popupInnerHTML += `
-                </div>
-                <div class="card-header">${specimen.common_name[0]}</div>
-                <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
-                <p class="tap-for-more">Tap for more...</p>
-              </div>`;
-        
-            popupContentEl.innerHTML = popupInnerHTML;
-        
-            popupContentEl.querySelector('.close-btn').addEventListener('click', (e) => {
-              e.stopPropagation();
-              popupOverlay.setPosition(undefined);
-              popupContentEl.innerHTML = '';
-            });
-        
-            popupOverlay.setPosition(coordinates);
-            animateMapToPopup(coordinates);
-          });
-        }
+  const cardMapLink = document.getElementById(`specimen-card-map-link-${specimen.id}`);
+  if (cardMapLink) {
+    cardMapLink.addEventListener('click', () => {
+      for (const section in sections) {
+        sections[section].style.display = "none";
+      }
+      sections["map"].style.display = "block";
+      previousSection = "card";
+      currentSection = "map";
+      const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
+  
+      // Rebuild popup HTML (same logic as in createMarker)
+      let popupInnerHTML = `
+        <div class="map-card" data-specimen-id="${specimen.id}">
+          <span class="close-btn">✖</span>
+          <div class="gallery">`;
+  
+      if (specimen.images) {
+        const imageFilenames = JSON.parse(specimen.images);
+        const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
+        popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
+      }
+  
+      popupInnerHTML += `
+          </div>
+          <div class="card-header">${specimen.common_name[0]}</div>
+          <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+          <p class="tap-for-more">Tap for more...</p>
+        </div>`;
+  
+      popupContentEl.innerHTML = popupInnerHTML;
+  
+      popupContentEl.querySelector('.close-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        popupOverlay.setPosition(undefined);
+        popupContentEl.innerHTML = '';
+      });
+  
+      popupOverlay.setPosition(coordinates);
+      animateMapToPopup(coordinates);
+    });
+  }
         
 
-/////////////////////////////
-
-
-      createMarker(specimen);  
+    createMarker(specimen);  
 
     });
   }
 
-  
-  function generateCard(cardClass, ) {
-
-  }
-
-  
+    
   document.querySelector(".new-question").addEventListener("click", displayQuestion);
 
 
@@ -496,26 +479,31 @@ document.addEventListener("DOMContentLoaded", async function () {
     sections[id].style.display = displayValue;
     currentSection = id;
     if (id === "map"){
-      /*map.invalidateSize();
-
-      map.setView([53.635908, -0.657139], 16);*/  
+      map.setTarget("map");
+    } else {
+      map.setTarget(null);
     }
     dropdownContent.style.display = "none";
     menuIcon.textContent = "menu";
-}
-
-function handleBackNav(){
-  const newPreviousSection = currentSection;
-  const newCurrentSection = previousSection;
-  dropdownContent.style.display = "none";
-  menuIcon.textContent = "menu";
-  for (const section in sections) {
-    sections[section].style.display = "none";
   }
-  sections[newCurrentSection].style.display = "block";
-  previousSection = newPreviousSection;
-  currentSection = newCurrentSection;
-}
+
+  function handleBackNav(){
+    const newPreviousSection = currentSection;
+    const newCurrentSection = previousSection;
+    dropdownContent.style.display = "none";
+    menuIcon.textContent = "menu";
+    for (const section in sections) {
+      sections[section].style.display = "none";
+    }
+    if (newCurrentSection === "map"){
+      map.setTarget("map");
+    } else {
+      map.setTarget(null);
+    }
+    sections[newCurrentSection].style.display = "block";
+    previousSection = newPreviousSection;
+    currentSection = newCurrentSection;
+  }
 
   backButton.addEventListener("click", handleBackNav);
 
@@ -547,316 +535,341 @@ function handleBackNav(){
 
   const popupContentEl = document.getElementById('popup-content');
 
-popupContentEl.addEventListener('click', function(event) {
+  popupContentEl.addEventListener('click', function(event) {
 
-  const specimenId = popupContentEl.querySelector('.map-card').dataset.specimenId;
-  const foundSpecimen = trees.find(t => t.id === parseInt(specimenId));
-  if (!foundSpecimen) return;
+    const specimenId = popupContentEl.querySelector('.map-card').dataset.specimenId;
+    const foundSpecimen = trees.find(t => t.id === parseInt(specimenId));
+    if (!foundSpecimen) return;
 
-  for (const section in sections) {
-    sections[section].style.display = "none";
-  }
-
-  const sheetSection = document.getElementById(`sheet-section`);
-  sheetSection.innerHTML = "";
-
-  const sheetElement = createSpecimenSheet(foundSpecimen);
-  sheetSection.appendChild(sheetElement);
-
-  sections["sheet"].style.display = "flex";
-  previousSection = "map";
-  currentSection = "sheet";
-});
-
-let activeMarker = null;
-
-function forceClosePopup() {
-  // Remove .open so CSS reverts to hidden state
-  popupContainer.classList.remove('open');
-
-  // Temporarily disable transitions so it instantly snaps shut
-  popupContainer.style.transition = 'none';
-
-  // Clear content, un-position overlay
-  popupContentEl.innerHTML = '';
-  popupOverlay.setPosition(undefined);
-
-  // Force the browser to apply these changes
-  void popupContainer.offsetHeight;
-
-  // Restore the transition property
-  popupContainer.style.removeProperty('transition');
-}
-
-function showPopup(html, coords) {
-
-  // first, ensure everything is closed
-  forceClosePopup();
-
-  // now set new content
-  popupContentEl.innerHTML = html;
-  popupOverlay.setPosition(coords);
-
-  // Force reflow so the popup sees the “closed” style
-  void popupContainer.offsetHeight;
-
-  // Then fade in
-  popupContainer.classList.add('open');
-
-}
-
-
-function createMarker(specimen) {
-  // Create marker element
-  const el = document.createElement('div');
-  el.className = 'custom-marker';
-  el.innerHTML = `<svg stroke="#000000" stroke-width="5" fill="currentColor" viewBox="0 0 425.963 425.963">
-    <path d="M213.285,0h-0.608C139.114,0,79.268,59.826,79.268,133.361c0,48.202,21.952,111.817,65.246,189.081
-      c32.098,57.281,64.646,101.152,64.972,101.588c0.906,1.217,2.334,1.934,3.847,1.934c0.043,0,0.087,0,0.13-0.002
-      c1.561-0.043,3.002-0.842,3.868-2.143c0.321-0.486,32.637-49.287,64.517-108.976c43.03-80.563,64.848-141.624,
-      64.848-181.482C346.693,59.825,286.846,0,213.285,0z M274.865,136.62c0,34.124-27.761,61.884-61.885,61.884
-      c-34.123,0-61.884-27.761-61.884-61.884s27.761-61.884,61.884-61.884C247.104,74.736,274.865,102.497,274.865,136.62z"/>
-  </svg>`;
-  el.title = specimen.common_name[0];
-
-  // Create marker overlay
-  const markerOverlay = new Overlay({
-    position: fromLonLat([specimen.longitude, specimen.latitude]),
-    positioning: 'bottom-center', 
-    offset: [-16, -32],
-    element: el,
-    stopEvent: false
-  });
-  map.addOverlay(markerOverlay);
-
-  const labelEl = document.createElement('div');
-  labelEl.className = 'marker-label';
-  labelEl.innerText = specimen.common_name[0];
-  
-  const labelOverlay = new Overlay({
-    position: fromLonLat([specimen.longitude, specimen.latitude]),
-    positioning: 'top-center',
-    offset: [0, -64],
-    element: labelEl,
-    stopEvent: false
-  });
-  //map.addOverlay(labelOverlay);
-
-  el.addEventListener('mouseenter', (e) => {    
-    const hoveredMarker = e.currentTarget;
-    if (activeMarker && activeMarker === hoveredMarker) {
-      el.parentElement.style.zIndex = '9999';
-    } else {
-      el.parentElement.style.zIndex = '999';
-    }
-  });
-  
-  el.addEventListener('mouseleave', (e) => {
-    const hoveredMarker = e.currentTarget;
-    if (activeMarker && activeMarker !== hoveredMarker) {
-      el.parentElement.style.zIndex = '0';
-    }
-  });
-
-  el.addEventListener('click', function (e) {
-    const styleElement = document.createElement('style');
-    const clickedMarker = e.currentTarget;
-
-    // Deactivate previously active marker if it's not the clicked one
-    if (activeMarker && activeMarker !== clickedMarker) {
-      activeMarker.classList.remove('active');
-      el.parentElement.style.zIndex = '0';
-    }
-
-    // Toggle active state
-    const isAlreadyActive = clickedMarker.classList.contains('active');
-    if (isAlreadyActive) {
-      if (isMapLayerBlurred) {
-        isMapLayerBlurred = false;
-        styleElement.innerHTML += `
-        .ol-layers {
-          filter: blur(0);  
-        }`;
-      }
-      /*if (isNonActiveMarkersBlurred) {
-        isNonActiveMarkersBlurred = false;
-        styleElement.innerHTML += `
-        .custom-marker {
-          filter: blur(0);  
-        }`;
-      }*/
-      document.head.appendChild(styleElement);
-      forceClosePopup();
-      clickedMarker.classList.remove('active');
-      popupOverlay.setPosition(undefined);
-      activeMarker = null;
-      return;
-    }
-
-    el.parentElement.style.zIndex = '9999';
-    clickedMarker.classList.add('active');      
-    activeMarker = clickedMarker;
-    const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
-
-    let popupInnerHTML = `
-      <div class="map-card" data-specimen-id="${specimen.id}">
-        <div class="gallery">`;
-    if (specimen.images) {
-      const imageFilenames = JSON.parse(specimen.images);
-      const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-      popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
-    }
-    popupInnerHTML += `
-        </div>
-        <div class="card-header">${specimen.common_name[0]}</div>
-        <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
-        <p class="tap-for-more">Tap for more...</p>
-      </div>`;
-    
-    popupOverlay.setPosition(coordinates);
-    showPopup(popupInnerHTML, coordinates);
-
-    if (!isMapLayerBlurred) {
-      styleElement.innerHTML += `
-      .ol-layers {
-        filter: blur(3px);
-      }`;
-      isMapLayerBlurred = true;
-    }
-    /*if (!isNonActiveMarkersBlurred) {
-      isNonActiveMarkersBlurred = true;
-      styleElement.innerHTML += `
-      .custom-marker {
-        filter: blur(0.75px);  
-      }`;
-    }*/
-    document.head.appendChild(styleElement);
-    animateMapToPopup(coordinates);
-  });
-}
-
-
-
-
-function animateMapToPopup(coordinates) {
-  const popupEl = document.getElementById('popup-content');
-  const popupHeightPx = popupEl?.offsetHeight || 200;
-  const resolution = view.getResolution();
-  const rotation = view.getRotation();
-
-  const adjustedOffset = popupHeightPx * 0.5 * resolution;
-
-  // Correctly rotate offset vector based on current rotation
-  const offsetX = adjustedOffset * Math.sin(rotation);
-  const offsetY = adjustedOffset * Math.cos(rotation);
-
-  const adjustedCenter = [
-    coordinates[0] - offsetX,
-    coordinates[1] + offsetY
-  ];
-
-  view.animate({
-    center: adjustedCenter,
-    duration: 500
-  });
-}
-
-
-
-function createSpecimenSheet(specimen) {
-  const sheet = document.createElement('div');
-  sheet.classList.add('card', 'sheet');
-  sheet.id = `specimen-sheet-${specimen.id}`;
-
-  let imageFilenames = [], imageDescriptions = [];
-
-  if (specimen.images) {
-    imageFilenames = JSON.parse(specimen.images);
-    imageDescriptions = JSON.parse(specimen.image_info || "[]");
-  }
-
-  let sheetInnerHTML = `<div class="gallery">`;
-
-  if (imageFilenames.length > 0) {
-    sheetInnerHTML += `<div class="thumbnail-container">`;
-    imageFilenames.forEach((filename, index) => {
-      const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
-      sheetInnerHTML += `
-        <img src="${fullImageUrl}" class="thumbnail" 
-          onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index] || ''}')" 
-          alt="${imageDescriptions[index] || 'Specimen image'}">
-      `;
-    });
-    sheetInnerHTML += `</div>`;
-  }
-
-  const commonNames = (typeof specimen.common_name === "object")
-    ? Object.values(specimen.common_name)
-    : [specimen.common_name];
-
-  sheetInnerHTML += `</div>
-    <div class="card-header">${commonNames.join(", ")}</div>
-    <div>
-      <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
-      <div class="info-wrapper">
-        <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>
-        <div class="info location-details">
-          <t>Location: </t>
-          <a class="attr-info" id="specimen-sheet-map-link-${specimen.id}">
-            <span class="material-symbols-outlined">pin_drop</span>Open In Map
-          </a>
-          <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
-            <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">Open In Google Maps
-          </a>
-        </div>`;
-
-  if (specimen.native_range) {
-    sheetInnerHTML += `
-      <div class="info">
-        <t>Native Habitat: </t>
-        <p class="desc-info">${specimen.native_range}</p>
-      </div>`;
-  }
-
-  if (specimen.species_info) {
-    sheetInnerHTML += `
-      <div class="info">
-        <t>Description: </t>
-        <p class="desc-info">${specimen.species_info}`;
-    if (specimen.specimen_info) {
-      sheetInnerHTML += `<br>${specimen.specimen_info}`;
-    }
-    sheetInnerHTML += `</p></div>`;
-  }
-
-  if (specimen.resources && specimen.resources.ati) {
-    sheetInnerHTML += `
-      <div class="info">
-        <t>Links: </t>
-        <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
-          This tree appears in the Woodland Trust Ancient Tree Inventory
-        </a>
-      </div>`;
-  }
-
-  sheetInnerHTML += `</div>`;
-  sheet.innerHTML = sheetInnerHTML;
-
-  // Attach handler for reopening popup from the sheet view
-  sheet.querySelector(`#specimen-sheet-map-link-${specimen.id}`).addEventListener('click', () => {
     for (const section in sections) {
       sections[section].style.display = "none";
     }
-    sections["map"].style.display = "block";
+
+    const sheetSection = document.getElementById(`sheet-section`);
+    sheetSection.innerHTML = "";
+
+    const sheetElement = createSpecimenSheet(foundSpecimen);
+    sheetSection.appendChild(sheetElement);
+
+    sections["sheet"].style.display = "flex";
     previousSection = "map";
     currentSection = "sheet";
-    const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
-    popupOverlay.setPosition(coordinates);
-    animateMapToPopup(coordinates);
   });
 
-  return sheet;
-}
+  let activeMarker = null;
+
+  function forceClosePopup() {
+    popupContainer.classList.remove('open');
+    popupContainer.style.transition = 'none';
+
+    popupContentEl.innerHTML = '';
+    popupOverlay.setPosition(undefined);
+
+    void popupContainer.offsetHeight;
+
+    popupContainer.style.removeProperty('transition');
+  }
+
+  function showPopup(html, coords) {
+
+    forceClosePopup();
+
+    popupContentEl.innerHTML = html;
+    popupOverlay.setPosition(coords);
+
+    // Force reflow so the popup sees the “closed” style
+    void popupContainer.offsetHeight;
+    popupContainer.classList.add('open');
+
+  }
+
+  const labelVectorSource = new VectorSource();
+
+  const labelVectorLayer = new VectorLayer({
+    source: labelVectorSource,
+    declutter: true,
+    className: "marker-labels",
+    style: function(feature) {
+      return [
+        new Style({
+          text: new Text({
+            font: '1.25rem Work-Sans, sans-serif',
+            text: feature.get('label') || 'No Name',
+            offsetY: -48,
+            fill: new Fill({ color: 'orange' }),
+            stroke: new Stroke({ color: '#000', width: 2 }),
+          })
+        })
+      ];
+    }
+  });
+
+  map.addLayer(labelVectorLayer);
+
+
+  function createMarker(specimen) {
+    const el = document.createElement('div');
+    el.className = 'custom-marker';
+    el.innerHTML = `<svg stroke="#000000" stroke-width="5" fill="currentColor" viewBox="0 0 425.963 425.963">
+      <path d="M213.285,0h-0.608C139.114,0,79.268,59.826,79.268,133.361c0,48.202,21.952,111.817,65.246,189.081
+        c32.098,57.281,64.646,101.152,64.972,101.588c0.906,1.217,2.334,1.934,3.847,1.934c0.043,0,0.087,0,0.13-0.002
+        c1.561-0.043,3.002-0.842,3.868-2.143c0.321-0.486,32.637-49.287,64.517-108.976c43.03-80.563,64.848-141.624,
+        64.848-181.482C346.693,59.825,286.846,0,213.285,0z M274.865,136.62c0,34.124-27.761,61.884-61.885,61.884
+        c-34.123,0-61.884-27.761-61.884-61.884s27.761-61.884,61.884-61.884C247.104,74.736,274.865,102.497,274.865,136.62z"/>
+    </svg>`;
+    el.title = specimen.common_name[0];
+
+    const markerOverlay = new Overlay({
+      position: fromLonLat([specimen.longitude, specimen.latitude]),
+      positioning: 'bottom-center', 
+      offset: [-16, -32],
+      element: el,
+      stopEvent: false
+    });
+    map.addOverlay(markerOverlay);
+
+    const labelEl = document.createElement('div');
+    labelEl.className = 'marker-label';
+    labelEl.innerText = specimen.common_name[0];
+    
+    const labelOverlay = new Overlay({
+      position: fromLonLat([specimen.longitude, specimen.latitude]),
+      positioning: 'top-center',
+      offset: [0, -64],
+      element: labelEl,
+      stopEvent: false
+    });
+    //map.addOverlay(labelOverlay);
+
+    el.addEventListener('mouseenter', (e) => {    
+      const hoveredMarker = e.currentTarget;
+      if (activeMarker && activeMarker === hoveredMarker) {
+        el.parentElement.style.zIndex = '9999';
+      } else {
+        el.parentElement.style.zIndex = '999';
+      }
+    });
+    
+    el.addEventListener('mouseleave', (e) => {
+      const hoveredMarker = e.currentTarget;
+      if (activeMarker && activeMarker !== hoveredMarker) {
+        el.parentElement.style.zIndex = '0';
+      }
+    });
+
+    el.addEventListener('click', function (e) {
+      const olLayersEl = document.querySelector('.tile-layer');
+      const customMarkers = document.getElementsByClassName('custom-marker');
+      const markerLabels = document.getElementsByClassName('marker-labels');
+    
+      const clickedMarker = e.currentTarget;
+    
+      if (activeMarker && activeMarker !== clickedMarker) {
+        activeMarker.classList.remove('active');
+        activeMarker.parentElement.style.zIndex = '0';
+      }
+    
+      const isAlreadyActive = clickedMarker.classList.contains('active');
+    
+      if (isAlreadyActive) {
+        // Remove blur from map layer
+        if (isMapLayerBlurred && olLayersEl) {
+          olLayersEl.style.filter = "blur(0)";
+          isMapLayerBlurred = false;
+        }
+    
+        // Remove blur from all markers
+        Array.from(customMarkers).forEach(marker => {
+          marker.style.filter = "blur(0)";
+        });
+        Array.from(markerLabels).forEach(marker => {
+          marker.style.filter = "blur(0)";
+        });
+        isNonActiveMarkersBlurred = false;
+
+
+    
+        forceClosePopup();
+        clickedMarker.classList.remove('active');
+        popupOverlay.setPosition(undefined);
+        activeMarker = null;
+        return;
+      }
+    
+      clickedMarker.parentElement.style.zIndex = '9999';
+      clickedMarker.classList.add('active');
+      activeMarker = clickedMarker;
+      const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
+    
+      // Construct popup HTML (existing logic)
+      let popupInnerHTML = `
+        <div class="map-card" data-specimen-id="${specimen.id}">
+          <div class="gallery">`;
+      if (specimen.images) {
+        const imageFilenames = JSON.parse(specimen.images);
+        const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
+        popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
+      }
+      popupInnerHTML += `
+          </div>
+          <div class="card-header">${specimen.common_name[0]}</div>
+          <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+          <p class="tap-for-more">Tap for more...</p>
+        </div>`;
+      
+      popupOverlay.setPosition(coordinates);
+      showPopup(popupInnerHTML, coordinates);
+    
+      if (!isMapLayerBlurred && olLayersEl) {
+        olLayersEl.style.filter = "blur(3px)";
+        isMapLayerBlurred = true;
+      }
+    
+      Array.from(customMarkers).forEach(marker => {
+        if (!marker.classList.contains('active')) {
+          marker.style.filter = "blur(1px)";
+        } else {
+          marker.style.filter = "blur(0)";
+        }
+      });
+      Array.from(markerLabels).forEach(marker => {
+        marker.style.filter = "blur(1px)";
+      });
+      isNonActiveMarkersBlurred = true;
+    
+      animateMapToPopup(coordinates);
+    });
+    
+      const labelFeature = new Feature({
+        geometry: new Point(fromLonLat([specimen.longitude, specimen.latitude])),
+        label: specimen.common_name[0]
+      });
+      labelVectorSource.addFeature(labelFeature);
+  }
+
+
+  function animateMapToPopup(coordinates) {
+    const popupEl = document.getElementById('popup-content');
+    const popupHeightPx = popupEl?.offsetHeight || 200;
+    const resolution = view.getResolution();
+    const rotation = view.getRotation();
+
+    const adjustedOffset = popupHeightPx * 0.5 * resolution;
+
+    const offsetX = adjustedOffset * Math.sin(rotation);
+    const offsetY = adjustedOffset * Math.cos(rotation);
+
+    const adjustedCenter = [
+      coordinates[0] - offsetX,
+      coordinates[1] + offsetY
+    ];
+
+    view.animate({
+      center: adjustedCenter,
+      duration: 500
+    });
+  }
+
+
+
+  function createSpecimenSheet(specimen) {
+    const sheet = document.createElement('div');
+    sheet.classList.add('card', 'sheet');
+    sheet.id = `specimen-sheet-${specimen.id}`;
+
+    let imageFilenames = [], imageDescriptions = [];
+
+    if (specimen.images) {
+      imageFilenames = JSON.parse(specimen.images);
+      imageDescriptions = JSON.parse(specimen.image_info || "[]");
+    }
+
+    let sheetInnerHTML = `<div class="gallery">`;
+    if (imageFilenames.length > 0) {
+      sheetInnerHTML += `<div class="thumbnail-container">`;
+      imageFilenames.forEach((filename, index) => {
+        const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+        sheetInnerHTML += `
+          <img src="${fullImageUrl}" class="thumbnail" 
+            onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index] || ''}')" 
+            alt="${imageDescriptions[index] || 'Specimen image'}" loading="lazy">
+        `;
+      });
+      sheetInnerHTML += `</div>`;
+    }
+
+    const commonNames = (typeof specimen.common_name === "object")
+      ? Object.values(specimen.common_name)
+      : [specimen.common_name];
+
+    sheetInnerHTML += `</div>
+      <div class="card-header">${commonNames.join(", ")}</div>
+      <div>
+        <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+        <div class="info-wrapper">
+          <p class="info italic family"><t class="normal">Family: </t>${specimen.family}</p>
+          <div class="info location-details">
+            <t>Location: </t>
+            <a class="attr-info" id="specimen-sheet-map-link-${specimen.id}">
+              <span class="material-symbols-outlined">pin_drop</span>Open In Map
+            </a>
+            <a class="attr-info gmaps-open-in" href="https://www.google.com/maps/search/?api=1&query=${specimen.latitude}%2C${specimen.longitude}">
+              <img src="${supabaseUrlPrefix}${supabaseStoragePrefix}symbols/gmaps-icon.png" class="gmaps-icon">Open In Google Maps
+            </a>
+          </div>`;
+
+    if (specimen.native_range) {
+      sheetInnerHTML += `
+        <div class="info">
+          <t>Native Habitat: </t>
+          <p class="desc-info">${specimen.native_range}</p>
+        </div>`;
+    }
+
+    if (specimen.species_info) {
+      sheetInnerHTML += `
+        <div class="info">
+          <t>Description: </t>
+          <p class="desc-info">${specimen.species_info}`;
+      if (specimen.specimen_info) {
+        sheetInnerHTML += `<br>${specimen.specimen_info}`;
+      }
+      sheetInnerHTML += `</p></div>`;
+    }
+
+    if (specimen.resources && specimen.resources.ati) {
+      sheetInnerHTML += `
+        <div class="info">
+          <t>Links: </t>
+          <a class="attr-info" href="https://ati.woodlandtrust.org.uk/tree-search/tree?treeid=${specimen.resources.ati}">
+            This tree appears in the Woodland Trust Ancient Tree Inventory
+          </a>
+        </div>`;
+    }
+
+    sheetInnerHTML += `</div>`;
+    sheet.innerHTML = sheetInnerHTML;
+
+    // Attach handler for reopening popup from the sheet view
+    sheet.querySelector(`#specimen-sheet-map-link-${specimen.id}`).addEventListener('click', () => {
+      for (const section in sections) {
+        sections[section].style.display = "none";
+      }
+      sections["map"].style.display = "block";
+      previousSection = "map";
+      currentSection = "sheet";
+      const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
+      popupOverlay.setPosition(coordinates);
+      animateMapToPopup(coordinates);
+    });
+
+    return sheet;
+  }
+
+
+  map.setTarget(null);
+
+
 });
 
 
@@ -1038,8 +1051,6 @@ function generateMultiQuestion(trees, speciesData) {
 }
 
 
-
-// Ensures we always have exactly 4 unique options
 function ensureFourOptions(baseOptions, possibleOptions) {
   const uniqueOptions = new Set(baseOptions);
   while (uniqueOptions.size < 4 && possibleOptions.length > 0) {
@@ -1049,7 +1060,6 @@ function ensureFourOptions(baseOptions, possibleOptions) {
   return Array.from(uniqueOptions);
 }
 
-// Shuffles array items
 function shuffleArray(array) {
   return array.sort(() => 0.5 - Math.random());
 }
@@ -1085,10 +1095,7 @@ function handleTimeout(correctAnswer) {
         }
     });
 
-    // Display timeout message
     timerElement.innerHTML = `Time's up! The correct answer is ${correctAnswer}.`;
-
-    // Show the "Next" button
     document.querySelector(".new-question").style.display = "block";
 }
 
@@ -1103,12 +1110,8 @@ function handleIncorrectAnswer(selectedButton, correctAnswer) {
         }
     });
 
-    selectedButton.classList.add("incorrect"); // Mark wrong answer
-
-    // Show message
+    selectedButton.classList.add("incorrect");
     document.querySelector(".timer").innerHTML = `Incorrect! The correct answer is ${correctAnswer}.`;
-
-    // Show the "Next" button
     document.querySelector(".new-question").style.display = "block";
 }
 
@@ -1120,12 +1123,8 @@ function handleCorrectAnswer(selectedButton) {
         button.disabled = true;
     });
 
-    selectedButton.classList.add("correct"); // Mark as correct
-
-    // Show message
+    selectedButton.classList.add("correct");
     document.querySelector(".timer").innerHTML = "Correct! Well done!";
-
-    // Show the "Next" button
     document.querySelector(".new-question").style.display = "block";
 }
 
@@ -1181,11 +1180,12 @@ window.openFullImage = function(imageUrl, description) {
   modal.classList.add('image-modal');
   modal.innerHTML = `
     <div class="modal-content">
-      <span class="close-btn" onclick="this.parentElement.parentElement.remove()">✖</span>
       <img src="${imageUrl}" alt="${description}">
       <p>${description}</p>
     </div>
   `;
   document.body.appendChild(modal);
 };
+
+//<span class="close-btn" onclick="this.parentElement.parentElement.remove()">✖</span>
 

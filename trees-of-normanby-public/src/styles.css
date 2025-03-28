@@ -7,7 +7,7 @@
     --ton-green-dark-b: rgb(53, 77, 26);
     --ton-green-darker: rgb(26, 41, 10);
     --link-gray: rgb(206, 206, 206);
-    --header-gray-op: rgba(236, 236, 236, 0.8612);
+    --header-gray-op: rgba(236r, 236, 236, 0.8612);
     --header-gray: rgb(236, 236, 236);
     --bg-gray: rgb(43, 42, 42);
     --bg-gray-light: rgb(71, 70, 70);
@@ -426,13 +426,10 @@ nav {
   }
   
   
-  .ol-layers {
+  .tile-layer {
     filter: blur();
     transition: filter 740.74074074074ms ease;
   }
-
-.ol-overlaycontainer {
-}
 
   footer nav a{
     color: var(--link-gray);
@@ -528,7 +525,6 @@ nav {
     border-radius: 5px;
     transform-origin: center top; 
     transition: transform 0.295295295s ease-in-out;
-    filter: blur(0.111px);
   }
 
   .map-location-pin {
@@ -914,7 +910,7 @@ nav {
     }
     to {
       /* Move background up by 10px, for example */
-      background-size: 160%;
+      background-size: 161%;
     }
   }
 
@@ -1057,6 +1053,9 @@ nav {
     background-color: rgba(60, 60, 60, 0.6);
     padding: 0 0.5rem 0 0.5rem;
     border-radius: 0.5rem;
+}
+.marker-labels {
+    filter: blur();
 }
 
 .custom-marker {
