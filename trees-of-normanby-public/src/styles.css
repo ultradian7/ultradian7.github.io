@@ -427,7 +427,7 @@ nav {
   
   
   .ol-layers {
-    filter: grayscale(0%) blur(1px);
+    filter: blur();
     transition: filter 740.74074074074ms ease;
   }
 

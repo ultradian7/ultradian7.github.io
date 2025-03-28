@@ -652,7 +652,7 @@ function createMarker(specimen) {
     if (isAlreadyActive) {
       styleElement.innerHTML = `
         .ol-layers {
-          filter: blur(1.5px) saturate(105%);  
+          filter: blur(0);  
         }
       `;
       document.head.appendChild(styleElement);
@@ -691,7 +691,7 @@ function createMarker(specimen) {
 
     styleElement.innerHTML = `
     .ol-layers {
-      filter: blur(3px) saturate(90%);
+      filter: blur(3px);
     }
   `;
   document.head.appendChild(styleElement);
