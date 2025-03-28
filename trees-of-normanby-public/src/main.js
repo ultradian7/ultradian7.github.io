@@ -678,13 +678,13 @@ function createMarker(specimen) {
           filter: blur(0);  
         }`;
       }
-      if (isNonActiveMarkersBlurred) {
+      /*if (isNonActiveMarkersBlurred) {
         isNonActiveMarkersBlurred = false;
         styleElement.innerHTML += `
         .custom-marker {
           filter: blur(0);  
         }`;
-      }
+      }*/
       document.head.appendChild(styleElement);
       forceClosePopup();
       clickedMarker.classList.remove('active');
@@ -723,13 +723,13 @@ function createMarker(specimen) {
       }`;
       isMapLayerBlurred = true;
     }
-    if (!isNonActiveMarkersBlurred) {
+    /*if (!isNonActiveMarkersBlurred) {
       isNonActiveMarkersBlurred = true;
       styleElement.innerHTML += `
       .custom-marker {
         filter: blur(0.75px);  
       }`;
-    }
+    }*/
     document.head.appendChild(styleElement);
     animateMapToPopup(coordinates);
   });
