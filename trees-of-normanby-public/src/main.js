@@ -604,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  map.addLayer(labelVectorLayer);
+  //map.addLayer(labelVectorLayer);
 
 
   function createMarker(specimen) {
@@ -678,13 +678,13 @@ document.addEventListener("DOMContentLoaded", async function () {
           isMapLayerBlurred = false;
         }
     
-        // Remove blur from all markers
-        Array.from(customMarkers).forEach(marker => {
+  
+        /*Array.from(customMarkers).forEach(marker => {
           marker.style.filter = "blur(0)";
         });
         Array.from(markerLabels).forEach(marker => {
           marker.style.filter = "blur(0)";
-        });
+        });*/
         isNonActiveMarkersBlurred = false;
 
 
@@ -725,7 +725,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         isMapLayerBlurred = true;
       }
     
-      Array.from(customMarkers).forEach(marker => {
+      /*Array.from(customMarkers).forEach(marker => {
         if (!marker.classList.contains('active')) {
           marker.style.filter = "blur(1px)";
         } else {
@@ -734,7 +734,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
       Array.from(markerLabels).forEach(marker => {
         marker.style.filter = "blur(1px)";
-      });
+      });*/
       isNonActiveMarkersBlurred = true;
     
       animateMapToPopup(coordinates);
