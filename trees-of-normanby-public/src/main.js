@@ -171,7 +171,6 @@ function vectorMarkerStyleFunction(feature, resolution) {
       crossOrigin: 'anonymous',
       className: "custom-marker",
       src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
-      src: `/images/location-pin.svg`,
       color: 'orange',
       scale: scale,
       anchor: [0.5, anchorY],
