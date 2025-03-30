@@ -45,7 +45,7 @@ let isNonActiveMarkersBlurred = false;
 
 let previousSection = "home";
 let currentSection = "home"
-
+let activeMarker = null;
 
 
 const compassIconSpan = document.createElement("div");
@@ -65,7 +65,7 @@ const layer = new TileLayer({
   source: new XYZ({
     url: 'https://cnibjqyawzddpcpdrzrz.supabase.co/storage/v1/object/public/tiles/15-19-jpg/{z}/{x}/{-y}.jpg',
     crossOrigin: 'anonymous',
-    transition: 740.74074074074
+    transition: 185.18518518519
   }),
   background: '#5e5447',
   className: 'tile-layer'
@@ -149,24 +149,37 @@ function getBounceValue(t) {
 function vectorMarkerStyleFunction(feature, resolution) {
   const baseScale = 1.25;
   let targetScale = baseScale;
-  
-  // Determine target scale based on hover and active state.
-  if (feature.get('hover') || feature.get('active')) {
-    targetScale = baseScale * 1.2;
+
+  // Determine target opacity.
+  let targetOpacity;
+  if (feature.get('active') || feature.get('hover')) {
+    targetOpacity = 1;
+  } else {
+    targetOpacity = activeMarker ? 0.6 : 0.862;
   }
+
+  // Prioritize active state over hover for scale.
   if (feature.get('active')) {
     targetScale = 1.5;
+  } else if (feature.get('hover')) {
+    targetScale = baseScale * 1.2;
   }
 
-  // Get the current scale (initialize it if necessary)
+  // Smooth scale transition.
   let currentScale = feature.get('currentScale') || baseScale;
-  
-  // Smoothly interpolate towards the target scale.
-  const speed = 0.2; // Adjust this factor for faster or slower transitions
-  currentScale += (targetScale - currentScale) * speed;
+  const scaleSpeed = 0.2;
+  currentScale += (targetScale - currentScale) * scaleSpeed;
   feature.set('currentScale', currentScale);
 
-  // For the active marker bounce effect.
+  // Smooth opacity transition.
+  let currentOpacity = feature.get('currentOpacity');
+  if (currentOpacity === undefined) {
+    currentOpacity = targetOpacity;
+  }
+  const opacitySpeed = 0.1;
+  currentOpacity += (targetOpacity - currentOpacity) * opacitySpeed;
+  feature.set('currentOpacity', currentOpacity);
+
   let anchorY = 1;
   if (feature.get('active')) {
     const now = performance.now();
@@ -182,12 +195,13 @@ function vectorMarkerStyleFunction(feature, resolution) {
       className: "custom-marker",
       src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
       color: 'orange',
-      scale: currentScale,  // Use the animated scale value
+      scale: currentScale,  // Smoothly interpolated scale.
       anchor: [0.5, anchorY],
+      opacity: currentOpacity,  // Smoothly interpolated opacity.
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction'
     }),
-    zIndex: (feature.get('hover') || feature.get('active')) ? 999 : 1
+    zIndex: (feature.get('active') || feature.get('hover')) ? 999 : 1
   });
 }
 
@@ -665,8 +679,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     currentSection = "sheet";
   });
 
-  let activeMarker = null;
-
   function animateMarkers() {
     if (activeMarker) {
       markerVectorLayer.changed();
@@ -719,7 +731,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  map.addLayer(labelVectorLayer);
+  //map.addLayer(labelVectorLayer);
 
 
   function createMarker(specimen) {
