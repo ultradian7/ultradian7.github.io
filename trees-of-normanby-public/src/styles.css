@@ -885,46 +885,64 @@ nav {
 
 
 .giant-seq {
-    background-image: url("images/giant-seq-1.jpg");
-    background-size: cover;
-    background-position: 25%;
+    position: relative;
     min-height: 400px;
     margin: 0;
     padding-bottom: 1rem;
+    display: grid; /* or your preferred layout method */
     place-content: center space-between;
+    overflow: hidden; /* Ensures pseudo-element doesn’t spill outside */
+  }
+  
+  .giant-seq::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("images/giant-seq-1.jpg");
+    background-size: cover;
+    background-position: 25%;
     filter: blur(0.111px);
-    animation: giant-seq-anim 47407.407407407ms ease infinite,
-    float-up-down 11851.851851852ms ease-in-out infinite alternate;
-
-    > h1 {
-        cursor: pointer;
-        max-width: 400px;
-        padding: 0.5rem 4rem 0.5rem 1rem;
-    }
-}
-
-@keyframes float-up-down {
+    animation: float-up-down 11851.85ms ease-in-out infinite alternate,
+               giant-seq-anim 47407.41ms ease infinite;
+    will-change: transform, filter;
+    z-index: -1; /* Place behind content */
+  }
+  
+  /* Maintain your heading styling */
+  .giant-seq > h1 {
+    cursor: pointer;
+    max-width: 400px;
+    padding: 0.5rem 4rem 0.5rem 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Animate using transform scale instead of background-size */
+  @keyframes float-up-down {
     from {
-      /* Original position: image centered at 0px offset */
-      background-size: 150%;
+      transform: scale(1.5);
     }
     to {
-      /* Move background up by 10px, for example */
-      background-size: 161%;
+      transform: scale(1.61);
     }
   }
-
-@keyframes giant-seq-anim {
+  
+  /* Your filter animation remains similar */
+  @keyframes giant-seq-anim {
     0%, 20%, 50%, 80%, 100% {
-        filter: blur(0.111px) saturate(110%) hue-rotate(10deg);
+      filter: saturate(110%) hue-rotate(10deg);
     }
     40% {
-        filter: blur(0.54px) saturate(115%) hue-rotate(20deg);
+      filter: saturate(115%) hue-rotate(20deg);
     }
     60% {
-        filter: blur(0.34px) saturate(100%) hue-rotate(30deg);
+      filter: saturate(100%) hue-rotate(30deg);
     }
-}
+  }
+  
 
 .landing-page-split-banner {
     display:flex;
