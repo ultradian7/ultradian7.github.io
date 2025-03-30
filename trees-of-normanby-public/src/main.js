@@ -161,7 +161,7 @@ function vectorMarkerStyleFunction(feature, resolution) {
     const now = performance.now();
     const normalizedTime = (now % bounceDuration) / bounceDuration;
     const translateY = getBounceValue(normalizedTime);
-    const iconHeight = 32; // Adjust to match your SVG's pixel height
+    const iconHeight = 32;
     anchorY = 1 - translateY / iconHeight;
     scale = 1.5;
 
@@ -182,12 +182,8 @@ function vectorMarkerStyleFunction(feature, resolution) {
   });
 }
 
-// Animation loop to continuously refresh the marker layer
-function animateMarkers() {
-  markerVectorLayer.changed();
-  requestAnimationFrame(animateMarkers);
-}
-animateMarkers();
+
+
 
 let hoveredFeature = null;
 map.on('pointermove', function (evt) {
@@ -208,7 +204,6 @@ map.on('pointermove', function (evt) {
       return true;
     }
   });
-  // If no feature is found at the current pointer, reset the previously hovered feature.
   if (!featureFound && hoveredFeature) {
     hoveredFeature.set('hover', false);
     hoveredFeature.changed();
@@ -662,6 +657,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 
   let activeMarker = null;
+
+  function animateMarkers() {
+    if (activeMarker) {
+      markerVectorLayer.changed();
+    }
+    requestAnimationFrame(animateMarkers);
+  }
+  animateMarkers();
 
   function forceClosePopup() {
     popupContainer.classList.remove('open');
