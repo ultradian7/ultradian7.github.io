@@ -148,26 +148,30 @@ function getBounceValue(t) {
 // If a feature's "active" property is true, apply a bounce effect.
 function vectorMarkerStyleFunction(feature, resolution) {
   const active = feature.get('active');
-  const scale = 1.25;
+  let scale = 1.25;
   let anchorY = 1; // Default: icon anchored at the bottom
   if (active) {
     const now = performance.now();
     const normalizedTime = (now % bounceDuration) / bounceDuration;
     const translateY = getBounceValue(normalizedTime);
+    const iconHeight = 32; // Adjust to match your SVG's pixel height
     anchorY = 1 - translateY / iconHeight;
+    scale = 1.5;
+
   }
   return new Style({
     image: new Icon({
       crossOrigin: 'anonymous',
       className: "custom-marker",
       src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
-      //src: `/images/location-pin.svg`,
+      src: `/images/location-pin.svg`,
       color: 'orange',
       scale: scale,
       anchor: [0.5, anchorY],
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction'
-    })
+    }),
+    zIndex: active ? 1000 : 0
   });
 }
 
@@ -719,8 +723,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       } else {
         clickedFeature.set('active', true);
-        clickedFeature.changed();
         activeMarker = clickedFeature;
+        clickedFeature.changed(); 
         const specimen = clickedFeature.get('specimenData');
         const coordinates = clickedFeature.getGeometry().getCoordinates();
   
