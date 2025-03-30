@@ -112,6 +112,7 @@ const popupOverlay = new Overlay({
 map.addOverlay(popupOverlay);
 
 
+
 const markerVectorSource = new VectorSource();
 const markerVectorLayer = new VectorLayer({
   source: markerVectorSource,
@@ -144,12 +145,18 @@ function getBounceValue(t) {
   return 0;
 }
 
-// Define the style function for vector markers.
-// If a feature's "active" property is true, apply a bounce effect.
+
 function vectorMarkerStyleFunction(feature, resolution) {
   const active = feature.get('active');
+  const hover = feature.get('hover');
+  let anchorY = 1;
   let scale = 1.25;
-  let anchorY = 1; // Default: icon anchored at the bottom
+  let zIndex = 1;
+  if (hover || active) {
+    scale *= 1.2;
+    zIndex = 999;
+  }
+  
   if (active) {
     const now = performance.now();
     const normalizedTime = (now % bounceDuration) / bounceDuration;
@@ -171,7 +178,7 @@ function vectorMarkerStyleFunction(feature, resolution) {
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction'
     }),
-    zIndex: active ? 1000 : 0
+    zIndex: zIndex
   });
 }
 
@@ -181,6 +188,34 @@ function animateMarkers() {
   requestAnimationFrame(animateMarkers);
 }
 animateMarkers();
+
+let hoveredFeature = null;
+map.on('pointermove', function (evt) {
+  let featureFound = false;
+  map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+    if (layer === markerVectorLayer) {
+      featureFound = true;
+      if (hoveredFeature !== feature) {
+        // Reset previously hovered feature
+        if (hoveredFeature) {
+          hoveredFeature.set('hover', false);
+          hoveredFeature.changed();
+        }
+        hoveredFeature = feature;
+        hoveredFeature.set('hover', true);
+        hoveredFeature.changed();
+      }
+      return true;
+    }
+  });
+  // If no feature is found at the current pointer, reset the previously hovered feature.
+  if (!featureFound && hoveredFeature) {
+    hoveredFeature.set('hover', false);
+    hoveredFeature.changed();
+    hoveredFeature = null;
+  }
+});
+
 
 
 
@@ -665,7 +700,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           text: new Text({
             font: '1.25rem Work-Sans, sans-serif',
             text: feature.get('label') || 'No Name',
-            offsetY: -48,
+            offsetY: -32,
             fill: new Fill({ color: 'orange' }),
             stroke: new Stroke({ color: '#000', width: 2 }),
           })
@@ -674,7 +709,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  //map.addLayer(labelVectorLayer);
+  map.addLayer(labelVectorLayer);
 
 
   function createMarker(specimen) {
@@ -689,11 +724,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       geometry: new Point(fromLonLat([specimen.longitude, specimen.latitude])),
       label: specimen.common_name[0]
     });
-    labelVectorSource.addFeature(labelFeature);
+    //labelVectorSource.addFeature(labelFeature);
 
   }
   
-  map.on('singleclick', function (evt) {
+  map.on('pointerdown', function (evt) {
     let clickedFeature = null;
     // Check if a marker from our vector layer was clicked
     map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
@@ -743,10 +778,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
             <p class="tap-for-more">Tap for more...</p>
           </div>`;
-        popupOverlay.setPosition(coordinates);
+        ///popupOverlay.setPosition(coordinates);
         showPopup(popupInnerHTML, coordinates);
-
-        animateMapToPopup(coordinates);
+        setTimeout(() => {
+          animateMapToPopup(coordinates);
+        }, 50);
   
         // Blur the tile layer if not already blurred
         const olLayersEl = document.querySelector('.tile-layer');
@@ -777,7 +813,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     view.animate({
       center: adjustedCenter,
-      duration: 500
+      duration: 740.74074074074
     });
   }
 
