@@ -16,7 +16,7 @@ import Style from 'ol/style/Style';
 import Text from 'ol/style/Text';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
-
+import Icon from 'ol/style/Icon';
 
 
 
@@ -110,6 +110,74 @@ const popupOverlay = new Overlay({
 });
 
 map.addOverlay(popupOverlay);
+
+
+const markerVectorSource = new VectorSource();
+const markerVectorLayer = new VectorLayer({
+  source: markerVectorSource,
+  className: "custom-markers",
+  style: vectorMarkerStyleFunction
+});
+map.addLayer(markerVectorLayer);
+
+// Bounce animation configuration (mirroring your CSS keyframes)
+const bounceDuration = 1481.4814814815;
+const keyframes = [
+  { time: 0, value: 0 },
+  { time: 0.2, value: 0 },
+  { time: 0.4, value: -8 },
+  { time: 0.5, value: 0 },
+  { time: 0.6, value: -5 },
+  { time: 0.8, value: 0 },
+  { time: 1, value: 0 }
+];
+
+function getBounceValue(t) {
+  for (let i = 0; i < keyframes.length - 1; i++) {
+    const kf0 = keyframes[i];
+    const kf1 = keyframes[i + 1];
+    if (t >= kf0.time && t <= kf1.time) {
+      const localT = (t - kf0.time) / (kf1.time - kf0.time);
+      return kf0.value + localT * (kf1.value - kf0.value);
+    }
+  }
+  return 0;
+}
+
+// Define the style function for vector markers.
+// If a feature's "active" property is true, apply a bounce effect.
+function vectorMarkerStyleFunction(feature, resolution) {
+  const active = feature.get('active');
+  const scale = 1.25;
+  let anchorY = 1; // Default: icon anchored at the bottom
+  if (active) {
+    const now = performance.now();
+    const normalizedTime = (now % bounceDuration) / bounceDuration;
+    const translateY = getBounceValue(normalizedTime);
+    const iconHeight = 32; // Adjust to match your SVG's pixel height
+    anchorY = 1 - translateY / iconHeight;
+  }
+  return new Style({
+    image: new Icon({
+      crossOrigin: 'anonymous',
+      className: "custom-marker",
+      //src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
+      src: `/images/location-pin.svg`,
+      color: 'orange',
+      scale: scale,
+      anchor: [0.5, anchorY],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction'
+    })
+  });
+}
+
+// Animation loop to continuously refresh the marker layer
+function animateMarkers() {
+  markerVectorLayer.changed();
+  requestAnimationFrame(animateMarkers);
+}
+animateMarkers();
 
 
 
@@ -397,7 +465,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       currentSection = "map";
       const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
   
-      // Rebuild popup HTML (same logic as in createMarker)
       let popupInnerHTML = `
         <div class="map-card" data-specimen-id="${specimen.id}">
           <span class="close-btn">✖</span>
@@ -608,144 +675,85 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
   function createMarker(specimen) {
-    const el = document.createElement('div');
-    el.className = 'custom-marker';
-    el.innerHTML = `<svg stroke="#000000" stroke-width="5" fill="currentColor" viewBox="0 0 425.963 425.963">
-      <path d="M213.285,0h-0.608C139.114,0,79.268,59.826,79.268,133.361c0,48.202,21.952,111.817,65.246,189.081
-        c32.098,57.281,64.646,101.152,64.972,101.588c0.906,1.217,2.334,1.934,3.847,1.934c0.043,0,0.087,0,0.13-0.002
-        c1.561-0.043,3.002-0.842,3.868-2.143c0.321-0.486,32.637-49.287,64.517-108.976c43.03-80.563,64.848-141.624,
-        64.848-181.482C346.693,59.825,286.846,0,213.285,0z M274.865,136.62c0,34.124-27.761,61.884-61.885,61.884
-        c-34.123,0-61.884-27.761-61.884-61.884s27.761-61.884,61.884-61.884C247.104,74.736,274.865,102.497,274.865,136.62z"/>
-    </svg>`;
-    el.title = specimen.common_name[0];
-
-    const markerOverlay = new Overlay({
-      position: fromLonLat([specimen.longitude, specimen.latitude]),
-      positioning: 'bottom-center', 
-      offset: [-16, -32],
-      element: el,
-      stopEvent: false
+    const feature = new Feature({
+      geometry: new Point(fromLonLat([specimen.longitude, specimen.latitude])),
+      specimenData: specimen,
+      active: false
     });
-    map.addOverlay(markerOverlay);
-
-    const labelEl = document.createElement('div');
-    labelEl.className = 'marker-label';
-    labelEl.innerText = specimen.common_name[0];
-    
-    const labelOverlay = new Overlay({
-      position: fromLonLat([specimen.longitude, specimen.latitude]),
-      positioning: 'top-center',
-      offset: [0, -64],
-      element: labelEl,
-      stopEvent: false
+    markerVectorSource.addFeature(feature);
+  
+    const labelFeature = new Feature({
+      geometry: new Point(fromLonLat([specimen.longitude, specimen.latitude])),
+      label: specimen.common_name[0]
     });
-    //map.addOverlay(labelOverlay);
+    labelVectorSource.addFeature(labelFeature);
 
-    el.addEventListener('mouseenter', (e) => {    
-      const hoveredMarker = e.currentTarget;
-      if (activeMarker && activeMarker === hoveredMarker) {
-        el.parentElement.style.zIndex = '9999';
-      } else {
-        el.parentElement.style.zIndex = '999';
+  }
+  
+  map.on('singleclick', function (evt) {
+    let clickedFeature = null;
+    // Check if a marker from our vector layer was clicked
+    map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+      if (layer === markerVectorLayer) {
+        clickedFeature = feature;
+        return true; // stop iteration
+      } 
+    }, { hitTolerance: 10 });
+  
+    if (clickedFeature) {
+      // If another marker is active, deactivate it
+      if (activeMarker && activeMarker !== clickedFeature) {
+        activeMarker.set('active', false);
+        activeMarker.changed();
       }
-    });
-    
-    el.addEventListener('mouseleave', (e) => {
-      const hoveredMarker = e.currentTarget;
-      if (activeMarker && activeMarker !== hoveredMarker) {
-        el.parentElement.style.zIndex = '0';
-      }
-    });
-
-    el.addEventListener('click', function (e) {
-      const olLayersEl = document.querySelector('.tile-layer');
-      const customMarkers = document.getElementsByClassName('custom-marker');
-      const markerLabels = document.getElementsByClassName('marker-labels');
-    
-      const clickedMarker = e.currentTarget;
-    
-      if (activeMarker && activeMarker !== clickedMarker) {
-        activeMarker.classList.remove('active');
-        activeMarker.parentElement.style.zIndex = '0';
-      }
-    
-      const isAlreadyActive = clickedMarker.classList.contains('active');
-    
-      if (isAlreadyActive) {
-        // Remove blur from map layer
-        if (isMapLayerBlurred && olLayersEl) {
+      // Toggle active state on the clicked feature
+      if (clickedFeature.get('active')) {
+        clickedFeature.set('active', false);
+        clickedFeature.changed();
+        forceClosePopup();
+        activeMarker = null;
+        // Remove blur from the map layer
+        const olLayersEl = document.querySelector('.tile-layer');
+        if (olLayersEl) {
           olLayersEl.style.filter = "blur(0)";
           isMapLayerBlurred = false;
         }
-    
+      } else {
+        clickedFeature.set('active', true);
+        clickedFeature.changed();
+        activeMarker = clickedFeature;
+        const specimen = clickedFeature.get('specimenData');
+        const coordinates = clickedFeature.getGeometry().getCoordinates();
   
-        /*Array.from(customMarkers).forEach(marker => {
-          marker.style.filter = "blur(0)";
-        });
-        Array.from(markerLabels).forEach(marker => {
-          marker.style.filter = "blur(0)";
-        });*/
-        isNonActiveMarkersBlurred = false;
-
-
-    
-        forceClosePopup();
-        clickedMarker.classList.remove('active');
-        popupOverlay.setPosition(undefined);
-        activeMarker = null;
-        return;
-      }
-    
-      clickedMarker.parentElement.style.zIndex = '9999';
-      clickedMarker.classList.add('active');
-      activeMarker = clickedMarker;
-      const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
-    
-      // Construct popup HTML (existing logic)
-      let popupInnerHTML = `
-        <div class="map-card" data-specimen-id="${specimen.id}">
-          <div class="gallery">`;
-      if (specimen.images) {
-        const imageFilenames = JSON.parse(specimen.images);
-        const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-        popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
-      }
-      popupInnerHTML += `
-          </div>
-          <div class="card-header">${specimen.common_name[0]}</div>
-          <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
-          <p class="tap-for-more">Tap for more...</p>
-        </div>`;
-      
-      popupOverlay.setPosition(coordinates);
-      showPopup(popupInnerHTML, coordinates);
-    
-      if (!isMapLayerBlurred && olLayersEl) {
-        olLayersEl.style.filter = "blur(3px)";
-        isMapLayerBlurred = true;
-      }
-    
-      /*Array.from(customMarkers).forEach(marker => {
-        if (!marker.classList.contains('active')) {
-          marker.style.filter = "blur(1px)";
-        } else {
-          marker.style.filter = "blur(0)";
+        // Construct popup HTML (similar to your original logic)
+        let popupInnerHTML = `
+          <div class="map-card" data-specimen-id="${specimen.id}">
+            <div class="gallery">`;
+        if (specimen.images) {
+          const imageFilenames = JSON.parse(specimen.images);
+          const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
+          popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
         }
-      });
-      Array.from(markerLabels).forEach(marker => {
-        marker.style.filter = "blur(1px)";
-      });*/
-      isNonActiveMarkersBlurred = true;
-    
-      animateMapToPopup(coordinates);
-    });
-    
-      const labelFeature = new Feature({
-        geometry: new Point(fromLonLat([specimen.longitude, specimen.latitude])),
-        label: specimen.common_name[0]
-      });
-      labelVectorSource.addFeature(labelFeature);
-  }
+        popupInnerHTML += `
+            </div>
+            <div class="card-header">${specimen.common_name[0]}</div>
+            <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
+            <p class="tap-for-more">Tap for more...</p>
+          </div>`;
+        popupOverlay.setPosition(coordinates);
+        showPopup(popupInnerHTML, coordinates);
+
+        animateMapToPopup(coordinates);
+  
+        // Blur the tile layer if not already blurred
+        const olLayersEl = document.querySelector('.tile-layer');
+        if (!isMapLayerBlurred && olLayersEl) {
+          olLayersEl.style.filter = "blur(3px)";
+          isMapLayerBlurred = true;
+        }
+      }
+    }
+  });
 
 
   function animateMapToPopup(coordinates) {
@@ -866,8 +874,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     return sheet;
   }
 
-
   map.setTarget(null);
+
+  
 
 
 });
