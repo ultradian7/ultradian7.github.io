@@ -147,37 +147,47 @@ function getBounceValue(t) {
 
 
 function vectorMarkerStyleFunction(feature, resolution) {
-  const active = feature.get('active');
-  const hover = feature.get('hover');
-  let anchorY = 1;
-  let scale = 1.25;
-  let zIndex = 1;
-  if (hover || active) {
-    scale *= 1.2;
-    zIndex = 999;
-  }
+  const baseScale = 1.25;
+  let targetScale = baseScale;
   
-  if (active) {
+  // Determine target scale based on hover and active state.
+  if (feature.get('hover') || feature.get('active')) {
+    targetScale = baseScale * 1.2;
+  }
+  if (feature.get('active')) {
+    targetScale = 1.5;
+  }
+
+  // Get the current scale (initialize it if necessary)
+  let currentScale = feature.get('currentScale') || baseScale;
+  
+  // Smoothly interpolate towards the target scale.
+  const speed = 0.2; // Adjust this factor for faster or slower transitions
+  currentScale += (targetScale - currentScale) * speed;
+  feature.set('currentScale', currentScale);
+
+  // For the active marker bounce effect.
+  let anchorY = 1;
+  if (feature.get('active')) {
     const now = performance.now();
     const normalizedTime = (now % bounceDuration) / bounceDuration;
     const translateY = getBounceValue(normalizedTime);
     const iconHeight = 32;
     anchorY = 1 - translateY / iconHeight;
-    scale = 1.5;
-
   }
+
   return new Style({
     image: new Icon({
       crossOrigin: 'anonymous',
       className: "custom-marker",
       src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
       color: 'orange',
-      scale: scale,
+      scale: currentScale,  // Use the animated scale value
       anchor: [0.5, anchorY],
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction'
     }),
-    zIndex: zIndex
+    zIndex: (feature.get('hover') || feature.get('active')) ? 999 : 1
   });
 }
 
@@ -672,6 +682,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     popupContentEl.innerHTML = '';
     popupOverlay.setPosition(undefined);
 
+    void popupContainer.offsetHeight;
+
+    popupContainer.style.removeProperty('transition');
   }
 
   function showPopup(html, coords) {
@@ -680,8 +693,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     popupContentEl.innerHTML = html;
     popupOverlay.setPosition(coords);
-
-    // Force reflow so the popup sees the “closed” style
+    void popupContainer.offsetHeight;
     popupContainer.classList.add('open');
 
   }
