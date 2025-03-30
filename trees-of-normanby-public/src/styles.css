@@ -466,19 +466,19 @@ nav {
   }
   
   .dropdown-content {
-    position: sticky;
-    left: 100%;    
-    background-color: rgb(17, 17, 17);
+    position: fixed;
+    top: 3rem;
+    right: 1rem;
+    background-color: rgba(17, 17, 17, 0.95);
     border-bottom-left-radius: 1rem;
-    max-width: fit-content;
     min-width: 7rem;
-    display: none;
     z-index: 9999;
     border-bottom: 2px solid var(--ton-green-darker);
     border-left: 2px solid var(--ton-green-darker);
     cursor: pointer;
     user-select: none;
-}
+  }
+  
   
   .dropdown-content a {
     padding: 0.5rem 2rem 0.5rem 1rem;
@@ -882,16 +882,18 @@ nav {
 }
 
 
-
-
 .giant-seq {
     position: relative;
+    overflow: hidden;
     min-height: 400px;
     margin: 0;
     padding-bottom: 1rem;
-    display: grid; /* or your preferred layout method */
     place-content: center space-between;
-    overflow: hidden; /* Ensures pseudo-element doesn’t spill outside */
+    > h1 {
+        cursor: pointer;
+        max-width: 400px;
+        padding: 0.5rem 4rem 0.5rem 1rem;
+    }
   }
   
   .giant-seq::before {
@@ -899,28 +901,18 @@ nav {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-image: url("images/giant-seq-1.jpg");
     background-size: cover;
     background-position: 25%;
-    filter: blur(0.111px);
+    z-index: -1;
+    transform: scale(1.5);
+    filter: blur(0.111px) saturate(110%) hue-rotate(10deg);
     animation: float-up-down 11851.85ms ease-in-out infinite alternate,
                giant-seq-anim 47407.41ms ease infinite;
-    will-change: transform, filter;
-    z-index: -1; /* Place behind content */
   }
   
-  /* Maintain your heading styling */
-  .giant-seq > h1 {
-    cursor: pointer;
-    max-width: 400px;
-    padding: 0.5rem 4rem 0.5rem 1rem;
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* Animate using transform scale instead of background-size */
   @keyframes float-up-down {
     from {
       transform: scale(1.5);
@@ -930,7 +922,7 @@ nav {
     }
   }
   
-  /* Your filter animation remains similar */
+  /* Original filter animation keyframes */
   @keyframes giant-seq-anim {
     0%, 20%, 50%, 80%, 100% {
       filter: saturate(110%) hue-rotate(10deg);
