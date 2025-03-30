@@ -672,9 +672,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     popupContentEl.innerHTML = '';
     popupOverlay.setPosition(undefined);
 
-    void popupContainer.offsetHeight;
-
-    popupContainer.style.removeProperty('transition');
   }
 
   function showPopup(html, coords) {
@@ -685,7 +682,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     popupOverlay.setPosition(coords);
 
     // Force reflow so the popup sees the “closed” style
-    void popupContainer.offsetHeight;
     popupContainer.classList.add('open');
 
   }
@@ -761,7 +757,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       } else {
         clickedFeature.set('active', true);
         activeMarker = clickedFeature;
-        clickedFeature.changed(); 
+        clickedFeature.changed();
         const specimen = clickedFeature.get('specimenData');
         const coordinates = clickedFeature.getGeometry().getCoordinates();
   
