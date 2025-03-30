@@ -644,6 +644,7 @@ nav {
     background-color: var(--bg-gray-light);
     color: var(--link-gray);
     text-align: center;
+    margin: 0.5rem;
   }
 
 .quiz-container, .card {

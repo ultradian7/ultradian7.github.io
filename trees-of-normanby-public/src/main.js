@@ -523,7 +523,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   
       let popupInnerHTML = `
         <div class="map-card" data-specimen-id="${specimen.id}">
-          <span class="close-btn">✖</span>
           <div class="gallery">`;
   
       if (specimen.images) {
@@ -1250,6 +1249,7 @@ window.openFullImage = function(imageUrl, description) {
   modal.classList.add('image-modal');
   modal.innerHTML = `
     <div class="modal-content">
+    <span class="close-btn" onclick="this.parentElement.parentElement.remove()">✖</span>
       <img src="${imageUrl}" alt="${description}">
       <p>${description}</p>
     </div>
@@ -1257,5 +1257,4 @@ window.openFullImage = function(imageUrl, description) {
   document.body.appendChild(modal);
 };
 
-//<span class="close-btn" onclick="this.parentElement.parentElement.remove()">✖</span>
 
