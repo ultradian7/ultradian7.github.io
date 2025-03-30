@@ -154,15 +154,14 @@ function vectorMarkerStyleFunction(feature, resolution) {
     const now = performance.now();
     const normalizedTime = (now % bounceDuration) / bounceDuration;
     const translateY = getBounceValue(normalizedTime);
-    const iconHeight = 32; // Adjust to match your SVG's pixel height
     anchorY = 1 - translateY / iconHeight;
   }
   return new Style({
     image: new Icon({
       crossOrigin: 'anonymous',
       className: "custom-marker",
-      //src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
-      src: `/images/location-pin.svg`,
+      src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
+      //src: `/images/location-pin.svg`,
       color: 'orange',
       scale: scale,
       anchor: [0.5, anchorY],
