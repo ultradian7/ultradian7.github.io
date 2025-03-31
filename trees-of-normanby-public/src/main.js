@@ -155,7 +155,7 @@ function vectorMarkerStyleFunction(feature, resolution) {
   if (feature.get('active') || feature.get('hover')) {
     targetOpacity = 1;
   } else {
-    targetOpacity = activeMarker ? 0.6 : 0.862;
+    targetOpacity = activeMarker ? 0.45 : 0.862;
   }
 
   // Prioritize active state over hover for scale.
@@ -193,7 +193,8 @@ function vectorMarkerStyleFunction(feature, resolution) {
     image: new Icon({
       crossOrigin: 'anonymous',
       className: "custom-marker",
-      src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
+      //src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
+      src: `images/location-pin.svg`,
       color: 'orange',
       scale: currentScale,  // Smoothly interpolated scale.
       anchor: [0.5, anchorY],
@@ -757,7 +758,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         clickedFeature = feature;
         return true; // stop iteration
       } 
-    }, { hitTolerance: 10 });
+    }, { hitTolerance: 5});
   
     if (clickedFeature) {
       // If another marker is active, deactivate it

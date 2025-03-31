@@ -1085,17 +1085,15 @@ footer .copyright {
 
 .popup {
     opacity: 0;
-    transform: translateY(20px);
-    filter: blur(4px);
-    transition: transform 1481.4814814815ms ease, 
-        opacity  740.74074074074ms ease,
+    filter: blur(15px);
+    transition: opacity  740.74074074074ms ease,
         filter  740.74074074074ms ease;
     pointer-events: none;
   }
   
   .popup.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-6px);
     filter: blur(0px);
     pointer-events: auto;
   }
