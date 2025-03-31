@@ -193,12 +193,12 @@ function vectorMarkerStyleFunction(feature, resolution) {
     image: new Icon({
       crossOrigin: 'anonymous',
       className: "custom-marker",
-      //src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
-      src: `images/location-pin.svg`,
+      src: `${supabaseUrlPrefix}${supabaseStoragePrefix}/symbols/location-pin.svg`,
+      //src: `images/location-pin.svg`,
       color: 'orange',
-      scale: currentScale,  // Smoothly interpolated scale.
+      scale: currentScale,
       anchor: [0.5, anchorY],
-      opacity: currentOpacity,  // Smoothly interpolated opacity.
+      opacity: currentOpacity,
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction'
     }),
@@ -390,11 +390,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (imageFilenames.length > 0) {
               //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
               const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-              innerHTML += `<div class="thumbnail image-overlay" style="background-image: url(${fullImageUrl});" alt="${imageDescriptions[0] || 'Specimen image'}"> `;
+              innerHTML += `<img class="thumbnail" src="${fullImageUrl}" alt="${imageDescriptions[0] || 'Specimen image'}" loading="lazy"> `;
       } else {
-          innerHTML += `<div class="thumbnail placeholder-overlay" style="background-image: url('${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg');">`;
+          innerHTML += `<img class="thumbnail placeholder-overlay" src="${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg" loading="lazy">`;
       }
-      innerHTML += `</div>`;
 
       innerHTML += `</div>`; // Close gallery div
 
@@ -517,6 +516,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       for (const section in sections) {
         sections[section].style.display = "none";
       }
+      map.setTarget("map");
       sections["map"].style.display = "block";
       previousSection = "card";
       currentSection = "map";
@@ -529,8 +529,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (specimen.images) {
         const imageFilenames = JSON.parse(specimen.images);
         const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-        popupInnerHTML += `<div class="thumbnail-container"><div class="thumbnail image-overlay" style="background-image: url(${imageUrl});"></div></div>`;
+        popupInnerHTML += `<div class="thumbnail-container"><img class="thumbnail image-overlay" src="${imageUrl}" loading="lazy"></div>`;
       }
+      
   
       popupInnerHTML += `
           </div>
@@ -539,16 +540,10 @@ document.addEventListener("DOMContentLoaded", async function () {
           <p class="tap-for-more">Tap for more...</p>
         </div>`;
   
-      popupContentEl.innerHTML = popupInnerHTML;
-  
-      popupContentEl.querySelector('.close-btn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        popupOverlay.setPosition(undefined);
-        popupContentEl.innerHTML = '';
-      });
-  
-      popupOverlay.setPosition(coordinates);
-      animateMapToPopup(coordinates);
+      showPopup(popupInnerHTML, coordinates);
+      setTimeout(() => {
+        animateMapToPopup(coordinates);
+      }, 50);
     });
   }
         
@@ -800,7 +795,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             <p class="species-name title italic">${specimen.genus} ${specimen.species}</p>
             <p class="tap-for-more">Tap for more...</p>
           </div>`;
-        ///popupOverlay.setPosition(coordinates);
         showPopup(popupInnerHTML, coordinates);
         setTimeout(() => {
           animateMapToPopup(coordinates);
@@ -927,6 +921,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       sections["map"].style.display = "block";
       previousSection = "map";
       currentSection = "sheet";
+      map.setTarget("map");
       const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
       popupOverlay.setPosition(coordinates);
       animateMapToPopup(coordinates);
