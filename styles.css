@@ -391,15 +391,38 @@ footer a:hover {
 #about,
 #renoise,
 #music,
-#max-for-live,
 #freqmajor {
   gap: 0.862rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 40ch), 1fr));
-
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  display: none;
   &:target {
     display: grid;
   }
 }
+
+#home,
+#max-for-live {
+  display: none;
+  place-content: center;
+  &:target {
+    display: flex;
+  }
+}
+
+#home {
+  display: flex;
+}
+
+#projects:target ~ #home,
+#about:target ~ #home,
+#ton:target ~ #home,
+#renoise:target ~ #home,
+#music:target ~ #home,
+#max-for-live:target ~ #home,
+#freqmajor:target ~ #home {
+  display: none;
+}
+
 
 #ton {
   &:target {
@@ -650,3 +673,4 @@ footer a:hover {
     }
   }
 }
+
