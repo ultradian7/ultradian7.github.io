@@ -433,6 +433,8 @@ footer a:hover {
 
 #projects {
   container-type: inline-size;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+
 }
 
 .projects-overview {
@@ -445,7 +447,7 @@ footer a:hover {
     grid-row: 1;
     grid-column: 1;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
     gap: 0;
     align-items: center;
@@ -479,8 +481,7 @@ footer a:hover {
     padding:1rem;
   }
 
-  @container (inline-size > calc(40ch * 2 + 1rem)) {
-    grid-column: span 3;
+  @container (inline-size > calc(400px + 1rem)) {
     .title {
       font-size: 3.142rem;
     }
@@ -490,10 +491,11 @@ footer a:hover {
     }
     > .projects-img-grid {
       
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
+
 
 
 .ton-card:first-of-type {
@@ -509,8 +511,6 @@ footer a:hover {
     font-family: "Aboreto", system-ui;
     color: var(--my-pink);
     text-shadow: 0.111rem 0.111rem 0.25rem rgba(0, 0, 0, 0.862);
-    
-
   }
 
   p {

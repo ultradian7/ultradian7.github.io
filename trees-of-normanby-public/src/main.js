@@ -19,7 +19,6 @@ import Stroke from 'ol/style/Stroke';
 import Icon from 'ol/style/Icon';
 
 
-
 const supabaseUrlPrefix = "https://cnibjqyawzddpcpdrzrz.supabase.co";
 const supabaseStoragePrefix = "/storage/v1/object/public/images/";
 
@@ -147,20 +146,19 @@ function getBounceValue(t) {
 
 
 function vectorMarkerStyleFunction(feature, resolution) {
-  const baseScale = 1.25;
+  const baseScale = 1;
   let targetScale = baseScale;
 
-  // Determine target opacity.
   let targetOpacity;
   if (feature.get('active') || feature.get('hover')) {
     targetOpacity = 1;
   } else {
-    targetOpacity = activeMarker ? 0.45 : 0.862;
+    targetOpacity = activeMarker ? 0.387 : 0.862;
   }
 
   // Prioritize active state over hover for scale.
   if (feature.get('active')) {
-    targetScale = 1.5;
+    targetScale = 1.25;
   } else if (feature.get('hover')) {
     targetScale = baseScale * 1.2;
   }
@@ -230,12 +228,26 @@ map.on('pointermove', function (evt) {
   });
   if (!featureFound && hoveredFeature) {
     hoveredFeature.set('hover', false);
-    hoveredFeature.changed();
+    hoveredFeature.changed(); 
     hoveredFeature = null;
   }
 });
 
-
+function createImageElements({specimen, imageFilenames, imageDescriptions, showPlaceholder}){
+  let HTML = `<div class="gallery">`;
+    if (imageFilenames.length > 0) {
+      HTML += `<div class="thumbnail-container">`;
+      imageFilenames.forEach((filename, index) => {
+        const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
+        HTML += `<img src="${fullImageUrl}" class="thumbnail" onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index] || ''}')"
+          alt="${imageDescriptions[index] || 'Specimen image'}" loading="lazy">`;
+        });
+      } else if (imageFilenames.length === 0 && showPlaceholder) {
+        HTML += `<div class="thumbnail-container"><img class="thumbnail placeholder-overlay" src="${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg" loading="lazy">`;
+      }
+      HTML += `</div></div>`; // Close gallery div
+    return HTML;
+}
 
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -245,14 +257,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  const sectionNames = [
-    "home",
-    "about",
-    "trees",
-    "resources",
-    "quiz"
-  ];
+  const URLparams = new URLSearchParams(window.location.search);
+  const viewParam = URLparams.get("view") || "home";
 
+  //selectSection(viewParam, "block");
 
   const speciesContainer = document.getElementById('species-container');
   const filterButton = document.getElementById('filters-btn');
@@ -382,20 +390,16 @@ document.addEventListener("DOMContentLoaded", async function () {
           ? Object.values(specimen.common_name) 
           : ["Unknown Name"];
 
-      let innerHTML = "";
+      imageFilenames.splice(1);
+      imageDescriptions.splice(1);
 
-      innerHTML += `<div class="gallery">`;
-
-      innerHTML += `<div class="thumbnail-container">`;
-      if (imageFilenames.length > 0) {
-              //const thumbnailUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/thumb_${imageFilenames[0]}`;
-              const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-              innerHTML += `<img class="thumbnail" src="${fullImageUrl}" alt="${imageDescriptions[0] || 'Specimen image'}" loading="lazy"> `;
-      } else {
-          innerHTML += `<img class="thumbnail placeholder-overlay" src="${supabaseUrlPrefix}${supabaseStoragePrefix}/placeholder.jpg" loading="lazy">`;
-      }
-
-      innerHTML += `</div>`; // Close gallery div
+     
+      let innerHTML = createImageElements({
+        specimen: specimen,
+        imageFilenames: imageFilenames,
+        imageDescriptions: imageDescriptions,
+        showPlaceholder: true
+      });
 
       innerHTML += `<div class="card-header">${commonNames[0]}</div>`
       
@@ -523,13 +527,25 @@ document.addEventListener("DOMContentLoaded", async function () {
       const coordinates = fromLonLat([specimen.longitude, specimen.latitude]);
   
       let popupInnerHTML = `
-        <div class="map-card" data-specimen-id="${specimen.id}">
-          <div class="gallery">`;
+        <div class="map-card" data-specimen-id="${specimen.id}">`;
   
-      if (specimen.images) {
-        const imageFilenames = JSON.parse(specimen.images);
-        const imageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${imageFilenames[0]}`;
-        popupInnerHTML += `<div class="thumbnail-container"><img class="thumbnail image-overlay" src="${imageUrl}" loading="lazy"></div>`;
+        let imageFilenames = [];
+        let imageDescriptions = [];
+  
+        if (specimen.images) {
+            imageFilenames = JSON.parse(specimen.images);
+            imageDescriptions = JSON.parse(specimen.image_info || "[]");
+  
+            while (imageDescriptions.length < imageFilenames.length) {
+                imageDescriptions.push(""); // Ensure descriptions array matches images array length
+            }
+
+        popupInnerHTML += createImageElements({
+          specimen: specimen,
+          imageFilenames: imageFilenames,
+          imageDescriptions: imageDescriptions,
+          showPlaceholder: true
+        });
       }
       
   
@@ -581,24 +597,30 @@ document.addEventListener("DOMContentLoaded", async function () {
   const contactFooterNav = document.getElementById("contact-footer-nav-li");
   const mapFooterNav = document.getElementById("map-footer-nav-li");
   const mapStraightTo = document.getElementById("map-straight-to");
-  const aboutTrees = document.getElementById("about-trees");
-  const backButton = document.getElementById("back-btn");
+  //const aboutTrees = document.getElementById("about-trees");
+  const footerElement = document.getElementById("footer");
+  //const backButton = document.getElementById("back-btn");
 
 
-
-  function selectSection(event, displayValue) {
+  function navCallback(event, displayValue){
     let id = event.target.id;
     id = id.replace(/-.*/, "");
-    backButton.style.opacity = 1;
-    backButton.style["pointer-events"] = "auto";
+    selectSection(id, displayValue);
+  }
+
+  function selectSection(id, displayValue) {
+    //backButton.style.opacity = 1;
+    //backButton.style["pointer-events"] = "auto";
     for (const section in sections) {
         sections[section].style.display = "none";
     }
     sections[id].style.display = displayValue;
     currentSection = id;
     if (id === "map"){
+      footerElement.style.display = "none";
       map.setTarget("map");
     } else {
+      footerElement.style.display = "flex";
       map.setTarget(null);
     }
     dropdownContent.style.display = "none";
@@ -614,8 +636,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       sections[section].style.display = "none";
     }
     if (newCurrentSection === "map"){
+      footerElement.style.display = "none";
       map.setTarget("map");
     } else {
+      footerElement.style.display = "flex";
       map.setTarget(null);
     }
     sections[newCurrentSection].style.display = "block";
@@ -623,7 +647,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     currentSection = newCurrentSection;
   }
 
-  backButton.addEventListener("click", handleBackNav);
+  //backButton.addEventListener("click", handleBackNav);
 
   dropdownToggle.addEventListener("click", () => {
     const isHidden = dropdownContent.style.display === "none" || !dropdownContent.style.display;
@@ -633,20 +657,20 @@ document.addEventListener("DOMContentLoaded", async function () {
   
 
 
-  knowBanner.addEventListener("click",  (event) => selectSection(event, "block"));
-  quizNav.addEventListener("click",  (event) => selectSection(event, "block"));
-  treesNav.addEventListener("click", (event) => selectSection(event, "block"));
-  treesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
-  giantSeq.addEventListener("click", (event) => selectSection(event, "block"));
-  resourcesNav.addEventListener("click", (event) => selectSection(event, "block"));
-  resourcesFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
-  aboutNav.addEventListener("click",  (event) => selectSection(event, "block"));
-  aboutFooterNav.addEventListener("click",  (event) => selectSection(event, "block"));
-  contactFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
-  mapNav.addEventListener("click", (event) => selectSection(event, "block"));
-  mapFooterNav.addEventListener("click", (event) => selectSection(event, "block"));
-  mapViewOn.addEventListener("click", (event) => selectSection(event, "block"));
-  mapStraightTo.addEventListener("click", (event) => selectSection(event, "block"));
+  knowBanner.addEventListener("click",  (event) => navCallback(event, "block"));
+  quizNav.addEventListener("click",  (event) => navCallback(event, "block"));
+  treesNav.addEventListener("click", (event) => navCallback(event, "block"));
+  treesFooterNav.addEventListener("click", (event) => navCallback(event, "block"));
+  giantSeq.addEventListener("click", (event) => navCallback(event, "block"));
+  resourcesNav.addEventListener("click", (event) => navCallback(event, "block"));
+  resourcesFooterNav.addEventListener("click", (event) => navCallback(event, "block"));
+  aboutNav.addEventListener("click",  (event) => navCallback(event, "block"));
+  aboutFooterNav.addEventListener("click",  (event) => navCallback(event, "block"));
+  contactFooterNav.addEventListener("click", (event) => navCallback(event, "block"));
+  mapNav.addEventListener("click", (event) => navCallback(event, "block"));
+  mapFooterNav.addEventListener("click", (event) => navCallback(event, "block"));
+  mapViewOn.addEventListener("click", (event) => navCallback(event, "block"));
+  mapStraightTo.addEventListener("click", (event) => navCallback(event, "block"));
   //aboutTrees.addEventListener("click", (event) => selectSection(event, "block"));
 
 
@@ -841,25 +865,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     sheet.id = `specimen-sheet-${specimen.id}`;
 
     let imageFilenames = [], imageDescriptions = [];
+    let sheetInnerHTML = "";
 
     if (specimen.images) {
       imageFilenames = JSON.parse(specimen.images);
       imageDescriptions = JSON.parse(specimen.image_info || "[]");
+      sheetInnerHTML += createImageElements({
+        specimen: specimen,
+        imageFilenames: imageFilenames,
+        imageDescriptions: imageDescriptions,
+        showPlaceholder: true
+      });
     }
 
-    let sheetInnerHTML = `<div class="gallery">`;
-    if (imageFilenames.length > 0) {
-      sheetInnerHTML += `<div class="thumbnail-container">`;
-      imageFilenames.forEach((filename, index) => {
-        const fullImageUrl = `${supabaseUrlPrefix}${supabaseStoragePrefix}botanical_specimen/${specimen.id}/${filename}`;
-        sheetInnerHTML += `
-          <img src="${fullImageUrl}" class="thumbnail" 
-            onclick="openFullImage('${fullImageUrl}', '${imageDescriptions[index] || ''}')" 
-            alt="${imageDescriptions[index] || 'Specimen image'}" loading="lazy">
-        `;
-      });
-      sheetInnerHTML += `</div>`;
-    }
 
     const commonNames = (typeof specimen.common_name === "object")
       ? Object.values(specimen.common_name)
@@ -930,9 +948,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     return sheet;
   }
 
-  map.setTarget(null);
 
-  
+
 
 
 });

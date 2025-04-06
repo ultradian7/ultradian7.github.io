@@ -425,11 +425,6 @@ nav {
     border-radius: 0.5rem;
   }
   
-  
-  .tile-layer {
-    filter: blur();
-    transition: filter 740.74074074074ms ease;
-  }
 
   footer nav a{
     color: var(--link-gray);
@@ -822,7 +817,7 @@ nav {
 
 
 .placeholder-overlay {
-    filter: blur(6px);
+    filter: blur(3px);
 }
 
 .overlay-p {
@@ -1085,9 +1080,9 @@ footer .copyright {
 
 .popup {
     opacity: 0;
-    filter: blur(15px);
-    transition: opacity  740.74074074074ms ease,
-        filter  740.74074074074ms ease;
+    filter: blur(10px);
+    transition: opacity 277.77777777778ms ease,
+        filter 370.370370370374ms ease;
     pointer-events: none;
   }
   

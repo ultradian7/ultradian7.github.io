@@ -1,0 +1,17 @@
+The role of Software Engineer with Multon is an exciting opportunity to gain experience and contribute within a small specialised company developing the OPTIMAT system.
+
+I have a lifelong passion for computing and technology, my degree in Audio Technology (BSc Hons) covered programming fundamentals, I had some prior experience with JavaScript and visual programming in Pure Data. Although I don't have industry experience in software engineering, I’ve built a wide range of personal projects and developed a diverse skillset through both employment and independent learning. Additionally I've written software voluntarily for North Lincolnshire Council Museum Services that was used in an exhibition celebrating George Stubbs in 2024.
+
+Programming began as a way to support my music production hobby, building custom tools and instruments, but quickly became a central passion in its own right. I now spend much of my free time coding, constantly learning new techniques and exploring new technologies.
+
+One of my larger projects is an interactive map for Normanby Hall Country Park. It's a cross-platform mobile app that showcases notable trees around the estate using GPS and lets users log and share wildlife sightings. I also developed a web interface for park staff to manage app content, with PostgreSQL database and storage integration. I've begun building a public-facing website to present the same data, rebuilding the mapping features in a different language to fit the web platform.
+
+While my C++ experience isn't extensive, I have written basic console tools such as a calculator, unit converter, and a wavetable synthesiser. I've also written synthesisers using the Cmajor audio programming language which allows exporting to C++, I use CMake to generate build files and build executables in Visual Studio. I ultilise mathematics in audio programming and DSP, for example algebra, trigonometry, complex numbers. I have experience with object-oriented programming in languages like JavaScript, Lua, Python and Dart (through Flutter).
+
+Adaptability has been a consistent strength throughout my varied work history. These experiences have helped me build strong communication and problem-solving skills, notably my time working as part of the Facilities team at Leeds College of Music for around 7 years. My varying roles have all involved use of Microsoft Office 365 applications including Word, Excel, and PowerPoint which I'm competent in using.
+
+I'm enthusiastic about the learning process and confident in my ability to pick up new technologies quickly. I'm particularly excited about the opportunity to work across the full software lifecycle and contribute to projects used in specialist manufacturing worldwide.
+
+Thank you for considering my application.
+
+Declan Whitfield
