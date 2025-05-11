@@ -62,14 +62,20 @@ class sine_View extends HTMLElement
                 overflow: auto;
             }
 
+            .controls {
+                display: flex;
+                flex-direction: column;
+                place-content: center;
+            }
+
             .slider {
                 display: inline-block;
                 margin: 1rem;
-                width: 300px;
+                width: 100%;
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
-                height: 0.5rem;
+                height: 1.25rem;
                 margin: 1rem 0;
                 background: white;
                 border: 1px solid #fff;
@@ -77,7 +83,7 @@ class sine_View extends HTMLElement
             
             .freq-text {
                 display: inline-block;
-                width: 50px;
+                width: 7ch;
                 height: 1.5rem;
             }
 
