@@ -932,7 +932,80 @@
 
     <section class="cards-grid" id="home">
       <div class="card"><p>
-        Welcome to the Ultradian7 homepage, head to the <a href="#projects">projects</a> section to see some of the things we've been working on.
+        Head to the <a href="#projects">projects</a> section to see some of the things we've been working on.
+      </p></div>
+    </section>
+
+    <section class="cards-grid" id="mdp">
+      <div class="card"><p>
+        Modulation Device Presets Tool for Renoise:
+        </p>
+        <p> 
+        A Sample Modulation Device preset handler for Renoise.
+        
+        
+        Overview:
+        
+        Modulation Device Presets is a tool for Renoise that adds functionality for to saving and recalling presets for Sample Modulation Devices.
+        
+        
+        Context & Motivation:
+        
+        Renoise is a digital audio workstation, users have access to inbuilt devices such as audio effects and modulation devices that can be loaded into tracks and instruments to effect audio or meta data. Device settings can be saved and loaded as presets per device, except for "Sample Modulation Devices" for which device settings can only be saved in "Modulation Sets". These contain all devices and their settings for the current instrument in a single file. The only way to save and recall any of these Sample Modulation Device settings an entire Modulation Set has to be loaded, replacing any existing devices in the instrument and ALL modulation settings.
+        
+        This can be an issue when you've already begun creating an instrument and configured any modulation settings, then want to insert a single device with specific settings that you saved previously. Renoise features an API for scripting tools using the Lua programming language, allowing users to customise and extend functionality. I searched the official Renoise tool library and the web to see if anyone had created a device that solves the issue we face and didn't find one, so I'll attempt to write one myself and share it in the tool library for other users.
+        
+        Research & Ideation:
+        
+        First off I need to know if and what access the Renoise scripting API has access to Sample Modulation Devices. We require read access to a devices parameters when saving presets and write access to load presets into the device, from looking at the documentation we can access devices within a sample modulation set and their values.
+        
+        renoise.song().instruments[].sample_modulation_sets[].devices[]:parameter(index)
+          -> [renoise.DeviceParameter object]
+        
+        To understand how the native presets are stored, I tried opening a Modulation Set ".xrno" file into a text editor and found they're written in an XML format, so it would make sense for us to use the XML format for our preset files. I identified nodes for each device present in the modulation set, the set name and filter bank settings. The device nodes contain all settings for the devices and a defined target, "Volume", "Panning", "Pitch", "Cutoff", "Resonance" or "Drive". By dividing the file into nodes and we could create a tweaked reconstructed format for our presets. Through reading the documentation I discovered the renoise.Document namespace allows us to create node based documents easily and save them as XML files, so it could be convenient to use in our project.
+        
+        
+        The native presets are saved and recalled using context menus in the device target lane, modulation set pane or browser, and hotkey shortcuts also in the device target lane and mod set pane. We'll want to consider this user interactivity when developing our seamless native user experience with our preset handler. The API has functions for adding menu entries, key bindings and import hooks that we could use for our new filetypes.
+        
+        renoise.tool():add_menu_entry(menu_entry_definition_table)
+        
+        renoise.tool():add_keybinding(keybinding_definition_table)
+        
+        renoise.tool():add_file_import_hook(file_import_hook_definition_table)
+        
+        It would make sense for us to integrate the Renoise user library providing default save and load paths. From my reading of the documentation the API doesn't have access to the User Library location, so we'll implement our own functionality to set the User Library manually and store in a preferences file for persistence.
+        
+        
+        Solution Overview:
+        
+        I'll work with the XML format to keep our presets inline with the native files. By dividing the native file into nodes I could visualise some modularity for creating additional preset formats due to the varying types of nodes and values. I think it would be possible and useful to have multiple types of preset, so I'm going to create three new preset file types;
+        
+        "Device" - Single device for a defined target.
+        
+        "Device Chain" - Chain of devices for a defined target.
+        
+        "Filter" - filter bank settings.
+        
+        I'll add context menu entries, user library and file manager integration in attempting seamless integration based on how native presets are saved and recalled.
+        
+        
+        Tools:
+        
+        Renoise API, editor and terminal.
+        VSCode
+        
+        
+        Challenges & Learnings:
+        
+        
+        The API doesn't give us access to the currently selected modulation device, this is creates an issue by not letting us save presets directly with context menus or hotkeys. To work around this we've created a minimal GUI that allows users to manually save their desired preset.
+        
+        When loading device presets we had to first init a new document, adding in arbitrary values for points for devices that required them.
+        
+        
+        Continuation:
+        
+        Add a feature or new tool that extracts devices or filter settings from mod set files and save as one of our new preset types.
       </p></div>
     </section>
 

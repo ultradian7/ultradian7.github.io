@@ -401,7 +401,8 @@ footer a:hover {
 }
 
 #home,
-#max-for-live {
+#max-for-live,
+#mdp {
   display: none;
   place-content: center;
   &:target {
@@ -419,7 +420,8 @@ footer a:hover {
 #renoise:target ~ #home,
 #music:target ~ #home,
 #max-for-live:target ~ #home,
-#freqmajor:target ~ #home {
+#freqmajor:target ~ #home,
+#mdp:target ~ #home {
   display: none;
 }
 
