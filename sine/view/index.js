@@ -92,10 +92,10 @@ class sine_View extends HTMLElement
                 font-size: 2rem;
             }
 
-            @media (max-width: 400px) {
+            @media (min-width: 900px) {
             
                 body, html {
-                    font-size: 24px;
+                    font-size: 36px;
                 }
             }
 
