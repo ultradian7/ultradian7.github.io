@@ -60,6 +60,7 @@ class sine_View extends HTMLElement
                 height: 100%;
                 padding: 1rem;
                 overflow: auto;
+                touch-action: none;
             }
 
             .controls {
@@ -71,20 +72,24 @@ class sine_View extends HTMLElement
             .slider {
                 display: inline-block;
                 margin: 1rem;
-                width: 100%;
+                width: 90%;
+                max-width: 40rem;
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
-                height: 1.25rem;
+                height: 3rem;
                 margin: 1rem 0;
                 background: white;
                 border: 1px solid #fff;
+                align-self: center;
             }
             
             .freq-text {
                 display: inline-block;
-                width: 7ch;
-                height: 1.5rem;
+                width: 7rem;
+                height: 4rem;
+                align-self: center;
+                font-size: 2rem;
             }
 
             
@@ -92,7 +97,7 @@ class sine_View extends HTMLElement
             
         </style>
 
-        <div id="controls">
+        <div class="controls" id="controls">
           <input type="range" class="slider" id="frequency-slider" min="1" max="100" step="0.01"></input>
           <input type="number" class="freq-text" id="frequency-text" min="1" max="100" step="0.01"></input>
         </div>`;
