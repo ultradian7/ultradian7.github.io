@@ -35,7 +35,7 @@ export const manifest =
     "src": "view/index.js",
     "width": 400,
     "height": 300,
-    "resizable": true
+    "resizable": false
   }
 };
 
@@ -180,7 +180,7 @@ class sine
         "annotation": {
           "name": "Frequency",
           "min": 1,
-          "max": 100,
+          "max": 12000,
           "init": 40
         },
         "purpose": "parameter"
