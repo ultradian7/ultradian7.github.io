@@ -25,13 +25,14 @@ class sine_View extends HTMLElement
 
         // When the slider is moved, this will cause the new value to be sent to the patch:
         freqSlider.oninput = () => {
-            this.patchConnection.sendEventOrValue ("frequency", freqSlider.value)
-            freqText.value = freqSlider.value
+            const sliderValue = parseFloat(freqSlider.value);
+            this.patchConnection.sendEventOrValue ("frequency", sliderValue);
+            freqText.value = sliderValue.toFixed(2);
         };
 
         freqText.oninput = () => {
-            this.patchConnection.sendEventOrValue ("frequency", freqText.value),
-            freqSlider.value = freqText.value;
+            this.patchConnection.sendEventOrValue ("frequency", freqText.value);
+            freqSlider.value = freqText.value
         };
 
         // Create a listener for the frequency endpoint, so that when it changes, we update our slider..
@@ -71,7 +72,10 @@ class sine_View extends HTMLElement
 
             .slider {
                 display: inline-block;
-                margin: 1rem;
+
+            }
+
+            input[type=range]{
                 width: 90%;
                 max-width: 40rem;
                 -webkit-appearance: none;
@@ -81,7 +85,7 @@ class sine_View extends HTMLElement
                 margin: 1rem 0;
                 background: dark gray;
                 border: 1px solid #fff;
-                align-self: center;
+                align-self: center; 
             }
 
             input[type=range]::-webkit-slider-thumb  {
@@ -116,6 +120,10 @@ class sine_View extends HTMLElement
                 padding-left: 0.5rem;
             }
 
+            input[type=number] {
+                font-family: Monaco, Consolas, monospace;
+            }
+
             @media (min-width: 900px) {
             
                 body, html {
@@ -128,9 +136,9 @@ class sine_View extends HTMLElement
 
         <div class="controls" id="controls">
           <label class="frequency-slider-label" for="frequency-slider">Frequency</label>
-          <input type="range" class="slider" id="frequency-slider" min="1" max="130" step="0.01"></input>
+          <input type="range" class="slider" id="frequency-slider" min="1" max="200" step="0.01" ></input>
           <div class="freq-text-wrapper">
-            <input type="number" class="freq-text" id="frequency-text" min="1" max="12000" step="0.01"></input>
+            <input type="number" class="freq-text" id="frequency-text" min="1" max="12000" step="0.01" value="40.00"></input>
             <label for="frequency-text">Hz</label>
           </div>  
         </div>`;
