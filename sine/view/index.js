@@ -84,28 +84,33 @@ class sine_View extends HTMLElement
                 align-self: center;
             }
 
-            input[type=range]::-webkit-slider-thumb, input[type=range]::-moz-range-thumb  {
+            input[type=range]::-webkit-slider-thumb  {
               -webkit-appearance: none;
               width: 0.25rem;
               height: 3rem;
               background: #4285f4;
               cursor: pointer;
-              transition: background 0.2s;
             }
-            input[type=range]:active::-webkit-slider-thumb, input[type=range]::-moz-range-thumb  {
+            input[type=range]:active::-webkit-slider-thumb {
               background: #3367d6;
             }
-
+        
             .frequency-slider-label {
               align-self: center;
               font-size: 2rem;
             }
 
+            label {
+                font-size: 2rem;
+            }
 
+            .freq-text-wrapper {
+                align-self: center;
+            }
             
             .freq-text {
                 display: inline-block;
-                width: 7rem;
+                width: 8rem;
                 align-self: center;
                 font-size: 2rem;
                 padding-left: 0.5rem;
@@ -124,7 +129,10 @@ class sine_View extends HTMLElement
         <div class="controls" id="controls">
           <label class="frequency-slider-label" for="frequency-slider">Frequency</label>
           <input type="range" class="slider" id="frequency-slider" min="1" max="130" step="0.01"></input>
-          <input type="number" class="freq-text" id="frequency-text" min="1" max="12000" step="0.01"></input>
+          <div class="freq-text-wrapper">
+            <input type="number" class="freq-text" id="frequency-text" min="1" max="12000" step="0.01"></input>
+            <label for="frequency-text">Hz</label>
+          </div>  
         </div>`;
     }
 }
