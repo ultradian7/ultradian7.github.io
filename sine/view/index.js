@@ -21,7 +21,9 @@ class sine_View extends HTMLElement
 
         // First, find our frequency slider:
         const freqSlider = this.querySelector ("#frequency-slider");
+        const gainSlider = this.querySelector ("#gain-slider");
         const freqText = this.querySelector ("#frequency-text");
+        const gainText = this.querySelector ("#gain-text");
 
         // When the slider is moved, this will cause the new value to be sent to the patch:
         freqSlider.oninput = () => {
@@ -30,13 +32,27 @@ class sine_View extends HTMLElement
             freqText.value = sliderValue.toFixed(2);
         };
 
+        gainSlider.oninput = () => {
+            const sliderValue = parseFloat(gainSlider.value);
+            this.patchConnection.sendEventOrValue ("gain", sliderValue);
+            gainText.value = sliderValue.toFixed(2);
+        };
+
         freqText.oninput = () => {
             this.patchConnection.sendEventOrValue ("frequency", freqText.value);
-            freqSlider.value = freqText.value
+            freqSlider.value = freqText.value;
+        };
+
+        gainText.oninput = () => {
+            this.patchConnection.sendEventOrValue ("gain", gainText.value);
+            gainSlider.value = gainText.value;
         };
 
         // Create a listener for the frequency endpoint, so that when it changes, we update our slider..
-        this.freqListener = value => freqSlider.value = value;
+        this.freqListener = value => {
+            freqSlider.value = value;
+            freqText.value = value;
+        }
         this.patchConnection.addParameterListener ("frequency", this.freqListener);
 
         // Now request an initial update, to get our slider to show the correct starting value:
@@ -68,24 +84,28 @@ class sine_View extends HTMLElement
                 display: flex;
                 flex-direction: column;
                 place-content: center;
+                background-color: #333;
+                margin: 1rem 0;
+                border-radius: 0.5rem;
+                padding: 1rem;
             }
 
             .slider {
                 display: inline-block;
-
             }
 
             input[type=range]{
-                width: 90%;
+                width: 100%;
                 max-width: 40rem;
                 -webkit-appearance: none;
                 -moz-appearance: none;
                 appearance: none;
                 height: 3rem;
                 margin: 1rem 0;
-                background: dark gray;
-                border: 1px solid #fff;
+                background: #ccc;
+                border: 1px solid #000;
                 align-self: center; 
+                borrer-radius: 0.5rem;
             }
 
             input[type=range]::-webkit-slider-thumb  {
@@ -98,30 +118,25 @@ class sine_View extends HTMLElement
             input[type=range]:active::-webkit-slider-thumb {
               background: #3367d6;
             }
-        
-            .frequency-slider-label {
-              align-self: center;
-              font-size: 2rem;
-            }
 
             label {
                 font-size: 2rem;
+                align-self: center;
             }
 
             .freq-text-wrapper {
                 align-self: center;
             }
             
-            .freq-text {
-                display: inline-block;
+
+            input[type=number] {
+                font-family: Monaco, Consolas, monospace;
                 width: 8rem;
                 align-self: center;
                 font-size: 2rem;
                 padding-left: 0.5rem;
-            }
-
-            input[type=number] {
-                font-family: Monaco, Consolas, monospace;
+                background: #999;
+                text-align: right;
             }
 
             @media (min-width: 900px) {
@@ -134,13 +149,18 @@ class sine_View extends HTMLElement
             
         </style>
 
-        <div class="controls" id="controls">
+        <div class="controls" id="freq-controls">
           <label class="frequency-slider-label" for="frequency-slider">Frequency</label>
-          <input type="range" class="slider" id="frequency-slider" min="1" max="200" step="0.01" ></input>
+          <input type="range" class="slider" id="frequency-slider" min="1" max="200" step="0.01" value="40.00"></input>
           <div class="freq-text-wrapper">
-            <input type="number" class="freq-text" id="frequency-text" min="1" max="12000" step="0.01" value="40.00"></input>
+            <input type="number" class="slider-text" id="frequency-text" min="1" max="12000" step="0.01" value="40.00"></input>
             <label for="frequency-text">Hz</label>
           </div>  
+        </div>
+        <div class="controls" id="gain-controls">
+            <label for="gain-slider">Gain</label>
+            <input type="range" class="slider" id="gain-slider" min="0" max="1" step="0.01" value="0.5"></input>
+             <input type="number" class="slider-text" id="gain-text" min="0" max="1" step="0.01" value="0.50"></input>
         </div>`;
     }
 }
